@@ -1,4 +1,4 @@
-name: Bright Hearts Phase B technical proof
+name: Bright Hearts CI
 
 on:
   pull_request:

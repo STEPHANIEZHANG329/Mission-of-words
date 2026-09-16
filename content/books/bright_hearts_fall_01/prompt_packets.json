@@ -1,0 +1,205 @@
+{
+  "max_paid_image_calls": 24,
+  "planned_count": 18,
+  "repair_slots": 6,
+  "packets": [
+    {
+      "asset_id": "cast_reference_sheet",
+      "role": "cast_reference",
+      "mission_id": null,
+      "model": "gpt-image-2.5-sunburst",
+      "quality": "high",
+      "size": "1664x2160",
+      "prompt": "Commercial US children's coloring and activity book plate. Pure black line art on white. Thick clean outlines. Large easy-to-color shapes. Coherent single scene, not a collage. Cute but not babyish, ages 5-8. No gray wash, no photorealism, no 3D render, no anime, no horror, no text.\nABSOLUTE RULE: do not draw any letters, numbers, words, titles, captions, Bible verses, signs, logos, name tags, book text, or watermarks. Blank pages, blank lanterns, blank collar tags, blank banners. All final text will be added later by layout code.\nRecurring cast, keep them identical in every picture:\n- Mira: Round cheerful face, chin-length dark bob with a small round hair clip on the right, medium-warm skin, simple crewneck sweater, round-toed shoes. Often holds a paper-bag lantern with a candle glow but no writing on the lantern.\n- Eli: Short curly hair, medium-deep skin, striped long-sleeve shirt, kind open expression, sneakers.\n- Joy: Two puffs with round hair ties (no letters on the ties), lighter skin, overalls over a t-shirt, small boots.\n- Caleb: Straight hair with bangs, light-medium skin, zip hoodie, sneakers, gentle posture.\n- Pip: Medium scruffy mixed-breed dog, floppy ears, oval collar tag that is completely blank, friendly face, sitting or walking beside the children.\nFull-body character reference sheet: Mira, Eli, Joy, Caleb, and Pip the dog standing in a loose row on a simple autumn ground, facing the viewer, white background, even spacing, no props with writing, no panel labels. Each child distinct. Pip sits at their feet.",
+      "status": "pending",
+      "max_attempts": 1
+    },
+    {
+      "asset_id": "mission_01_hero",
+      "role": "coloring_hero",
+      "mission_id": "mission_01",
+      "model": "gpt-image-2.5-flare",
+      "quality": "high",
+      "size": "1664x2160",
+      "prompt": "Commercial US children's coloring and activity book plate. Pure black line art on white. Thick clean outlines. Large easy-to-color shapes. Coherent single scene, not a collage. Cute but not babyish, ages 5-8. No gray wash, no photorealism, no 3D render, no anime, no horror, no text.\nABSOLUTE RULE: do not draw any letters, numbers, words, titles, captions, Bible verses, signs, logos, name tags, book text, or watermarks. Blank pages, blank lanterns, blank collar tags, blank banners. All final text will be added later by layout code.\nRecurring cast, keep them identical in every picture:\n- Mira: Round cheerful face, chin-length dark bob with a small round hair clip on the right, medium-warm skin, simple crewneck sweater, round-toed shoes. Often holds a paper-bag lantern with a candle glow but no writing on the lantern.\n- Eli: Short curly hair, medium-deep skin, striped long-sleeve shirt, kind open expression, sneakers.\n- Joy: Two puffs with round hair ties (no letters on the ties), lighter skin, overalls over a t-shirt, small boots.\n- Caleb: Straight hair with bangs, light-medium skin, zip hoodie, sneakers, gentle posture.\n- Pip: Medium scruffy mixed-breed dog, floppy ears, oval collar tag that is completely blank, friendly face, sitting or walking beside the children.\nPortrait coloring page scene for 'Shine Your Light'. Church fall festival at dusk, intact steeple cross, string lights, pumpkins, leaves, welcome table, Mira and Eli carrying lanterns with no writing, Joy and Caleb nearby, Pip at their feet. Integrated black line-art coloring scene: church fall festival, two children carrying lanterns, pumpkins, leaves, church with intact steeple cross, string lights, welcome table. No letters in the artwork. Fill the frame with one integrated scene. Leave a little breathing room at the top because layout code will add the title later. No text.",
+      "status": "pending",
+      "max_attempts": 1
+    },
+    {
+      "asset_id": "mission_01_search_background",
+      "role": "search_background",
+      "mission_id": "mission_01",
+      "model": "gpt-image-2.5-flare",
+      "quality": "high",
+      "size": "1664x2160",
+      "prompt": "Commercial US children's coloring and activity book plate. Pure black line art on white. Thick clean outlines. Large easy-to-color shapes. Coherent single scene, not a collage. Cute but not babyish, ages 5-8. No gray wash, no photorealism, no 3D render, no anime, no horror, no text.\nABSOLUTE RULE: do not draw any letters, numbers, words, titles, captions, Bible verses, signs, logos, name tags, book text, or watermarks. Blank pages, blank lanterns, blank collar tags, blank banners. All final text will be added later by layout code.\nDense but readable hidden-object BACKGROUND ONLY for ages 5-8. Do not draw the children as the focus; small distant figures are ok if they are not holding hunt items. Festival grounds background with booths, trees, pumpkins in the distance, string lights. Do NOT include a lantern, pumpkin close-up as a hunt object, apple, leaf icon, acorn, scarf, basket, or Bible. Controlled festival-grounds background without the eight targets. Independently placed lantern, pumpkin, apple, leaf, acorn, scarf, basket, and Bible. Do not draw these hunt targets at all: lantern, pumpkin, apple, leaf, acorn, scarf, basket, Bible. Busy autumn environment, still readable, no text.",
+      "status": "pending",
+      "max_attempts": 1
+    },
+    {
+      "asset_id": "mission_02_hero",
+      "role": "coloring_hero",
+      "mission_id": "mission_02",
+      "model": "gpt-image-2.5-flare",
+      "quality": "high",
+      "size": "1664x2160",
+      "prompt": "Commercial US children's coloring and activity book plate. Pure black line art on white. Thick clean outlines. Large easy-to-color shapes. Coherent single scene, not a collage. Cute but not babyish, ages 5-8. No gray wash, no photorealism, no 3D render, no anime, no horror, no text.\nABSOLUTE RULE: do not draw any letters, numbers, words, titles, captions, Bible verses, signs, logos, name tags, book text, or watermarks. Blank pages, blank lanterns, blank collar tags, blank banners. All final text will be added later by layout code.\nRecurring cast, keep them identical in every picture:\n- Mira: Round cheerful face, chin-length dark bob with a small round hair clip on the right, medium-warm skin, simple crewneck sweater, round-toed shoes. Often holds a paper-bag lantern with a candle glow but no writing on the lantern.\n- Eli: Short curly hair, medium-deep skin, striped long-sleeve shirt, kind open expression, sneakers.\n- Joy: Two puffs with round hair ties (no letters on the ties), lighter skin, overalls over a t-shirt, small boots.\n- Caleb: Straight hair with bangs, light-medium skin, zip hoodie, sneakers, gentle posture.\n- Pip: Medium scruffy mixed-breed dog, floppy ears, oval collar tag that is completely blank, friendly face, sitting or walking beside the children.\nPortrait coloring page scene for 'God Made the Seasons'. Evening orchard: setting sun, rising moon, stars, apple trees, a path, Caleb looking up, Mira pointing at the sky, Pip sitting, no writing on anything. Integrated black line-art coloring scene: evening orchard with a setting sun, rising moon, stars in a clear sky, apple trees, a simple path, and a child looking up. No letters in the artwork. Do not bake verse text into the drawing. Fill the frame with one integrated scene. Leave a little breathing room at the top because layout code will add the title later. No text.",
+      "status": "pending",
+      "max_attempts": 1
+    },
+    {
+      "asset_id": "mission_02_search_background",
+      "role": "search_background",
+      "mission_id": "mission_02",
+      "model": "gpt-image-2.5-flare",
+      "quality": "high",
+      "size": "1664x2160",
+      "prompt": "Commercial US children's coloring and activity book plate. Pure black line art on white. Thick clean outlines. Large easy-to-color shapes. Coherent single scene, not a collage. Cute but not babyish, ages 5-8. No gray wash, no photorealism, no 3D render, no anime, no horror, no text.\nABSOLUTE RULE: do not draw any letters, numbers, words, titles, captions, Bible verses, signs, logos, name tags, book text, or watermarks. Blank pages, blank lanterns, blank collar tags, blank banners. All final text will be added later by layout code.\nDense but readable hidden-object BACKGROUND ONLY for ages 5-8. Do not draw the children as the focus; small distant figures are ok if they are not holding hunt items. Dusk orchard background with trees and sky. Do NOT include a sun disk, crescent moon, star, cloud icon, sundial, hourglass, sparrow, or a single highlighted season leaf. Controlled dusk-orchard background without the eight targets. Independently placed sun disk, crescent moon, star, cloud, sundial, hourglass, sparrow, and season leaf. Do not draw these hunt targets at all: sun_disk, crescent_moon, star, cloud, sundial, hourglass, sparrow, season_leaf. Busy autumn environment, still readable, no text.",
+      "status": "pending",
+      "max_attempts": 1
+    },
+    {
+      "asset_id": "mission_03_hero",
+      "role": "coloring_hero",
+      "mission_id": "mission_03",
+      "model": "gpt-image-2.5-flare",
+      "quality": "high",
+      "size": "1664x2160",
+      "prompt": "Commercial US children's coloring and activity book plate. Pure black line art on white. Thick clean outlines. Large easy-to-color shapes. Coherent single scene, not a collage. Cute but not babyish, ages 5-8. No gray wash, no photorealism, no 3D render, no anime, no horror, no text.\nABSOLUTE RULE: do not draw any letters, numbers, words, titles, captions, Bible verses, signs, logos, name tags, book text, or watermarks. Blank pages, blank lanterns, blank collar tags, blank banners. All final text will be added later by layout code.\nRecurring cast, keep them identical in every picture:\n- Mira: Round cheerful face, chin-length dark bob with a small round hair clip on the right, medium-warm skin, simple crewneck sweater, round-toed shoes. Often holds a paper-bag lantern with a candle glow but no writing on the lantern.\n- Eli: Short curly hair, medium-deep skin, striped long-sleeve shirt, kind open expression, sneakers.\n- Joy: Two puffs with round hair ties (no letters on the ties), lighter skin, overalls over a t-shirt, small boots.\n- Caleb: Straight hair with bangs, light-medium skin, zip hoodie, sneakers, gentle posture.\n- Pip: Medium scruffy mixed-breed dog, floppy ears, oval collar tag that is completely blank, friendly face, sitting or walking beside the children.\nPortrait coloring page scene for 'A Harvest of Thankfulness'. Harvest wagon of wheat and corn, barn, family including all four children, a simple hymn book shown closed with a blank cover, pumpkins, Pip, not a church festival. Integrated black line-art coloring scene: family with a harvest wagon of wheat and corn, a barn, a thankful child with a small hymn book, pumpkins nearby but not copied from Mission 1's church festival. No letters in the artwork. Fill the frame with one integrated scene. Leave a little breathing room at the top because layout code will add the title later. No text.",
+      "status": "pending",
+      "max_attempts": 1
+    },
+    {
+      "asset_id": "mission_03_search_background",
+      "role": "search_background",
+      "mission_id": "mission_03",
+      "model": "gpt-image-2.5-flare",
+      "quality": "high",
+      "size": "1664x2160",
+      "prompt": "Commercial US children's coloring and activity book plate. Pure black line art on white. Thick clean outlines. Large easy-to-color shapes. Coherent single scene, not a collage. Cute but not babyish, ages 5-8. No gray wash, no photorealism, no 3D render, no anime, no horror, no text.\nABSOLUTE RULE: do not draw any letters, numbers, words, titles, captions, Bible verses, signs, logos, name tags, book text, or watermarks. Blank pages, blank lanterns, blank collar tags, blank banners. All final text will be added later by layout code.\nDense but readable hidden-object BACKGROUND ONLY for ages 5-8. Do not draw the children as the focus; small distant figures are ok if they are not holding hunt items. Barn-yard background. Do NOT include a wheat sheaf, corn cob, loaf, pitcher, pie, hymn book, heart, or thank-you card. Controlled barn-yard background without the eight targets. Independently placed wheat sheaf, corn cob, loaf, pitcher, pie, hymn book, heart, and thank-you card. Do not draw these hunt targets at all: wheat_sheaf, corn_cob, loaf, pitcher, pie, hymn_book, heart, thank_you_card. Busy autumn environment, still readable, no text.",
+      "status": "pending",
+      "max_attempts": 1
+    },
+    {
+      "asset_id": "mission_04_hero",
+      "role": "coloring_hero",
+      "mission_id": "mission_04",
+      "model": "gpt-image-2.5-flare",
+      "quality": "high",
+      "size": "1664x2160",
+      "prompt": "Commercial US children's coloring and activity book plate. Pure black line art on white. Thick clean outlines. Large easy-to-color shapes. Coherent single scene, not a collage. Cute but not babyish, ages 5-8. No gray wash, no photorealism, no 3D render, no anime, no horror, no text.\nABSOLUTE RULE: do not draw any letters, numbers, words, titles, captions, Bible verses, signs, logos, name tags, book text, or watermarks. Blank pages, blank lanterns, blank collar tags, blank banners. All final text will be added later by layout code.\nRecurring cast, keep them identical in every picture:\n- Mira: Round cheerful face, chin-length dark bob with a small round hair clip on the right, medium-warm skin, simple crewneck sweater, round-toed shoes. Often holds a paper-bag lantern with a candle glow but no writing on the lantern.\n- Eli: Short curly hair, medium-deep skin, striped long-sleeve shirt, kind open expression, sneakers.\n- Joy: Two puffs with round hair ties (no letters on the ties), lighter skin, overalls over a t-shirt, small boots.\n- Caleb: Straight hair with bangs, light-medium skin, zip hoodie, sneakers, gentle posture.\n- Pip: Medium scruffy mixed-breed dog, floppy ears, oval collar tag that is completely blank, friendly face, sitting or walking beside the children.\nPortrait coloring page scene for 'Courage Over Fear'. Child (Eli) walking an autumn woods path toward a warmly lit porch, tall trees, fallen leaves, a small handheld light, Mira waiting on the porch, Pip beside Eli. Do not depict God as a person. Integrated black line-art coloring scene: a child walking an autumn woods path toward a warmly lit porch, tall trees, fallen leaves, a small handheld light. Do not depict God as a cartoon person. No letters in the artwork. Fill the frame with one integrated scene. Leave a little breathing room at the top because layout code will add the title later. No text.",
+      "status": "pending",
+      "max_attempts": 1
+    },
+    {
+      "asset_id": "mission_04_search_background",
+      "role": "search_background",
+      "mission_id": "mission_04",
+      "model": "gpt-image-2.5-flare",
+      "quality": "high",
+      "size": "1664x2160",
+      "prompt": "Commercial US children's coloring and activity book plate. Pure black line art on white. Thick clean outlines. Large easy-to-color shapes. Coherent single scene, not a collage. Cute but not babyish, ages 5-8. No gray wash, no photorealism, no 3D render, no anime, no horror, no text.\nABSOLUTE RULE: do not draw any letters, numbers, words, titles, captions, Bible verses, signs, logos, name tags, book text, or watermarks. Blank pages, blank lanterns, blank collar tags, blank banners. All final text will be added later by layout code.\nDense but readable hidden-object BACKGROUND ONLY for ages 5-8. Do not draw the children as the focus; small distant figures are ok if they are not holding hunt items. Woods-path background. Do NOT include a hiking boot, walking stick, small lantern, map, compass, owl, blanket, or badge. Controlled woods-path background without the eight targets. Independently placed hiking boot, walking stick, small lantern, map, compass, owl, blanket, and brave badge. Do not draw these hunt targets at all: hiking_boot, walking_stick, small_lantern, trail_map, compass, owl, blanket, brave_badge. Busy autumn environment, still readable, no text.",
+      "status": "pending",
+      "max_attempts": 1
+    },
+    {
+      "asset_id": "mission_05_hero",
+      "role": "coloring_hero",
+      "mission_id": "mission_05",
+      "model": "gpt-image-2.5-flare",
+      "quality": "high",
+      "size": "1664x2160",
+      "prompt": "Commercial US children's coloring and activity book plate. Pure black line art on white. Thick clean outlines. Large easy-to-color shapes. Coherent single scene, not a collage. Cute but not babyish, ages 5-8. No gray wash, no photorealism, no 3D render, no anime, no horror, no text.\nABSOLUTE RULE: do not draw any letters, numbers, words, titles, captions, Bible verses, signs, logos, name tags, book text, or watermarks. Blank pages, blank lanterns, blank collar tags, blank banners. All final text will be added later by layout code.\nRecurring cast, keep them identical in every picture:\n- Mira: Round cheerful face, chin-length dark bob with a small round hair clip on the right, medium-warm skin, simple crewneck sweater, round-toed shoes. Often holds a paper-bag lantern with a candle glow but no writing on the lantern.\n- Eli: Short curly hair, medium-deep skin, striped long-sleeve shirt, kind open expression, sneakers.\n- Joy: Two puffs with round hair ties (no letters on the ties), lighter skin, overalls over a t-shirt, small boots.\n- Caleb: Straight hair with bangs, light-medium skin, zip hoodie, sneakers, gentle posture.\n- Pip: Medium scruffy mixed-breed dog, floppy ears, oval collar tag that is completely blank, friendly face, sitting or walking beside the children.\nPortrait coloring page scene for 'Share the Harvest'. Mira and Joy on a neighbor porch handing over a basket of apples and a loaf, an older neighbor at the door, jars on the step, Eli and Caleb and Pip nearby. Not a church festival. Integrated black line-art coloring scene: two children on a neighbor porch handing over a basket of apples and a loaf, an older neighbor at the door, extra jars on the step. Not the Mission 1 church festival. No letters in the artwork. Fill the frame with one integrated scene. Leave a little breathing room at the top because layout code will add the title later. No text.",
+      "status": "pending",
+      "max_attempts": 1
+    },
+    {
+      "asset_id": "mission_05_search_background",
+      "role": "search_background",
+      "mission_id": "mission_05",
+      "model": "gpt-image-2.5-flare",
+      "quality": "high",
+      "size": "1664x2160",
+      "prompt": "Commercial US children's coloring and activity book plate. Pure black line art on white. Thick clean outlines. Large easy-to-color shapes. Coherent single scene, not a collage. Cute but not babyish, ages 5-8. No gray wash, no photorealism, no 3D render, no anime, no horror, no text.\nABSOLUTE RULE: do not draw any letters, numbers, words, titles, captions, Bible verses, signs, logos, name tags, book text, or watermarks. Blank pages, blank lanterns, blank collar tags, blank banners. All final text will be added later by layout code.\nDense but readable hidden-object BACKGROUND ONLY for ages 5-8. Do not draw the children as the focus; small distant figures are ok if they are not holding hunt items. Porch-and-yard background. Do NOT include an extra apple, loaf, soup pot, empty bowl, pair of gloves, jar of jam, note card, or wagon. Controlled porch-and-yard background without the eight targets. Independently placed extra apple, loaf, soup pot, empty bowl, pair of gloves, jar of jam, note card, and wagon. Do not draw these hunt targets at all: extra_apple, shared_loaf, soup_pot, empty_bowl, pair_of_gloves, jam_jar, note_card, wagon. Busy autumn environment, still readable, no text.",
+      "status": "pending",
+      "max_attempts": 1
+    },
+    {
+      "asset_id": "mission_06_hero",
+      "role": "coloring_hero",
+      "mission_id": "mission_06",
+      "model": "gpt-image-2.5-flare",
+      "quality": "high",
+      "size": "1664x2160",
+      "prompt": "Commercial US children's coloring and activity book plate. Pure black line art on white. Thick clean outlines. Large easy-to-color shapes. Coherent single scene, not a collage. Cute but not babyish, ages 5-8. No gray wash, no photorealism, no 3D render, no anime, no horror, no text.\nABSOLUTE RULE: do not draw any letters, numbers, words, titles, captions, Bible verses, signs, logos, name tags, book text, or watermarks. Blank pages, blank lanterns, blank collar tags, blank banners. All final text will be added later by layout code.\nRecurring cast, keep them identical in every picture:\n- Mira: Round cheerful face, chin-length dark bob with a small round hair clip on the right, medium-warm skin, simple crewneck sweater, round-toed shoes. Often holds a paper-bag lantern with a candle glow but no writing on the lantern.\n- Eli: Short curly hair, medium-deep skin, striped long-sleeve shirt, kind open expression, sneakers.\n- Joy: Two puffs with round hair ties (no letters on the ties), lighter skin, overalls over a t-shirt, small boots.\n- Caleb: Straight hair with bangs, light-medium skin, zip hoodie, sneakers, gentle posture.\n- Pip: Medium scruffy mixed-breed dog, floppy ears, oval collar tag that is completely blank, friendly face, sitting or walking beside the children.\nPortrait coloring page scene for 'Kindness at the Fall Festival'. Fall-festival game booth, ring-toss, cider cups, Mira and Eli waving lonely Joy over to an extra empty chair, Caleb at the booth, Pip. Not the church-and-lanterns scene. Integrated black line-art coloring scene: fall-festival game booth, two children waving a lonely child over to an extra chair, cider cups on a rail, a ring-toss game. Not a copy of Mission 1's church-and-lanterns scene. No letters in the artwork. Fill the frame with one integrated scene. Leave a little breathing room at the top because layout code will add the title later. No text.",
+      "status": "pending",
+      "max_attempts": 1
+    },
+    {
+      "asset_id": "mission_06_search_background",
+      "role": "search_background",
+      "mission_id": "mission_06",
+      "model": "gpt-image-2.5-flare",
+      "quality": "high",
+      "size": "1664x2160",
+      "prompt": "Commercial US children's coloring and activity book plate. Pure black line art on white. Thick clean outlines. Large easy-to-color shapes. Coherent single scene, not a collage. Cute but not babyish, ages 5-8. No gray wash, no photorealism, no 3D render, no anime, no horror, no text.\nABSOLUTE RULE: do not draw any letters, numbers, words, titles, captions, Bible verses, signs, logos, name tags, book text, or watermarks. Blank pages, blank lanterns, blank collar tags, blank banners. All final text will be added later by layout code.\nDense but readable hidden-object BACKGROUND ONLY for ages 5-8. Do not draw the children as the focus; small distant figures are ok if they are not holding hunt items. Festival-booth background. Do NOT include a ticket, cider cup, kind note, extra chair, smile badge, bandage, pretzel, or game ring. Controlled festival-booth background without the eight targets. Independently placed ticket, cider cup, kind note, extra chair, smile badge, bandage, shared pretzel, and extra game ring. Do not draw these hunt targets at all: ticket, cider_cup, kind_note, extra_chair, smile_badge, bandage, shared_pretzel, game_ring. Busy autumn environment, still readable, no text.",
+      "status": "pending",
+      "max_attempts": 1
+    },
+    {
+      "asset_id": "mission_07_hero",
+      "role": "coloring_hero",
+      "mission_id": "mission_07",
+      "model": "gpt-image-2.5-flare",
+      "quality": "high",
+      "size": "1664x2160",
+      "prompt": "Commercial US children's coloring and activity book plate. Pure black line art on white. Thick clean outlines. Large easy-to-color shapes. Coherent single scene, not a collage. Cute but not babyish, ages 5-8. No gray wash, no photorealism, no 3D render, no anime, no horror, no text.\nABSOLUTE RULE: do not draw any letters, numbers, words, titles, captions, Bible verses, signs, logos, name tags, book text, or watermarks. Blank pages, blank lanterns, blank collar tags, blank banners. All final text will be added later by layout code.\nRecurring cast, keep them identical in every picture:\n- Mira: Round cheerful face, chin-length dark bob with a small round hair clip on the right, medium-warm skin, simple crewneck sweater, round-toed shoes. Often holds a paper-bag lantern with a candle glow but no writing on the lantern.\n- Eli: Short curly hair, medium-deep skin, striped long-sleeve shirt, kind open expression, sneakers.\n- Joy: Two puffs with round hair ties (no letters on the ties), lighter skin, overalls over a t-shirt, small boots.\n- Caleb: Straight hair with bangs, light-medium skin, zip hoodie, sneakers, gentle posture.\n- Pip: Medium scruffy mixed-breed dog, floppy ears, oval collar tag that is completely blank, friendly face, sitting or walking beside the children.\nPortrait coloring page scene for 'God's Beautiful Creation'. Autumn hillside, creek, oak trees, a deer at the water, birds, Caleb sitting on a rock looking out, Mira Eli Joy and Pip nearby. Not an orchard of sun and moon. Integrated black line-art coloring scene: autumn hillside, creek, oak trees, a deer at the water, birds, a child sitting on a rock looking out. No letters in the artwork. Do not copy Mission 2's sun-moon-stars orchard. Fill the frame with one integrated scene. Leave a little breathing room at the top because layout code will add the title later. No text.",
+      "status": "pending",
+      "max_attempts": 1
+    },
+    {
+      "asset_id": "mission_07_search_background",
+      "role": "search_background",
+      "mission_id": "mission_07",
+      "model": "gpt-image-2.5-flare",
+      "quality": "high",
+      "size": "1664x2160",
+      "prompt": "Commercial US children's coloring and activity book plate. Pure black line art on white. Thick clean outlines. Large easy-to-color shapes. Coherent single scene, not a collage. Cute but not babyish, ages 5-8. No gray wash, no photorealism, no 3D render, no anime, no horror, no text.\nABSOLUTE RULE: do not draw any letters, numbers, words, titles, captions, Bible verses, signs, logos, name tags, book text, or watermarks. Blank pages, blank lanterns, blank collar tags, blank banners. All final text will be added later by layout code.\nDense but readable hidden-object BACKGROUND ONLY for ages 5-8. Do not draw the children as the focus; small distant figures are ok if they are not holding hunt items. Hillside-and-creek background. Do NOT include an oak leaf, pinecone, deer, fish, mushroom, bird nest, pebble, or ladybug as isolated hunt objects. Controlled hillside-and-creek background without the eight targets. Independently placed oak leaf, pinecone, deer, creek fish, mushroom, bird nest, pebble, and ladybug. Do not draw these hunt targets at all: oak_leaf, pinecone, deer, creek_fish, mushroom, bird_nest, pebble, ladybug. Busy autumn environment, still readable, no text.",
+      "status": "pending",
+      "max_attempts": 1
+    },
+    {
+      "asset_id": "mission_08_hero",
+      "role": "coloring_hero",
+      "mission_id": "mission_08",
+      "model": "gpt-image-2.5-flare",
+      "quality": "high",
+      "size": "1664x2160",
+      "prompt": "Commercial US children's coloring and activity book plate. Pure black line art on white. Thick clean outlines. Large easy-to-color shapes. Coherent single scene, not a collage. Cute but not babyish, ages 5-8. No gray wash, no photorealism, no 3D render, no anime, no horror, no text.\nABSOLUTE RULE: do not draw any letters, numbers, words, titles, captions, Bible verses, signs, logos, name tags, book text, or watermarks. Blank pages, blank lanterns, blank collar tags, blank banners. All final text will be added later by layout code.\nRecurring cast, keep them identical in every picture:\n- Mira: Round cheerful face, chin-length dark bob with a small round hair clip on the right, medium-warm skin, simple crewneck sweater, round-toed shoes. Often holds a paper-bag lantern with a candle glow but no writing on the lantern.\n- Eli: Short curly hair, medium-deep skin, striped long-sleeve shirt, kind open expression, sneakers.\n- Joy: Two puffs with round hair ties (no letters on the ties), lighter skin, overalls over a t-shirt, small boots.\n- Caleb: Straight hair with bangs, light-medium skin, zip hoodie, sneakers, gentle posture.\n- Pip: Medium scruffy mixed-breed dog, floppy ears, oval collar tag that is completely blank, friendly face, sitting or walking beside the children.\nPortrait coloring page scene for 'The Thankful Table'. Family table with a simple autumn meal, extra chair being pulled in, clasped hands before eating, bread basket, window with falling leaves, all four children and Pip. Not a harvest wagon scene. Integrated black line-art coloring scene: family table with simple autumn meal, empty chair being pulled in, clasped hands before eating, bread basket, window with falling leaves. Not a copy of Mission 3's harvest wagon. No letters in the artwork. Fill the frame with one integrated scene. Leave a little breathing room at the top because layout code will add the title later. No text.",
+      "status": "pending",
+      "max_attempts": 1
+    },
+    {
+      "asset_id": "mission_08_search_background",
+      "role": "search_background",
+      "mission_id": "mission_08",
+      "model": "gpt-image-2.5-flare",
+      "quality": "high",
+      "size": "1664x2160",
+      "prompt": "Commercial US children's coloring and activity book plate. Pure black line art on white. Thick clean outlines. Large easy-to-color shapes. Coherent single scene, not a collage. Cute but not babyish, ages 5-8. No gray wash, no photorealism, no 3D render, no anime, no horror, no text.\nABSOLUTE RULE: do not draw any letters, numbers, words, titles, captions, Bible verses, signs, logos, name tags, book text, or watermarks. Blank pages, blank lanterns, blank collar tags, blank banners. All final text will be added later by layout code.\nDense but readable hidden-object BACKGROUND ONLY for ages 5-8. Do not draw the children as the focus; small distant figures are ok if they are not holding hunt items. Dining-room background with a table. Do NOT include a plate, cup, napkin, chair, bread basket, candle, place card, or serving spoon as isolated hunt objects. Controlled dining-room background without the eight targets. Independently placed plate, cup, napkin, chair, bread basket, candle, place card, and serving spoon. Do not draw these hunt targets at all: plate, cup, napkin, chair, bread_basket, candle, place_card, serving_spoon. Busy autumn environment, still readable, no text.",
+      "status": "pending",
+      "max_attempts": 1
+    },
+    {
+      "asset_id": "cover_front",
+      "role": "cover_front",
+      "mission_id": null,
+      "model": "gpt-image-2.5-sunburst",
+      "quality": "high",
+      "size": "1664x2160",
+      "prompt": "Full-color children's paperback cover illustration, autumn Christian family activity book mood, warm daylight, four children (Mira, Eli, Joy, Caleb) and Pip the dog at a fall festival with lanterns, pumpkins, a small church in the distance with an intact steeple cross, harvest baskets. Recurring cast, keep them identical in every picture:\n- Mira: Round cheerful face, chin-length dark bob with a small round hair clip on the right, medium-warm skin, simple crewneck sweater, round-toed shoes. Often holds a paper-bag lantern with a candle glow but no writing on the lantern.\n- Eli: Short curly hair, medium-deep skin, striped long-sleeve shirt, kind open expression, sneakers.\n- Joy: Two puffs with round hair ties (no letters on the ties), lighter skin, overalls over a t-shirt, small boots.\n- Caleb: Straight hair with bangs, light-medium skin, zip hoodie, sneakers, gentle posture.\n- Pip: Medium scruffy mixed-breed dog, floppy ears, oval collar tag that is completely blank, friendly face, sitting or walking beside the children. NO TEXT, no title, no author name, no Bible verse, no logos. Leave a calm sky area in the upper third so layout code can place the title later. Painting-and-ink storybook color, not photoreal.",
+      "status": "pending",
+      "max_attempts": 1
+    }
+  ]
+}

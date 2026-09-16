@@ -5,8 +5,9 @@ from __future__ import annotations
 from reportlab.pdfgen import canvas
 
 from mission_of_words import art
-from mission_of_words.layout import USED_INSTRUCTION_PT, USED_SUBTITLE_PT, USED_TITLE_PT
+from mission_of_words.layout import USED_INSTRUCTION_PT, USED_SUBTITLE_PT
 from mission_of_words.proof import live_box
+from mission_of_words.templates import draw_activity_header
 from mission_of_words.text import ink_text, wrapped_text
 
 WELCOME_BODY = (
@@ -58,18 +59,20 @@ def draw_title_page(c: canvas.Canvas, book: dict, page_number: int = 1) -> dict:
 
 
 def draw_welcome_page(c: canvas.Canvas, book: dict, page_number: int = 2) -> dict:
-    left, bottom, right, top = live_box(page_number)
+    box = live_box(page_number)
+    plan = draw_activity_header(
+        c,
+        page_number,
+        mission_title="Welcome, Bright Hearts",
+        activity_title="How to use this book",
+        instruction="Read how to use the book, then start Mission 1 with a grown-up.",
+        box=box,
+    )
+    left, bottom, right, top = plan.art_box
     width = right - left
-    ink_text(c)
-    y = top - 24
-    c.setFont("Helvetica-Bold", USED_TITLE_PT)
-    c.drawString(left, y, "Welcome, Bright Hearts")
-    y -= 28
-    c.setFont("Helvetica-Bold", USED_INSTRUCTION_PT)
-    c.drawString(left, y, "How to use this book")
-    y -= 22
+    y = top - 4
     y = wrapped_text(c, WELCOME_BODY, left, y, width, size=USED_INSTRUCTION_PT, leading=18)
-    y -= 16
+    y -= 12
     steps = [
         "1. Look at the mission map. Pick a mission with a grown-up.",
         "2. Color the first picture. Stay inside the live area.",
@@ -88,55 +91,53 @@ def draw_welcome_page(c: canvas.Canvas, book: dict, page_number: int = 2) -> dic
         "Welcome, Bright Hearts",
         ["welcome_spot"],
         instruction="Read how to use the book, then start Mission 1 with a grown-up.",
+        layout=plan.state.as_fields(),
     )
 
 
 def draw_contents_page(c: canvas.Canvas, missions: list[dict], page_number: int = 3) -> dict:
-    left, bottom, right, top = live_box(page_number)
-    width = right - left
-    ink_text(c)
-    y = top - 24
-    c.setFont("Helvetica-Bold", USED_TITLE_PT)
-    c.drawString(left, y, "Fall Faith Missions Map")
-    y -= 22
-    y = wrapped_text(
+    box = live_box(page_number)
+    plan = draw_activity_header(
         c,
-        "Eight unique missions. Each one is locked to a Bible verse. Page numbers show where to begin.",
-        left,
-        y,
-        width,
-        size=USED_INSTRUCTION_PT,
-        leading=17,
+        page_number,
+        mission_title="Fall Faith Missions Map",
+        activity_title="",
+        instruction="Eight unique missions. Each one is locked to a Bible verse. Page numbers show where to begin.",
+        box=box,
     )
-    y -= 10
+    left, bottom, right, top = plan.art_box
+    width = right - left
+    y = top - 6
     for mission in missions:
         start = int(mission["global_page_start"])
         line = f"Mission {mission['sequence']}  p.{start}  {mission['title']}  ·  {mission['scripture_reference']}"
         y = wrapped_text(c, line, left, y, width, font="Helvetica-Bold", size=USED_INSTRUCTION_PT, leading=17)
-        y -= 8
-        art.draw_heart(c, right - 18, y + 22, 8)
+        y -= 10
     return _record(
         page_number,
         "contents",
         "Fall Faith Missions Map",
         ["missions_map"],
         instruction="Find your mission on the map, then turn to that page.",
+        layout=plan.state.as_fields(),
     )
 
 
 def draw_parent_note_page(c: canvas.Canvas, book: dict, page_number: int = 4) -> dict:
-    left, bottom, right, top = live_box(page_number)
+    box = live_box(page_number)
+    plan = draw_activity_header(
+        c,
+        page_number,
+        mission_title="A Note for Parents and Caregivers",
+        activity_title="Bible source note",
+        instruction="Bright Hearts is Bible-first. Each mission is locked to one public-domain verse.",
+        box=box,
+    )
+    left, bottom, right, top = plan.art_box
     width = right - left
-    ink_text(c)
-    y = top - 24
-    c.setFont("Helvetica-Bold", USED_TITLE_PT)
-    y = wrapped_text(c, "A Note for Parents and Caregivers", left, y, width, font="Helvetica-Bold", size=USED_TITLE_PT, leading=24)
-    y -= 8
+    y = top - 4
     y = wrapped_text(c, PARENT_NOTE, left, y, width, size=USED_INSTRUCTION_PT, leading=17)
-    y -= 14
-    c.setFont("Helvetica-Bold", USED_INSTRUCTION_PT)
-    c.drawString(left, y, "Bible source note")
-    y -= 18
+    y -= 12
     y = wrapped_text(
         c,
         "Translation: 1769 Oxford King James Version. License: public domain in the United States. "
@@ -150,7 +151,14 @@ def draw_parent_note_page(c: canvas.Canvas, book: dict, page_number: int = 4) ->
     y -= 12
     c.setFont("Helvetica", USED_INSTRUCTION_PT)
     c.drawString(left, y, f"Intended list price baseline: ${book.get('kdp_list_price_usd', 9.99):.2f}")
-    return _record(page_number, "parent_note", "A Note for Parents and Caregivers", ["parent_letter"], child=False)
+    return _record(
+        page_number,
+        "parent_note",
+        "A Note for Parents and Caregivers",
+        ["parent_letter"],
+        child=False,
+        layout=plan.state.as_fields(),
+    )
 
 
 def _wrap(c: canvas.Canvas, text: str, max_width: float, font: str, size: int) -> list[str]:
@@ -178,8 +186,9 @@ def _record(
     *,
     instruction: str = "",
     child: bool = True,
+    layout: dict | None = None,
 ) -> dict:
-    return {
+    record = {
         "page": page,
         "type": page_type,
         "title": title,
@@ -194,3 +203,6 @@ def _record(
         "drawing_area_sqin": None,
         "child_instruction_required": child,
     }
+    if layout:
+        record.update(layout)
+    return record

@@ -12,11 +12,13 @@ from reportlab.pdfgen import canvas
 from mission_of_words import art
 from mission_of_words import procedural
 from mission_of_words.compositor import AssetPlacement, compose_search_find
-from mission_of_words.layout import DPI, USED_PUZZLE_LETTER_PT, content_box
+from mission_of_words.geometry import BBox
+from mission_of_words.layout import DPI, USED_PUZZLE_LETTER_PT
 from mission_of_words.paths import OUTPUT_DIR
 from mission_of_words.proof import live_box
 from mission_of_words.targets import display_name
-from mission_of_words.text import ink_text, page_header
+from mission_of_words.templates import draw_activity_header, draw_answer_number, measure_activity_header
+from mission_of_words.text import ink_text
 
 REQUIRED_TARGETS = (
     "lantern",
@@ -29,7 +31,7 @@ REQUIRED_TARGETS = (
     "Bible",
 )
 
-LEGEND_H = 96
+LEGEND_H = 118
 ICON_DRAWERS = {
     "lantern": lambda c, x, y: art.draw_lantern(c, x, y, 22),
     "pumpkin": lambda c, x, y: art.draw_pumpkin(c, x, y, 22),
@@ -48,18 +50,47 @@ def _mission_from_spec(spec: dict) -> dict:
     return spec
 
 
+def _header_kwargs(mission: dict, page: dict, canon: dict | None, *, answer_key: bool) -> dict:
+    reference = (canon or {}).get("reference") or mission.get("scripture_reference") or ""
+    title = page["title"] if not answer_key else f"{page['title']} — Answer Key"
+    instruction = (
+        page["child_instruction"]
+        if not answer_key
+        else "Numbers mark the same independently placed targets used on the child page."
+    )
+    return {
+        "mission_number": int(mission.get("sequence") or 1),
+        "mission_title": str(mission.get("title") or ""),
+        "activity_title": title,
+        "reference": str(reference),
+        "activity_label": "Search & Find" if not answer_key else "Search & Find answers",
+        "instruction": instruction,
+        "hero": False,
+    }
+
+
 def search_geometry(
-    page_number: int, *, marked_proof: bool = False
+    page_number: int,
+    mission: dict,
+    page: dict,
+    canon: dict | None = None,
+    *,
+    marked_proof: bool = False,
+    answer_key: bool = False,
 ) -> tuple[tuple[float, float, float, float], float]:
-    box = live_box(page_number) if marked_proof else content_box(page_number)
-    return box, LEGEND_H
+    box = live_box(page_number) if marked_proof else None
+    plan = measure_activity_header(page_number, box=box, **_header_kwargs(mission, page, canon, answer_key=answer_key))
+    left, bottom, right, top = plan.art_box
+    return (left, bottom + LEGEND_H, right, top), LEGEND_H
 
 
-def _scene_pixel_size(box: tuple[float, float, float, float], legend_h: float) -> tuple[int, int]:
-    left, bottom, right, top = box
+def _scene_pixel_size(scene_box: tuple[float, float, float, float]) -> tuple[int, int]:
+    left, bottom, right, top = scene_box
     width_in = (right - left) / 72.0
-    height_in = (top - bottom - legend_h - 110) / 72.0
-    return max(1, math.ceil(width_in * DPI) + 2), max(1, math.ceil(max(height_in, 1.0) * DPI) + 2)
+    # Keep a tall compositor canvas so target ratios stay spaced like the
+    # Phase B layouts; the PDF letterboxes with preserveAspectRatio.
+    height_in = max((top - bottom) / 72.0, 7.25)
+    return max(1, math.ceil(width_in * DPI) + 2), max(1, math.ceil(height_in * DPI) + 2)
 
 
 def build_search_scene_from_page(
@@ -70,22 +101,45 @@ def build_search_scene_from_page(
     theme: str,
     marked_proof: bool = False,
     status: str = "procedural_lineart",
+    mission: dict | None = None,
+    canon: dict | None = None,
+    background_path: Path | None = None,
 ) -> tuple[Path, list[dict], list[dict]]:
-    box, legend_h = search_geometry(page_number, marked_proof=marked_proof)
-    px_w, px_h = _scene_pixel_size(box, legend_h)
+    mission = mission or {"id": theme, "sequence": 1, "title": "", "pages": [None, search_page]}
+    scene_box, _legend_h = search_geometry(
+        page_number, mission, search_page, canon, marked_proof=marked_proof
+    )
+    px_w, px_h = _scene_pixel_size(scene_box)
     dest_dir.mkdir(parents=True, exist_ok=True)
     bg_path = dest_dir / "search_background.png"
+    records: list[dict] = []
+    if background_path and Path(background_path).is_file():
+        with Image.open(background_path) as source:
+            fitted = source.convert("RGB").resize((px_w, px_h), Image.Resampling.LANCZOS)
+            fitted.save(bg_path, "PNG")
+        records.append(
+            {
+                "asset_id": f"{theme}_search_background",
+                "role": "search_background",
+                "path": str(bg_path),
+                "status": "accepted",
+                "source": str(background_path),
+            }
+        )
+    else:
+        targets = list(search_page["targets"])
+        names = [str(target["name"]) for target in targets]
+        bg_record = procedural.render_search_background(
+            bg_path,
+            px_w,
+            px_h,
+            theme=theme,
+            status=status,
+            excluded_targets=names,
+        )
+        records.append(bg_record)
     targets = list(search_page["targets"])
     names = [str(target["name"]) for target in targets]
-    bg_record = procedural.render_search_background(
-        bg_path,
-        px_w,
-        px_h,
-        theme=theme,
-        status=status,
-        excluded_targets=names,
-    )
-    records = [bg_record]
     placements: list[AssetPlacement] = []
     by_name = {t["name"]: t for t in targets}
     for name in names:
@@ -115,68 +169,40 @@ def build_search_scene(spec: dict, dest_dir: Path) -> tuple[Path, list[dict], li
         theme=mission.get("id") or "mission_01",
         marked_proof=False,
         status="accepted",
+        mission=mission,
     )
 
 
-def draw_search_find_page(
+def _draw_legend(
     c: canvas.Canvas,
-    spec: dict,
-    composed_path: Path,
-    manifest: list[dict],
+    names: list[str],
     *,
-    answer_key: bool = False,
-    page_number: int | None = None,
-    marked_proof: bool = False,
-    icon_dir: Path | None = None,
-    canon: dict | None = None,
-) -> dict:
-    mission = _mission_from_spec(spec)
-    page = mission["pages"][1]
-    number = page_number if page_number is not None else (2 if not answer_key else 1)
-    reference = (canon or {}).get("reference") or mission.get("scripture_reference") or ""
-    title = page["title"] if not answer_key else f"{page['title']} — Answer Key"
-    instruction = (
-        page["child_instruction"]
-        if not answer_key
-        else "Circles mark the same independently placed targets used on the child page."
-    )
-    box = live_box(number) if marked_proof else None
-    content, y = page_header(
-        c,
-        number,
-        title,
-        instruction,
-        kicker=f"{reference}  ·  Find 8 gifts" if reference else "Find 8 gifts",
-        box=box,
-    )
-    left, bottom, right, top = content
-    legend_h = LEGEND_H
-    scene_bottom = bottom + legend_h
-    scene_top = y
-    scene_h = scene_top - scene_bottom
-    scene_w = right - left
-
-    c.drawImage(
-        ImageReader(str(composed_path)),
-        left,
-        scene_bottom,
-        width=scene_w,
-        height=scene_h,
-        preserveAspectRatio=True,
-        anchor="c",
-        mask="auto",
-    )
-
-    names = [row["name"] for row in manifest]
-    col_w = scene_w / 4
+    left: float,
+    bottom: float,
+    width: float,
+    icon_dir: Path | None,
+    state,
+) -> None:
+    col_w = width / 4
     ink_text(c)
     c.setFont("Helvetica-Bold", USED_PUZZLE_LETTER_PT)
-    c.drawString(left, bottom + legend_h - 14, "Find and circle:")
+    heading = "Find and circle:"
+    c.drawString(left, bottom + LEGEND_H - 16, heading)
+    state.add(
+        BBox(
+            "legend_heading",
+            left,
+            bottom + LEGEND_H - 20,
+            left + c.stringWidth(heading, "Helvetica-Bold", USED_PUZZLE_LETTER_PT),
+            bottom + LEGEND_H - 2,
+            kind="text",
+        )
+    )
     for index, name in enumerate(names):
         col = index % 4
         row = index // 4
         x = left + 8 + col * col_w
-        icon_y = bottom + 42 - row * 40
+        icon_y = bottom + 48 - row * 44
         icon_path = None
         if icon_dir is not None:
             candidate = icon_dir / f"target_{name}.png"
@@ -195,32 +221,71 @@ def draw_search_find_page(
             )
         elif name in ICON_DRAWERS:
             ICON_DRAWERS[name](c, x, icon_y)
+        else:
+            art.draw_star(c, x + 10, icon_y + 10, 8)
         ink_text(c)
         c.setFont("Helvetica", USED_PUZZLE_LETTER_PT)
-        c.drawString(x + 28, icon_y + 6, f"{index + 1}. {display_name(name)}")
+        label = f"{index + 1}. {display_name(name)}"
+        c.drawString(x + 28, icon_y + 6, label)
 
-    placed_w = scene_w
-    placed_h = scene_h
+
+def draw_search_find_page(
+    c: canvas.Canvas,
+    spec: dict,
+    composed_path: Path,
+    manifest: list[dict],
+    *,
+    answer_key: bool = False,
+    page_number: int | None = None,
+    marked_proof: bool = False,
+    icon_dir: Path | None = None,
+    canon: dict | None = None,
+) -> dict:
+    mission = _mission_from_spec(spec)
+    page = mission["pages"][1]
+    number = page_number if page_number is not None else (2 if not answer_key else 1)
+    box = live_box(number) if marked_proof else None
+    plan = draw_activity_header(
+        c,
+        number,
+        box=box,
+        **_header_kwargs(mission, page, canon, answer_key=answer_key),
+    )
+    left, bottom, right, top = plan.art_box
+    legend_h = LEGEND_H
+    scene_bottom = bottom + legend_h
+    scene_top = top
+    scene_h = scene_top - scene_bottom
+    scene_w = right - left
+
+    c.drawImage(
+        ImageReader(str(composed_path)),
+        left,
+        scene_bottom,
+        width=scene_w,
+        height=scene_h,
+        preserveAspectRatio=True,
+        anchor="c",
+        mask="auto",
+    )
+
+    names = [row["name"] for row in manifest]
+    _draw_legend(c, names, left=left, bottom=bottom, width=scene_w, icon_dir=icon_dir, state=plan.state)
+
     with Image.open(composed_path) as composed_image:
         img_w, img_h = composed_image.size
     scale = min(scene_w / img_w, scene_h / img_h)
     draw_w, draw_h = img_w * scale, img_h * scale
     ox = left + (scene_w - draw_w) / 2
     oy = scene_bottom + (scene_h - draw_h) / 2
-    placed_w, placed_h = draw_w, draw_h
     if answer_key:
-        c.setStrokeColorRGB(0, 0, 0)
-        c.setLineWidth(1.4)
-        ink_text(c)
-        c.setFont("Helvetica", 9)
-        for row in manifest:
+        for index, row in enumerate(manifest, start=1):
             cx = ox + (row["x"] + row["width"] / 2) * scale
             cy = oy + (img_h - (row["y"] + row["height"] / 2)) * scale
             radius = max(row["width"], row["height"]) * scale * 0.62
-            c.circle(cx, cy, radius, fill=0, stroke=1)
-            c.drawCentredString(cx, cy + radius + 3, display_name(row["name"]))
+            draw_answer_number(c, cx, cy, radius, index, plan.state, f"answer_{row['name']}")
 
-    effective_dpi = min(img_w / (placed_w / 72.0), img_h / (placed_h / 72.0)) if placed_w and placed_h else 0
+    effective_dpi = min(img_w / (draw_w / 72.0), img_h / (draw_h / 72.0)) if draw_w and draw_h else 0
     return {
         "page": number,
         "type": "search_find",
@@ -233,16 +298,17 @@ def draw_search_find_page(
         "artwork_status": "placeholder_only" if marked_proof else "procedural_lineart",
         "asset_integration": (
             "Background was drawn without the eight targets. Targets are separate "
-            "assets placed by the compositor. Answer key uses that manifest."
+            "code assets placed by the compositor. Answer key uses that manifest."
         ),
         "child_instruction": page["child_instruction"],
         "bible_connection": page["bible_connection"],
         "manifest": manifest,
         "composed_path": str(composed_path),
         "raster_pixel_size": [img_w, img_h],
-        "placed_points": [placed_w, placed_h],
+        "placed_points": [draw_w, draw_h],
         "effective_dpi": effective_dpi,
         "drawing_area_sqin": None,
+        **plan.state.as_fields(),
     }
 
 

@@ -485,6 +485,14 @@ def evaluate_full_book(
                 f"technical: expected {TARGET_PAGE_COUNT} compositions, got {len(compositions)}"
             )
         for record in compositions:
+            collisions = list(record.get("collisions") or [])
+            overflow = list(record.get("overflow") or [])
+            clipped = list(record.get("clipped") or [])
+            if collisions or overflow or clipped:
+                technical_failures.append(
+                    f"technical: page {record.get('page')} layout defects "
+                    f"collisions={collisions} overflow={overflow} clipped={clipped}"
+                )
             if record.get("type") != "search_find":
                 continue
             dpi = float(record.get("effective_dpi") or 0)

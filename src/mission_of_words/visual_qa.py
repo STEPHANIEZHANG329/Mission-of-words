@@ -21,6 +21,21 @@ PLACEHOLDER_NEEDLES = (
 )
 
 
+def _layout_ok(record: dict[str, Any]) -> tuple[bool, str]:
+    collisions = list(record.get("collisions") or [])
+    overflow = list(record.get("overflow") or [])
+    clipped = list(record.get("clipped") or [])
+    if collisions:
+        return False, f"Bounding-box collisions: {collisions}"
+    if overflow:
+        return False, f"Text overflow: {overflow}"
+    if clipped:
+        return False, f"Clipped content: {clipped}"
+    if record.get("layout_ok") is False:
+        return False, "layout_ok is false"
+    return True, "Badge, titles, reference, and instructions do not overlap or clip."
+
+
 def _objects_ok(record: dict[str, Any]) -> tuple[bool, str]:
     required = [str(item) for item in record.get("required_objects") or []]
     drawn = set(str(item) for item in record.get("drawn_objects") or [])
@@ -93,6 +108,7 @@ def evaluate_visual(
         integration_ok, integration_note = _integration_ok(record)
         child_ok, child_note = _child_ok(record)
         prompt_ok, prompt_note = _objects_ok(record)
+        layout_ok, layout_note = _layout_ok(record)
         human = human_by_page.get(page_no, {})
         human_pass = bool(human.get("pass"))
         human_notes = str(human.get("notes") or "No human visual review recorded.")
@@ -117,6 +133,8 @@ def evaluate_visual(
             page_fail_reasons.append(child_note)
         if not prompt_ok:
             page_fail_reasons.append(prompt_note)
+        if not layout_ok:
+            page_fail_reasons.append(layout_note)
         if not human_pass:
             page_fail_reasons.append(human_notes)
 
@@ -132,6 +150,7 @@ def evaluate_visual(
                 "asset_integration": {"pass": integration_ok, "notes": integration_note},
                 "child_usability": {"pass": child_ok, "notes": child_note},
                 "prompt_to_art": {"pass": prompt_ok, "notes": prompt_note},
+                "layout_collision": {"pass": layout_ok, "notes": layout_note},
                 "human_visual_review": {"pass": human_pass, "notes": human_notes},
             }
         )
@@ -196,9 +215,10 @@ def write_visual_qa_markdown(
             ("asset_integration", "Asset Integration"),
             ("child_usability", "Child Usability"),
             ("prompt_to_art", "Prompt-to-Art"),
-            ("human_visual_review", "Human visual review"),
+            ("layout_collision", "Layout / collisions"),
+            ("human_visual_review", "Human/PM Visual Review"),
         ):
-            item = page[key]
+            item = page.get(key) or {"pass": False, "notes": "missing gate"}
             mark = "PASS" if item["pass"] else "FAIL"
             lines.append(f"- **{label}:** {mark} — {item['notes']}")
         lines.append("")

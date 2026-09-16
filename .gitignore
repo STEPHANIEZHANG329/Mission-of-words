@@ -4,4 +4,7 @@ __pycache__/
 venv/
 output/*
 !output/.gitkeep
+assets/raw/*.png
+assets/raw/*.jpg
+assets/rejected/*.png
 .DS_Store

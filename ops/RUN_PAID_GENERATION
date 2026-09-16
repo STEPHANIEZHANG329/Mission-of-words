@@ -1,0 +1,4 @@
+OWNER_PHASE_C_GPT2_REBUILD
+This flag file is the Owner-authorized trigger for the bounded GPT2 production run.
+Max paid image calls: 24.
+Do not re-run by editing this file unless a repair pass is explicitly authorized.

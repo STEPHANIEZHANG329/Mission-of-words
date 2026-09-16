@@ -42,6 +42,9 @@ def test_pr_ci_workflow_never_receives_image_secrets():
     assert "evaluate_full_book" in workflow
     assert "build_book" in workflow
     assert "production_pass" in workflow
+    paid = (ROOT / ".github" / "workflows" / "phase-c-gpt2-generation.yml").read_text(encoding="utf-8")
+    assert "secrets.GPT2" in paid
+    assert "max_paid" not in paid.lower() or "24" in (ROOT / "ops" / "phase_c_paid_gate.json").read_text()
     planning = ROOT / ".github" / "workflows" / "cursor-agent-architecture-plan.yml"
     assert not planning.exists()
     phase0 = ROOT / ".github" / "workflows" / "phase0.yml"

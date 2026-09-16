@@ -1,0 +1,17 @@
+{
+  "paid_calls_enabled": true,
+  "allow_paid_image_calls": true,
+  "max_usd": 60.0,
+  "max_paid_calls": 24,
+  "spent_usd": 0.0,
+  "spent_calls": 0,
+  "currency": "USD",
+  "confirm_phrase": "OWNER_PHASE_C_GPT2_REBUILD",
+  "interior_model": "gpt-image-2.5-flare",
+  "repair_model": "gpt-image-2.5-sunburst",
+  "quality": "high",
+  "size": "1664x2160",
+  "fallback_size": "1664x2160",
+  "endpoint": "https://api.openai.com/v1/images/generations",
+  "notes": "Phase C Owner-authorized bounded production run. Do not exceed 24 paid image requests. Repo ops/budget.json stays closed so ordinary PR CI cannot spend."
+}

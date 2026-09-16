@@ -1,0 +1,87 @@
+name: Phase C GPT2 production generation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'cursor/phase-c-gpt2-rebuild-9570'
+    paths:
+      - 'ops/RUN_PAID_GENERATION'
+
+permissions:
+  contents: read
+
+jobs:
+  generate-and-compose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GPT2: ${{ secrets.GPT2 }}
+      ALLOW_PAID_IMAGE_CALLS: '1'
+      BRIGHT_HEARTS_CONFIRM_PAID_GENERATION: OWNER_PHASE_C_GPT2_REBUILD
+      PYTHONPATH: src
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Confirm GPT2 secret exists without printing it
+        run: |
+          set -euo pipefail
+          if [ -z "${GPT2:-}" ]; then
+            echo "GPT2_SECRET_MISSING"
+            exit 1
+          fi
+          echo "GPT2_SECRET_PRESENT"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate bounded GPT2 assets
+        run: python -m mission_of_words.generate_assets --confirm OWNER_PHASE_C_GPT2_REBUILD
+
+      - name: Build production candidate
+        run: python -m mission_of_words.build_production
+
+      - name: Summarize ledger without secrets
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          for name in ('output/asset_ledger.json', 'output/generation_summary.json', 'output/qa_report.json'):
+              path = Path(name)
+              if not path.is_file():
+                  print('MISSING', name)
+                  continue
+              data = json.loads(path.read_text())
+              if name.endswith('qa_report.json'):
+                  keep = {k: data[k] for k in data if k != 'pages'}
+                  print(name, json.dumps(keep, indent=2)[:4000])
+              else:
+                  print(name, json.dumps({k: data[k] for k in data if k != 'assets' and k != 'packets'}, indent=2))
+          PY
+
+      - name: Upload production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: bright-hearts-phase-c-production
+          path: |
+            output/BrightHearts_Fall_Interior.pdf
+            output/BrightHearts_Fall_AnswerKey.pdf
+            output/BrightHearts_Fall_Cover.pdf
+            output/qa_report.json
+            output/visual_qa.json
+            output/visual_qa.md
+            output/asset_ledger.json
+            output/generation_summary.json
+            output/cover_geometry.json
+            output/previews/
+            assets/accepted/
+            assets/raw/
+            ops/asset_ledger.jsonl
+            content/books/bright_hearts_fall_01/prompt_packets.json
+          if-no-files-found: error

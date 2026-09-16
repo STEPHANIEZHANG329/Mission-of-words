@@ -1,0 +1,43 @@
+{
+  "version": "2026-09-16-phase-c",
+  "style_lock": {
+    "standard": "Commercial US children's activity and coloring book, black-and-white interior line art.",
+    "outlines": "Thick clean outlines, large colorable regions, no tiny noodle lines.",
+    "cast": "Four children plus one dog, consistent across every scene.",
+    "no_text": "Generate NO titles, verses, instructions, page numbers, signs, logos, captions, watermarks, or any legible letters or numbers.",
+    "medium": "Ink on paper coloring-book plate, not 3D, not photoreal, not anime, not watercolor wash.",
+    "composition": "One coherent integrated scene. Not a collage, sticker sheet, or pasted strip."
+  },
+  "cast": [
+    {
+      "id": "mira",
+      "name": "Mira",
+      "age": 7,
+      "look": "Round cheerful face, chin-length dark bob with a small round hair clip on the right, medium-warm skin, simple crewneck sweater, round-toed shoes. Often holds a paper-bag lantern with a candle glow but no writing on the lantern."
+    },
+    {
+      "id": "eli",
+      "name": "Eli",
+      "age": 8,
+      "look": "Short curly hair, medium-deep skin, striped long-sleeve shirt, kind open expression, sneakers."
+    },
+    {
+      "id": "joy",
+      "name": "Joy",
+      "age": 6,
+      "look": "Two puffs with round hair ties (no letters on the ties), lighter skin, overalls over a t-shirt, small boots."
+    },
+    {
+      "id": "caleb",
+      "name": "Caleb",
+      "age": 7,
+      "look": "Straight hair with bangs, light-medium skin, zip hoodie, sneakers, gentle posture."
+    },
+    {
+      "id": "pip",
+      "name": "Pip",
+      "age": null,
+      "look": "Medium scruffy mixed-breed dog, floppy ears, oval collar tag that is completely blank, friendly face, sitting or walking beside the children."
+    }
+  ]
+}

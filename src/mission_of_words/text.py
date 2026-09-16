@@ -8,8 +8,6 @@ from reportlab.pdfgen import canvas
 from mission_of_words.layout import (
     USED_INSTRUCTION_LEADING,
     USED_INSTRUCTION_PT,
-    USED_SUBTITLE_PT,
-    USED_TITLE_PT,
     content_box,
 )
 
@@ -57,27 +55,34 @@ def page_header(
     *,
     kicker: str | None = None,
     box: tuple[float, float, float, float] | None = None,
-) -> tuple[tuple[float, float, float, float], float]:
-    """Draw title + child instruction. Returns (content_box, y_below_header)."""
-    left, bottom, right, top = box or content_box(page_number)
-    width = right - left
-    y = top - 8
-    ink_text(c)
-    if kicker:
-        c.setFont("Helvetica", USED_SUBTITLE_PT)
-        c.drawString(left, y - 4, kicker)
-        y -= 20
-    c.setFont("Helvetica-Bold", USED_TITLE_PT)
-    c.drawString(left, y - 18, title)
-    y -= 42
-    y = wrapped_text(
+    mission_number: int | None = None,
+    mission_title: str = "",
+    activity_label: str = "",
+    hero: bool = False,
+) -> tuple[tuple[float, float, float, float], float, HeaderPlan]:
+    """Draw the reusable activity header. Returns (content_box, y_below, plan)."""
+    from mission_of_words.templates import draw_activity_header
+
+    reference = ""
+    label = activity_label
+    if kicker and "·" in kicker:
+        reference, _, rest = kicker.partition("·")
+        reference = reference.strip()
+        extra = rest.strip()
+        label = extra or activity_label
+    elif kicker:
+        reference = kicker
+    plan = draw_activity_header(
         c,
-        instruction,
-        left,
-        y,
-        width,
-        font="Helvetica",
-        size=USED_INSTRUCTION_PT,
-        leading=USED_INSTRUCTION_LEADING,
+        page_number,
+        mission_number=mission_number,
+        mission_title=mission_title,
+        activity_title=title,
+        reference=reference,
+        activity_label=label,
+        instruction=instruction,
+        hero=hero,
+        box=box,
     )
-    return (left, bottom, right, top), y - 8
+    left, bottom, right, top = box or content_box(page_number)
+    return (left, bottom, right, top), plan.y_below, plan
