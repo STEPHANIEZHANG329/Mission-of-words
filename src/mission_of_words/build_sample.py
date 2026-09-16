@@ -1,46 +1,92 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 
-from reportlab.lib.pagesizes import inch
 from reportlab.pdfgen import canvas
 
+from mission_of_words.bible import bind_mission_canon
+from mission_of_words.image_client import paid_call_count
+from mission_of_words.layout import (
+    MARGIN,
+    PAGE_H,
+    PAGE_W,
+    USED_ANSWER_KEY_PT,
+    USED_INSTRUCTION_PT,
+    USED_PUZZLE_LETTER_PT,
+    USED_TITLE_PT,
+)
 from mission_of_words.maze import Maze, generate_maze
+from mission_of_words.paths import MISSION_SPEC, OUTPUT_DIR
+from mission_of_words.qa import evaluate_build, write_report
 
-ROOT = Path(__file__).resolve().parents[2]
-CONTENT = ROOT / "content" / "mission_01.json"
-OUTPUT = ROOT / "output"
-PAGE_W = 8.5 * inch
-PAGE_H = 11 * inch
-MARGIN = 0.5 * inch
+CONTENT = MISSION_SPEC
+OUTPUT = OUTPUT_DIR
 
 
 def load_spec() -> dict:
     return json.loads(CONTENT.read_text(encoding="utf-8"))
 
 
+def _draw_wrapped(
+    c: canvas.Canvas,
+    text: str,
+    x: float,
+    y: float,
+    max_width: float,
+    font: str = "Helvetica",
+    size: int = 12,
+    leading: float = 16,
+) -> float:
+    c.setFont(font, size)
+    line = ""
+    for word in text.split():
+        trial = f"{line} {word}".strip()
+        if c.stringWidth(trial, font, size) <= max_width:
+            line = trial
+            continue
+        c.drawString(x, y, line)
+        y -= leading
+        line = word
+    if line:
+        c.drawString(x, y, line)
+        y -= leading
+    return y
+
+
 def header(c: canvas.Canvas, title: str, subtitle: str | None = None) -> None:
-    c.setFont("Helvetica-Bold", 20)
+    c.setFont("Helvetica-Bold", USED_TITLE_PT)
     c.drawCentredString(PAGE_W / 2, PAGE_H - MARGIN - 18, title)
     if subtitle:
-        c.setFont("Helvetica", 12)
+        c.setFont("Helvetica", USED_INSTRUCTION_PT)
         c.drawCentredString(PAGE_W / 2, PAGE_H - MARGIN - 38, subtitle)
 
 
-def draw_coloring_placeholder(c: canvas.Canvas, spec: dict) -> None:
+def draw_coloring_placeholder(c: canvas.Canvas, spec: dict, canon: dict) -> None:
     page = spec["mission"]["pages"][0]
-    header(c, page["title"], spec["mission"]["scripture_reference"])
+    header(c, page["title"], canon["reference"])
+    y = _draw_wrapped(
+        c,
+        canon["source_text"],
+        MARGIN + 20,
+        PAGE_H - MARGIN - 62,
+        PAGE_W - 2 * MARGIN - 40,
+        size=USED_INSTRUCTION_PT,
+    )
     x = MARGIN + 18
-    y = MARGIN + 30
+    box_top = y - 10
+    box_bottom = MARGIN + 30
     w = PAGE_W - 2 * MARGIN - 36
-    h = PAGE_H - 2 * MARGIN - 100
+    h = box_top - box_bottom
     c.setLineWidth(2)
-    c.rect(x, y, w, h)
+    c.rect(x, box_bottom, w, h)
     c.setFont("Helvetica-Bold", 15)
-    c.drawCentredString(PAGE_W / 2, y + h / 2 + 10, "ARTWORK PLACEHOLDER")
-    c.setFont("Helvetica", 12)
-    c.drawCentredString(PAGE_W / 2, y + h / 2 - 12, "No paid image was generated in Phase 0")
+    c.drawCentredString(PAGE_W / 2, box_bottom + h / 2 + 10, "ARTWORK PLACEHOLDER")
+    c.setFont("Helvetica", USED_INSTRUCTION_PT)
+    c.drawCentredString(
+        PAGE_W / 2,
+        box_bottom + h / 2 - 12,
+        "No paid image was generated. Dry-run control plane only.",
+    )
 
 
 def _target_icon(c: canvas.Canvas, name: str, x: float, y: float, s: float) -> None:
@@ -78,7 +124,11 @@ def _target_icon(c: canvas.Canvas, name: str, x: float, y: float, s: float) -> N
 def draw_search_find(c: canvas.Canvas, spec: dict, answer_key: bool = False) -> None:
     page = spec["mission"]["pages"][1]
     title = page["title"] if not answer_key else "Search & Find — Answer Key"
-    header(c, title, page["instruction"] if not answer_key else "Phase 0 deterministic placement map")
+    header(
+        c,
+        title,
+        page["instruction"] if not answer_key else "Deterministic placement map",
+    )
 
     scene_x = MARGIN + 20
     scene_y = MARGIN + 95
@@ -104,11 +154,11 @@ def draw_search_find(c: canvas.Canvas, spec: dict, answer_key: bool = False) -> 
         if answer_key:
             c.setLineWidth(1)
             c.circle(x + size * 0.45, y + size * 0.45, size * 0.75)
-            c.setFont("Helvetica", 9)
+            c.setFont("Helvetica", USED_ANSWER_KEY_PT)
             c.drawString(x, y + size + 2, target["name"])
 
     if not answer_key:
-        c.setFont("Helvetica", 12)
+        c.setFont("Helvetica", USED_PUZZLE_LETTER_PT)
         labels = " • ".join(t["name"] for t in page["targets"])
         c.drawCentredString(PAGE_W / 2, MARGIN + 54, labels)
 
@@ -141,7 +191,7 @@ def draw_maze(c: canvas.Canvas, maze: Maze, title: str, show_solution: bool = Fa
             if (r, col + 1) not in linked:
                 c.line(x + cell, y, x + cell, y + cell)
 
-    c.setFont("Helvetica-Bold", 12)
+    c.setFont("Helvetica-Bold", USED_PUZZLE_LETTER_PT)
     c.drawString(x0 + 3, y0 + maze_h + 6, "START")
     c.drawRightString(x0 + maze_w - 3, y0 - 15, "FINISH")
 
@@ -157,10 +207,21 @@ def draw_maze(c: canvas.Canvas, maze: Maze, title: str, show_solution: bool = Fa
             c.line(a[0], a[1], b[0], b[1])
 
 
-def draw_faith_page(c: canvas.Canvas, spec: dict) -> None:
+def draw_faith_page(c: canvas.Canvas, spec: dict, canon: dict) -> None:
     page = spec["mission"]["pages"][3]
-    header(c, page["title"], spec["mission"]["scripture_reference"])
-    y = PAGE_H - MARGIN - 85
+    header(c, page["title"], canon["reference"])
+    y = PAGE_H - MARGIN - 70
+    c.setFont("Helvetica", USED_INSTRUCTION_PT)
+    c.drawString(MARGIN + 20, y, "For kids (not scripture):")
+    y = _draw_wrapped(
+        c,
+        canon["child_paraphrase"],
+        MARGIN + 20,
+        y - 18,
+        PAGE_W - 2 * MARGIN - 40,
+        size=USED_INSTRUCTION_PT,
+    )
+    y -= 8
     c.setFont("Helvetica-Bold", 14)
     c.drawString(MARGIN + 20, y, "Check one:")
     y -= 28
@@ -172,9 +233,9 @@ def draw_faith_page(c: canvas.Canvas, spec: dict) -> None:
 
     c.setFont("Helvetica-Bold", 14)
     c.drawString(MARGIN + 20, y - 4, page["drawing_prompt"])
-    draw_y = y - 230
+    draw_y = y - 210
     c.setLineWidth(1.5)
-    c.rect(MARGIN + 20, draw_y, PAGE_W - 2 * MARGIN - 40, 190)
+    c.rect(MARGIN + 20, draw_y, PAGE_W - 2 * MARGIN - 40, 170)
 
     c.setFont("Helvetica-Bold", 14)
     c.drawString(MARGIN + 20, draw_y - 40, "Prayer:")
@@ -184,6 +245,7 @@ def draw_faith_page(c: canvas.Canvas, spec: dict) -> None:
 
 def build() -> dict:
     spec = load_spec()
+    canon = bind_mission_canon(spec)
     OUTPUT.mkdir(parents=True, exist_ok=True)
     sample_path = OUTPUT / "BrightHearts_ShineYourLight_Phase0.pdf"
     answer_path = OUTPUT / "BrightHearts_ShineYourLight_AnswerKey.pdf"
@@ -193,13 +255,13 @@ def build() -> dict:
     maze = generate_maze(rows=rows, cols=cols, seed=maze_page["seed"])
 
     c = canvas.Canvas(str(sample_path), pagesize=(PAGE_W, PAGE_H))
-    draw_coloring_placeholder(c, spec)
+    draw_coloring_placeholder(c, spec, canon)
     c.showPage()
     draw_search_find(c, spec, answer_key=False)
     c.showPage()
     draw_maze(c, maze, maze_page["title"], show_solution=False)
     c.showPage()
-    draw_faith_page(c, spec)
+    draw_faith_page(c, spec, canon)
     c.save()
 
     a = canvas.Canvas(str(answer_path), pagesize=(PAGE_W, PAGE_H))
@@ -208,28 +270,8 @@ def build() -> dict:
     draw_maze(a, maze, "Maze — Answer Key", show_solution=True)
     a.save()
 
-    min_font_pt = 12
-    qa = {
-        "phase": 0,
-        "paid_image_calls": 0,
-        "sample_pages": 4,
-        "trim_inches": spec["book"]["trim_inches"],
-        "safe_margin_inches": spec["book"]["safe_margin_inches"],
-        "minimum_instruction_font_pt": min_font_pt,
-        "search_find_target_count": len(spec["mission"]["pages"][1]["targets"]),
-        "search_find_targets_unique": len({t["name"] for t in spec["mission"]["pages"][1]["targets"]}) == 8,
-        "maze_solvable": bool(maze.solve()),
-        "maze_perfect_unique_path": maze.is_perfect(),
-        "artwork_status": "placeholder_only",
-        "pass": (
-            len(spec["mission"]["pages"][1]["targets"]) == 8
-            and len({t["name"] for t in spec["mission"]["pages"][1]["targets"]}) == 8
-            and maze.is_perfect()
-            and spec["book"]["safe_margin_inches"] >= 0.5
-            and min_font_pt >= 12
-        ),
-    }
-    (OUTPUT / "qa_report.json").write_text(json.dumps(qa, indent=2), encoding="utf-8")
+    qa = evaluate_build(spec=spec, maze=maze, paid_image_calls=paid_call_count(), sample_pages=4)
+    write_report(qa)
     return qa
 
 

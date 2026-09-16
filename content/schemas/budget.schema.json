@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "budget.schema.json",
+  "title": "Owner-edited paid-call budget",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "paid_calls_enabled",
+    "allow_paid_image_calls",
+    "max_usd",
+    "max_paid_calls",
+    "spent_usd",
+    "spent_calls",
+    "currency",
+    "owner_only_changes"
+  ],
+  "properties": {
+    "paid_calls_enabled": { "type": "boolean" },
+    "allow_paid_image_calls": { "type": "boolean" },
+    "max_usd": { "type": "number", "minimum": 0 },
+    "max_paid_calls": { "type": "integer", "minimum": 0 },
+    "spent_usd": { "type": "number", "minimum": 0 },
+    "spent_calls": { "type": "integer", "minimum": 0 },
+    "currency": { "type": "string", "const": "USD" },
+    "owner_only_changes": { "type": "boolean" },
+    "notes": { "type": "string" }
+  }
+}

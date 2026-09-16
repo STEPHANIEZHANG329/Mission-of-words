@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "qa.schema.json",
+  "title": "Computed QA report",
+  "type": "object",
+  "required": [
+    "book_id",
+    "mission_id",
+    "canon_bound",
+    "sample_pages",
+    "paid_image_calls",
+    "layout_ok",
+    "search_find_all_targets_present",
+    "maze_solvable",
+    "failures",
+    "pass"
+  ],
+  "properties": {
+    "book_id": { "type": "string" },
+    "mission_id": { "type": "string" },
+    "canon_id": { "type": ["string", "null"] },
+    "canon_bound": { "type": "boolean" },
+    "sample_pages": { "type": "integer" },
+    "paid_image_calls": { "type": "integer", "minimum": 0 },
+    "trim_inches": {
+      "type": "array",
+      "items": { "type": "number" }
+    },
+    "dpi": { "type": "integer" },
+    "dpi_ok": { "type": "boolean" },
+    "safe_margin_inches": { "type": "number" },
+    "min_instruction_pt": { "type": "number" },
+    "min_puzzle_letter_pt": { "type": "number" },
+    "min_answer_key_pt": { "type": "number" },
+    "layout_ok": { "type": "boolean" },
+    "search_find_target_count": { "type": "integer" },
+    "search_find_all_targets_present": { "type": "boolean" },
+    "search_find_no_unsafe_overlap": { "type": "boolean" },
+    "maze_solvable": { "type": "boolean" },
+    "maze_perfect_unique_path": { "type": "boolean" },
+    "artwork_status": { "type": "string" },
+    "image_client_mode": { "type": "string" },
+    "paid_generation_gate_implemented": { "type": "boolean" },
+    "failures": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "pass": { "type": "boolean" }
+  },
+  "additionalProperties": false
+}

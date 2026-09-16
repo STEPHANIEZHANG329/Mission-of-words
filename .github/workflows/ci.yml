@@ -1,0 +1,78 @@
+name: V1 Control Plane
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Confirm PR CI cannot spend on image generation
+        run: |
+          set -euo pipefail
+          if [ -n "${GPT2:-}" ]; then
+            echo "GPT2_PRESENT_IN_PR_CI"
+            exit 1
+          fi
+          if [ -n "${ALLOW_PAID_IMAGE_CALLS:-}" ]; then
+            echo "ALLOW_PAID_IMAGE_CALLS_MUST_BE_UNSET"
+            exit 1
+          fi
+          echo "NO_GPT2_IN_PR_CI"
+          echo "ALLOW_PAID_IMAGE_CALLS_UNSET"
+          echo "NO_IMAGE_GENERATION_REQUEST_WILL_BE_SENT"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        env:
+          PYTHONPATH: src
+        run: pytest -q
+
+      - name: Build 4-page prototype
+        env:
+          PYTHONPATH: src
+        run: python -m mission_of_words.build_sample
+
+      - name: Verify QA gate
+        env:
+          PYTHONPATH: src
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('output/qa_report.json').read_text())
+          print(json.dumps(report, indent=2))
+          assert report['paid_image_calls'] == 0, report
+          assert report['sample_pages'] == 4, report
+          assert report['canon_bound'] is True, report
+          assert report['search_find_all_targets_present'] is True, report
+          assert report['maze_solvable'] is True, report
+          assert report['layout_ok'] is True, report
+          assert report['pass'] is True, report['failures']
+          PY
+
+      - name: Upload QA evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: bright-hearts-v1-control-plane
+          path: |
+            output/BrightHearts_ShineYourLight_Phase0.pdf
+            output/BrightHearts_ShineYourLight_AnswerKey.pdf
+            output/qa_report.json
+          if-no-files-found: error
