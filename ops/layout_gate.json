@@ -1,0 +1,19 @@
+{
+  "gate": "commercial_layout_before_paid_generation",
+  "status": "FAIL",
+  "approved_for_paid_generation": false,
+  "owner_reference_standard": "commercial Christian children's activity-book pages matching the Owner-approved three-page visual reference: integrated illustration + activity, strong page hierarchy, child-friendly density, no worksheet-like engineering layout",
+  "required_before_pass": [
+    "48-page zero-cost layout proof renders successfully",
+    "Mission headers and long titles have no collision or clipping",
+    "Search & Find pages are scene-integrated and visually dense enough for ages 5-8",
+    "Maze pages integrate illustration and maze rather than stacking unrelated blocks",
+    "Faith in Action pages match the same commercial visual language",
+    "Answer-key pages remain readable at print size",
+    "all typography and safe-area checks pass",
+    "PM visual review passes the complete contact sheet",
+    "Owner explicitly approves paid artwork generation"
+  ],
+  "reason": "Owner rejected the previous production path. Paid generation is forbidden until the book architecture itself reaches the approved commercial standard.",
+  "last_updated": "2026-09-16"
+}
