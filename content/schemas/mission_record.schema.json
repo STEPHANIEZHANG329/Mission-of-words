@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "mission_record.schema.json",
+  "title": "Standalone Bright Hearts mission record for the 48-page book",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "book_id",
+    "id",
+    "title",
+    "scripture_reference",
+    "canon_id",
+    "sequence",
+    "global_page_start",
+    "pages"
+  ],
+  "properties": {
+    "book_id": { "type": "string", "minLength": 1 },
+    "id": { "type": "string", "minLength": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "scripture_reference": { "type": "string", "minLength": 1 },
+    "canon_id": { "type": "string", "minLength": 1 },
+    "sequence": { "type": "integer", "minimum": 1, "maximum": 8 },
+    "global_page_start": { "type": "integer", "minimum": 5, "maximum": 33 },
+    "pages": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": { "$ref": "page.schema.json" }
+    }
+  }
+}

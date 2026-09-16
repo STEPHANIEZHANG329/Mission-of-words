@@ -1,0 +1,126 @@
+name: Bright Hearts Phase B technical proof
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Confirm PR CI cannot spend on image generation
+        run: |
+          set -euo pipefail
+          if [ -n "${GPT2:-}" ]; then
+            echo "GPT2_PRESENT_IN_PR_CI"
+            exit 1
+          fi
+          if [ -n "${ALLOW_PAID_IMAGE_CALLS:-}" ]; then
+            echo "ALLOW_PAID_IMAGE_CALLS_MUST_BE_UNSET"
+            exit 1
+          fi
+          echo "NO_GPT2_IN_PR_CI"
+          echo "ALLOW_PAID_IMAGE_CALLS_UNSET"
+          echo "NO_IMAGE_GENERATION_REQUEST_WILL_BE_SENT"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        env:
+          PYTHONPATH: src
+        run: pytest -q
+
+      - name: Evaluate 48-page blueprint (no PDF required)
+        env:
+          PYTHONPATH: src
+        run: python -m mission_of_words.evaluate_full_book
+
+      - name: Build 48-page Phase B technical proof
+        env:
+          PYTHONPATH: src
+        run: python -m mission_of_words.build_book
+
+      - name: Verify Phase B technical proof stays unpublished
+        env:
+          PYTHONPATH: src
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('output/qa_report.json').read_text())
+          print(json.dumps({k: report[k] for k in report if k != 'pages'}, indent=2))
+          visual = Path('output/visual_qa.md').read_text()
+          print(visual[:2000])
+          assert report['paid_image_calls'] == 0, report
+          assert report['estimated_spend_usd'] == 0, report
+          assert report['page_count'] == 48, report
+          assert report['rendered_page_count'] == 48, report
+          assert report['canon_bound_count'] == 8, report
+          assert report['all_canons_bound'] is True, report
+          assert report['facing_page_parity_ok'] is True, report
+          assert report['font_floors_ok'] is True, report
+          assert report['answer_key_linkage_ok'] is True, report
+          assert report['unique_content_ok'] is True, report
+          assert report['maze_all_solvable'] is True, report
+          assert report['maze_all_unique'] is True, report
+          assert report['search_answer_keys_from_manifest'] is True, report
+          assert report['raster_dpi_ok'] is True, report
+          assert report['non_production_mark_present'] is True, report
+          assert report['placeholder_assets_present'] is True, report
+          assert report['blueprint_pass'] is True, report['failures']
+          assert report['technical_pass'] is True, report['failures']
+          assert report['production_pass'] is False, report
+          assert report['pass'] is False, report
+          assert report['visual_readiness'] in {'FAIL', 'MISSING'}, report
+          assert report['blockers'], report
+          for name in (
+              'BrightHearts_Fall_Interior_TechnicalProof.pdf',
+              'BrightHearts_Fall_AnswerKey_TechnicalProof.pdf',
+              'qa_report.json',
+              'full_book_qa.json',
+              'visual_qa.md',
+              'book_manifest.json',
+              'page_map.json',
+              'asset_register.json',
+              'previews/page_01.png',
+              'previews/page_48.png',
+              'previews/contact_sheet.png',
+          ):
+              path = Path('output') / name
+              assert path.is_file(), path
+          assert 'Asset Integration' in visual
+          assert 'FAIL' in visual
+          PY
+
+      - name: Upload QA evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: bright-hearts-phase-b-technical-proof
+          path: |
+            output/full_book_qa.json
+            output/qa_report.json
+            output/book_manifest.json
+            output/page_map.json
+            content/books/bright_hearts_fall_01/book_manifest.json
+            output/BrightHearts_Fall_Interior_TechnicalProof.pdf
+            output/BrightHearts_Fall_AnswerKey_TechnicalProof.pdf
+            output/visual_qa.md
+            output/visual_qa.json
+            output/asset_register.json
+            output/compositions.json
+            output/previews/
+          if-no-files-found: error

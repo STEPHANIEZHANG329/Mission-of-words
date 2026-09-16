@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "asset.schema.json",
+  "title": "Asset provenance record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "asset_id",
+    "role",
+    "status",
+    "request_id",
+    "file",
+    "sha256",
+    "cost_usd",
+    "attempts",
+    "paid_call"
+  ],
+  "properties": {
+    "asset_id": { "type": "string", "minLength": 1 },
+    "role": {
+      "type": "string",
+      "enum": [
+        "title_lockup",
+        "welcome_spot",
+        "missions_map",
+        "parent_letter",
+        "coloring_hero",
+        "coloring_background",
+        "search_background",
+        "search_target",
+        "maze_scene",
+        "faith_frame",
+        "answer_key_spot",
+        "bonus_activity",
+        "certificate_frame",
+        "closing_lockup",
+        "other"
+      ]
+    },
+    "status": { "type": "string", "enum": ["raw", "accepted", "rejected"] },
+    "request_id": { "type": "string", "minLength": 1 },
+    "model": { "type": ["string", "null"] },
+    "prompt": { "type": ["string", "null"] },
+    "file": { "type": "string", "minLength": 1 },
+    "sha256": { "type": "string", "minLength": 1 },
+    "cost_usd": { "type": "number", "minimum": 0 },
+    "attempts": { "type": "integer", "minimum": 0 },
+    "paid_call": { "type": "boolean" }
+  }
+}

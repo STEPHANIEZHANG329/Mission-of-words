@@ -1,0 +1,107 @@
+{
+  "book_id": "bright_hearts_fall_01",
+  "id": "mission_07",
+  "title": "God's Beautiful Creation",
+  "scripture_reference": "Genesis 1:31",
+  "canon_id": "genesis_1_31",
+  "sequence": 7,
+  "global_page_start": 29,
+  "pages": [
+    {
+      "page": 1,
+      "type": "coloring",
+      "title": "It Was Very Good",
+      "activity_mechanic": "integrated_coloring_creation_hillside",
+      "art_roles": ["coloring_hero"],
+      "child_instruction": "Color the hillside, creek, trees, and animals God made.",
+      "bible_connection": "This scene is a picture of looking at what God made and saying it is very good.",
+      "visual_prompt": "Integrated black line-art coloring scene: autumn hillside, creek, oak trees, a deer at the water, birds, a child sitting on a rock looking out. No letters in the artwork. Do not copy Mission 2's sun-moon-stars orchard.",
+      "required_objects": [
+        "autumn_hillside",
+        "creek",
+        "oak_trees",
+        "deer",
+        "birds",
+        "child_on_rock"
+      ]
+    },
+    {
+      "page": 2,
+      "type": "search_find",
+      "title": "Find What God Made",
+      "activity_mechanic": "search_find_creation_wonders",
+      "art_roles": ["search_background", "search_target"],
+      "instruction": "Find and circle all 8 items.",
+      "child_instruction": "Find and circle all 8 wonders God made. Each one can remind you that creation is very good.",
+      "bible_connection": "Looking closely at what God made is practice for seeing that it was very good.",
+      "visual_prompt": "Controlled hillside-and-creek background without the eight targets. Independently placed oak leaf, pinecone, deer, creek fish, mushroom, bird nest, pebble, and ladybug.",
+      "required_objects": [
+        "search_background",
+        "oak_leaf",
+        "pinecone",
+        "deer",
+        "creek_fish",
+        "mushroom",
+        "bird_nest",
+        "pebble",
+        "ladybug"
+      ],
+      "targets": [
+        {"name": "oak_leaf", "x": 0.06, "y": 0.22, "scale": 0.10},
+        {"name": "pinecone", "x": 0.84, "y": 0.68, "scale": 0.09},
+        {"name": "deer", "x": 0.70, "y": 0.36, "scale": 0.12},
+        {"name": "creek_fish", "x": 0.28, "y": 0.78, "scale": 0.10},
+        {"name": "mushroom", "x": 0.12, "y": 0.68, "scale": 0.09},
+        {"name": "bird_nest", "x": 0.48, "y": 0.18, "scale": 0.10},
+        {"name": "pebble", "x": 0.54, "y": 0.84, "scale": 0.08},
+        {"name": "ladybug", "x": 0.38, "y": 0.54, "scale": 0.07}
+      ]
+    },
+    {
+      "page": 3,
+      "type": "maze",
+      "title": "Follow the Creek to the Lookout",
+      "activity_mechanic": "maze_creek_to_lookout_hill",
+      "art_roles": ["maze_scene"],
+      "child_instruction": "Start at the creek stone. Follow the path to the lookout hill.",
+      "bible_connection": "Walking to the lookout is a picture of stopping to see that what God made is very good.",
+      "visual_prompt": "One creek-and-hill scene: stepping stone at START, unique creek-bank maze, lookout hill with a wide view at FINISH. Not a maze pasted on a blank page.",
+      "required_objects": [
+        "creek_stone",
+        "creek_bank_maze",
+        "lookout_hill",
+        "start_label",
+        "finish_label"
+      ],
+      "start_label": "START",
+      "finish_label": "FINISH",
+      "difficulty": "medium_easy",
+      "seed": 20260922,
+      "grid": [10, 10]
+    },
+    {
+      "page": 4,
+      "type": "faith_interaction",
+      "title": "Care for What God Made",
+      "activity_mechanic": "faith_creation_care",
+      "art_roles": ["faith_frame"],
+      "child_instruction": "Check how you can care for creation. Then draw one thing God made that is very good.",
+      "bible_connection": "Caring for what God made is a child-sized answer to Genesis 1:31: it was very good.",
+      "visual_prompt": "One hill-framed page: four illustrated choices, a large nature drawing area, and a short prayer ribbon.",
+      "required_objects": [
+        "hill_frame",
+        "choice_cards",
+        "drawing_nature",
+        "prayer_ribbon"
+      ],
+      "choices": [
+        {"label": "Do not litter", "icon": "bin"},
+        {"label": "Water a plant", "icon": "plant"},
+        {"label": "Notice a bird or bug", "icon": "bird"},
+        {"label": "Thank God for making it good", "icon": "thank"}
+      ],
+      "drawing_prompt": "Draw one thing God made that is very good",
+      "prayer": "God, thank You for making a world that is very good."
+    }
+  ]
+}
