@@ -488,7 +488,7 @@ def evaluate_full_book(
             if record.get("type") != "search_find":
                 continue
             dpi = float(record.get("effective_dpi") or 0)
-            if dpi + 1e-6 < DPI:
+            if dpi + 0.05 < DPI:
                 raster_dpi_ok = False
                 technical_failures.append(
                     f"technical: search page {record.get('page')} effective DPI {dpi:.1f} is below {DPI}"

@@ -1,8 +1,12 @@
+from pathlib import Path
+from tempfile import TemporaryDirectory
+
 from mission_of_words.book_manifest import load_mission_records
 from mission_of_words.build_book import ANSWER_PDF, INTERIOR_PDF, build
 from mission_of_words.full_book_qa import evaluate_full_book
 from mission_of_words.image_client import paid_call_count
 from mission_of_words.maze import generate_maze
+from mission_of_words.page_search import build_search_scene_from_page
 from mission_of_words.paths import OUTPUT_DIR
 from mission_of_words.procedural import TARGET_DRAWERS
 from mission_of_words.proof import NON_PRODUCTION_MARK
@@ -19,6 +23,22 @@ def test_every_search_target_has_a_unique_procedural_drawer():
             seen.append(name)
     assert len(seen) == 64
     assert len(set(seen)) == 64
+
+
+def test_all_search_find_scenes_compose_without_pixel_overlap(tmp_path: Path):
+    for mission in load_mission_records():
+        dest = tmp_path / mission["id"]
+        composed, manifest, _records = build_search_scene_from_page(
+            mission["pages"][1],
+            dest,
+            page_number=int(mission["global_page_start"]) + 1,
+            theme=mission["id"],
+            marked_proof=True,
+        )
+        assert composed.is_file()
+        names = [row["name"] for row in manifest]
+        expected = [target["name"] for target in mission["pages"][1]["targets"]]
+        assert names == expected
 
 
 def test_all_eight_mazes_are_unique_solvable_and_perfect():

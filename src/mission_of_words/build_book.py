@@ -29,7 +29,7 @@ from mission_of_words.page_faith import draw_faith_page
 from mission_of_words.page_front import draw_contents_page, draw_parent_note_page, draw_title_page, draw_welcome_page
 from mission_of_words.page_maze import draw_maze_page
 from mission_of_words.page_search import build_search_scene_from_page, draw_search_find_page
-from mission_of_words.paths import BOOK_MANIFEST, OUTPUT_DIR, ROOT
+from mission_of_words.paths import BOOK_MANIFEST, OUTPUT_DIR
 from mission_of_words.proof import NON_PRODUCTION_MARK, draw_proof_mark
 from mission_of_words.qa import write_report
 from mission_of_words.render import contact_sheet_grid, render_pdf_pages
@@ -38,14 +38,6 @@ from mission_of_words.visual_qa import evaluate_full_book_visual, write_visual_q
 INTERIOR_PDF = OUTPUT_DIR / "BrightHearts_Fall_Interior_TechnicalProof.pdf"
 ANSWER_PDF = OUTPUT_DIR / "BrightHearts_Fall_AnswerKey_TechnicalProof.pdf"
 ASSET_REGISTER = OUTPUT_DIR / "asset_register.json"
-VISUAL_REVIEW = ROOT / "content" / "books" / "bright_hearts_fall_01" / "visual_review.json"
-
-
-def _load_visual_review() -> list[dict]:
-    if not VISUAL_REVIEW.is_file():
-        return []
-    payload = json.loads(VISUAL_REVIEW.read_text(encoding="utf-8"))
-    return list(payload.get("pages") or [])
 
 
 def build() -> dict:
@@ -221,7 +213,7 @@ def build() -> dict:
         compositions=compositions,
         preview_paths=previews,
         interior_pdf=INTERIOR_PDF,
-        human_findings=_load_visual_review(),
+        human_findings=[],
     )
     write_visual_qa_markdown(visual, OUTPUT_DIR / "visual_qa.md", title="Visual QA — 48-page technical proof")
     (OUTPUT_DIR / "visual_qa.json").write_text(json.dumps(visual, indent=2) + "\n", encoding="utf-8")

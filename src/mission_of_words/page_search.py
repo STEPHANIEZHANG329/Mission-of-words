@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from pathlib import Path
 
 from PIL import Image
@@ -58,7 +59,7 @@ def _scene_pixel_size(box: tuple[float, float, float, float], legend_h: float) -
     left, bottom, right, top = box
     width_in = (right - left) / 72.0
     height_in = (top - bottom - legend_h - 110) / 72.0
-    return max(1, round(width_in * DPI)), max(1, round(max(height_in, 1.0) * DPI))
+    return max(1, math.ceil(width_in * DPI) + 2), max(1, math.ceil(max(height_in, 1.0) * DPI) + 2)
 
 
 def build_search_scene_from_page(
