@@ -1,11 +1,11 @@
 {
   "paid_calls_enabled": false,
   "allow_paid_image_calls": false,
-  "max_usd": 60.0,
-  "max_paid_calls": 24,
+  "max_usd": 3.6,
+  "max_paid_calls": 18,
   "spent_usd": 3.6,
   "spent_calls": 18,
-  "remaining_calls": 6,
+  "remaining_calls": 0,
   "currency": "USD",
   "confirm_phrase": "OWNER_PHASE_C_GPT2_REBUILD",
   "interior_model": "gpt-image-2.5-flare",
@@ -17,5 +17,6 @@
   "lost_run_url": "https://github.com/STEPHANIEZHANG329/Mission-of-words/actions/runs/35146572312",
   "lost_run_id": 35146572312,
   "owner_stop": true,
-  "notes": "OWNER STOP 2026-09-16: do not spend until replacement-call authorization. Run 35146572312 billed 18 successful GPT2 images then lost the PNGs. Those 18 calls stay billed. remaining_calls=6 cannot replace 18 files. Recovering the lost production set requires 18 additional Owner-authorized calls (new cumulative cap 42) or an explicit 18-call replacement grant. Ordinary PR CI stays closed via ops/budget.json."
+  "status": "OWNER_REJECTED_CURRENT_PRODUCTION_PATH",
+  "notes": "OWNER STOP 2026-09-16. Current production path is rejected. Do not spend any additional GPT2 calls. The 18 successful calls from run 35146572312 remain recorded as spent/lost. No regeneration, repair, or paid image request is authorized. Redesign the page architecture against the Owner-approved commercial reference standard first, using zero-cost technical mocks and automated geometry/typography checks. Paid generation may only be re-enabled by a new explicit Owner approval after the redesigned pages pass review."
 }
