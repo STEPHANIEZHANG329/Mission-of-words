@@ -1,0 +1,17 @@
+{
+  "name": "mission-of-words",
+  "version": "0.1.0",
+  "private": true,
+  "description": "KDP production workspace for Mission of Words.",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "scriveno:init": "scriveno",
+    "scriveno:status": "npx scriveno@3.8.0 status --project .",
+    "scriveno:sync:check": "npx scriveno@3.8.0 sync --check"
+  },
+  "dependencies": {
+    "scriveno": "3.8.0"
+  }
+}
