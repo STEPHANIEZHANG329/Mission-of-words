@@ -14,10 +14,10 @@ from mission_of_words.fonts import FONT_BODY, FONT_BODY_BOLD
 from mission_of_words import procedural
 from mission_of_words.compositor import AssetPlacement, compose_search_find
 from mission_of_words.geometry import BBox
-from mission_of_words.layout import DPI, USED_PUZZLE_LETTER_PT
+from mission_of_words.layout import DPI
 from mission_of_words.paths import OUTPUT_DIR
 from mission_of_words.proof import live_box
-from mission_of_words.targets import display_name
+from mission_of_words.composition import search_legend_height
 from mission_of_words.templates import draw_activity_header, draw_answer_number, measure_activity_header
 from mission_of_words.text import ink_text
 
@@ -32,7 +32,7 @@ REQUIRED_TARGETS = (
     "Bible",
 )
 
-LEGEND_H = 96
+LEGEND_H = search_legend_height()
 ICON_DRAWERS = {
     "lantern": lambda c, x, y: art.draw_lantern(c, x, y, 22),
     "pumpkin": lambda c, x, y: art.draw_pumpkin(c, x, y, 22),
@@ -184,26 +184,25 @@ def _draw_legend(
     icon_dir: Path | None,
     state,
 ) -> None:
-    col_w = width / 4
+    heading = "Find:"
+    heading_w = c.stringWidth(heading, FONT_BODY_BOLD, 9) + 10
     ink_text(c)
-    c.setFont(FONT_BODY_BOLD, USED_PUZZLE_LETTER_PT)
-    heading = "Find and circle:"
-    c.drawString(left, bottom + LEGEND_H - 16, heading)
+    c.setFont(FONT_BODY_BOLD, 9)
+    c.drawString(left, bottom + LEGEND_H - 11, heading)
     state.add(
         BBox(
             "legend_heading",
             left,
-            bottom + LEGEND_H - 20,
-            left + c.stringWidth(heading, FONT_BODY_BOLD, USED_PUZZLE_LETTER_PT),
-            bottom + LEGEND_H - 2,
+            bottom + LEGEND_H - 14,
+            left + heading_w,
+            bottom + LEGEND_H - 1,
             kind="text",
         )
     )
+    col_w = (width - heading_w) / max(len(names), 1)
     for index, name in enumerate(names):
-        col = index % 4
-        row = index // 4
-        x = left + 8 + col * col_w
-        icon_y = bottom + 48 - row * 44
+        x = left + heading_w + index * col_w
+        icon_y = bottom + 8
         icon_path = None
         if icon_dir is not None:
             candidate = icon_dir / f"target_{name}.png"
@@ -213,21 +212,21 @@ def _draw_legend(
             c.drawImage(
                 ImageReader(str(icon_path)),
                 x,
-                icon_y - 4,
-                width=22,
-                height=22,
+                icon_y,
+                width=16,
+                height=16,
                 mask="auto",
                 preserveAspectRatio=True,
                 anchor="c",
             )
         elif name in ICON_DRAWERS:
-            ICON_DRAWERS[name](c, x, icon_y)
+            ICON_DRAWERS[name](c, x, icon_y + 2)
         else:
-            art.draw_star(c, x + 10, icon_y + 10, 8)
+            art.draw_star(c, x + 8, icon_y + 10, 6)
         ink_text(c)
-        c.setFont(FONT_BODY, USED_PUZZLE_LETTER_PT)
-        label = f"{index + 1}. {display_name(name)}"
-        c.drawString(x + 28, icon_y + 6, label)
+        c.setFont(FONT_BODY, 9)
+        label = str(index + 1)
+        c.drawString(x + 18, icon_y + 4, label)
 
 
 def draw_search_find_page(

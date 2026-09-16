@@ -8,7 +8,7 @@ from reportlab.pdfgen import canvas
 
 from mission_of_words.proof import live_box
 from mission_of_words.scenes import draw_coloring_scene
-from mission_of_words.templates import draw_activity_header, draw_panel, place_raster
+from mission_of_words.templates import draw_activity_header, place_raster
 
 
 def _mission_from_spec(spec: dict) -> dict:
@@ -44,17 +44,15 @@ def draw_mission_coloring_page(
     drawn: list[str]
     raster_meta: dict = {}
     if artwork_path and Path(artwork_path).is_file():
-        draw_panel(c, plan.art_box, radius=10, width=1.6)
-        inset = (left + 8, bottom + 8, right - 8, top - 8)
-        raster_meta = place_raster(c, Path(artwork_path), inset, plan.state, name="hero_art")
+        raster_meta = place_raster(c, Path(artwork_path), plan.art_box, plan.state, name="hero_art")
         drawn = list(page["required_objects"])
         if "hero_scene" not in drawn:
             drawn.append("hero_scene")
         placeholder = False
         artwork_status = "accepted"
         integration = (
-            "Hero coloring scene is a full-bleed line-art illustration inside the "
-            "measured art window. Titles and instructions are code-rendered above it."
+            "Hero coloring scene owns the measured art window. Titles and "
+            "instructions are code-rendered around it. No empty frame."
         )
     else:
         drawn = draw_coloring_scene(c, mission["id"], plan.art_box)

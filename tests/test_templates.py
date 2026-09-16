@@ -52,8 +52,8 @@ def test_hero_header_uses_larger_instruction_type():
         hero=True,
     )
     assert plan.state.ok(), plan.state.as_fields()
-    art_h = plan.art_box[3] - plan.art_box[1]
-    assert art_h > 480
+    ratio = plan.art_height_ratio()
+    assert 0.70 <= ratio <= 0.80, ratio
 
 
 def test_odd_even_headers_stay_inside_safety():

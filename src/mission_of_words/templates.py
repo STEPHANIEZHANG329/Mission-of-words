@@ -1,7 +1,8 @@
-"""Reusable Bright Hearts page templates.
+"""Reusable Little Lampkeepers page templates.
 
 Models draw; code decides. All titles, badges, verses, instructions, and
 page numbers are measured, wrapped, and collision-checked before ink.
+Generated artwork stays text-free.
 """
 
 from __future__ import annotations
@@ -23,7 +24,12 @@ from mission_of_words.geometry import (
     new_state,
     wrap_lines,
 )
-from mission_of_words.fonts import FONT_BODY, FONT_BODY_BOLD, FONT_ITALIC, FONT_TITLE, FONT_TITLE_BOLD
+from mission_of_words.composition import (
+    art_ratio,
+    hero_art_ratio_bounds,
+    maze_path_box,
+)
+from mission_of_words.fonts import FONT_BODY, FONT_BODY_BOLD, FONT_ITALIC, FONT_TITLE_BOLD
 from mission_of_words.layout import (
     DPI,
     PAGE_H,
@@ -55,6 +61,10 @@ class HeaderPlan:
     art_box: tuple[float, float, float, float]
     footer_box: BBox
     y_below: float
+    live_box: tuple[float, float, float, float] = (0.0, 0.0, 0.0, 0.0)
+
+    def art_height_ratio(self) -> float:
+        return art_ratio(self.art_box, self.live_box)
 
 
 def _content(page_number: int, box: tuple[float, float, float, float] | None) -> tuple[float, float, float, float]:
@@ -135,20 +145,26 @@ def plan_activity_header(
     box: tuple[float, float, float, float] | None = None,
     draw: bool = True,
 ) -> HeaderPlan:
-    """Compact kicker + wrapping title + verse. Child prompt sits under the scene."""
+    """Compact kicker + wrapping title + verse. Child prompt sits under the scene.
+
+    Hero coloring pages keep the illustration inside 70–80% of the live area.
+    """
     left, bottom, right, top = _content(page_number, box)
+    live = (left, bottom, right, top)
     width = right - left
-    state = new_state(page_number, (left, bottom, right, top))
+    state = new_state(page_number, live)
     title_pt = USED_TITLE_PT if not hero else max(USED_TITLE_PT, 22)
     title_lead = title_pt + 4
     instr_pt = HERO_INSTRUCTION_PT if hero else USED_INSTRUCTION_PT
     instr_lead = HERO_INSTRUCTION_LEADING if hero else USED_INSTRUCTION_LEADING
 
     footer_h = FOOTER_PT + 6
-    prompt_width = width - 42
+    prompt_width = width - 24
     prompt_lines, prompt_overflow = wrap_lines(c, instruction, FONT_BODY, instr_pt, prompt_width) if instruction else ([], [])
     state.overflow.extend(prompt_overflow)
     prompt_h = max(len(prompt_lines), 1) * instr_lead + 8 if instruction else 0
+    if hero:
+        prompt_h = max(prompt_h, 70)
     art_bottom = bottom + footer_h + prompt_h + 4
 
     footer = BBox("page_number", right - 36, bottom, right, bottom + footer_h, kind="folio")
@@ -220,7 +236,19 @@ def plan_activity_header(
     if y_below - art_bottom < 160:
         state.overflow.append("header consumed the art area")
     art_box = (left, art_bottom, right, y_below)
-    return HeaderPlan(state=state, art_box=art_box, footer_box=footer, y_below=y_below)
+    if hero:
+        lo, hi = hero_art_ratio_bounds()
+        live_h = top - bottom
+        art_h = y_below - art_bottom
+        ratio = art_h / live_h if live_h else 0.0
+        if ratio > hi:
+            art_bottom = y_below - hi * live_h
+            art_box = (left, art_bottom, right, y_below)
+        elif ratio < lo:
+            state.overflow.append(
+                f"hero art occupies {ratio:.0%} of live area; floor is {lo:.0%}"
+            )
+    return HeaderPlan(state=state, art_box=art_box, footer_box=footer, y_below=y_below, live_box=live)
 
 
 def draw_activity_header(
@@ -299,8 +327,13 @@ def draw_maze_grid(
     cell: float,
     answer_key: bool = False,
     solution_weight: float | None = None,
+    wall_style: str = "hedge_path",
 ) -> dict:
-    wall = max(2.2, cell * 0.16)
+    wall = max(2.4, cell * 0.18)
+    if wall_style in {"orchard_rows", "harvest_rows"}:
+        wall = max(2.2, cell * 0.16)
+    elif wall_style in {"festival_booths", "porch_fence"}:
+        wall = max(2.6, cell * 0.20)
     c.setStrokeColor(INK)
     c.setFillColor(white)
     c.setLineJoin(1)
@@ -336,10 +369,8 @@ def draw_maze_grid(
 
 
 def maze_window_box(art_box: tuple[float, float, float, float]) -> tuple[float, float, float, float]:
-    left, bottom, right, top = art_box
-    width, height = right - left, top - bottom
-    pad_x, pad_y = width * 0.06, height * 0.08
-    return left + pad_x, bottom + pad_y, right - pad_x, top - pad_y
+    """Path box inside the scene. Kept as a name alias for older call sites."""
+    return maze_path_box(art_box)
 
 
 def draw_start_finish_badges(

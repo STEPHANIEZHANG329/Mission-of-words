@@ -43,7 +43,7 @@ jobs:
         env:
           PYTHONPATH: src
         run: |
-          python -m py_compile src/mission_of_words/production_qa.py src/mission_of_words/build_production.py
+          python -m py_compile src/mission_of_words/production_qa.py src/mission_of_words/build_production.py src/mission_of_words/composition.py src/mission_of_words/internal_geometry.py
           pytest -q
 
       - name: Evaluate 48-page blueprint (no PDF required)

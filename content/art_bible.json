@@ -1,9 +1,14 @@
 {
-  "version": "2026-09-16-phase-c",
+  "version": "2026-09-16-architecture-reset",
   "style_lock": {
     "standard": "Commercial US children's activity and coloring book, black-and-white interior line art.",
     "outlines": "Thick clean outlines, large colorable regions, no tiny noodle lines.",
+    "line_weight": "Primary outlines 2.0–2.8pt at print size; inner detail 1.2–1.6pt. Faces use simple closed shapes, not hatch shading.",
     "cast": "Four children plus one dog, consistent across every scene.",
+    "face_proportions": "Large round heads about one-third of child height, simple dot or crescent eyes, small rounded noses, closed smiling mouths. No adult fashion faces, no anime, no photoreal.",
+    "clothing_logic": "Seasonal fall layers only: Mira crewneck sweater, Eli striped long-sleeve, Joy overalls over a t-shirt, Caleb zip hoodie. Shoes stay round-toed. No logos, letters, numbers, or team names on clothes.",
+    "environment_language": "Readable church/fall depth: ground plane, mid-ground props, a far building or trees. Dense enough to color, never a sticker collage.",
+    "icon_family": "Closed colorable props: lantern, pumpkin, apple, leaf, acorn, scarf, basket, Bible, loaf, heart. Same construction on every page.",
     "no_text": "Generate NO titles, verses, instructions, page numbers, signs, logos, captions, watermarks, or any legible letters or numbers.",
     "medium": "Ink on paper coloring-book plate, not 3D, not photoreal, not anime, not watercolor wash.",
     "composition": "One coherent integrated scene. Not a collage, sticker sheet, or pasted strip."

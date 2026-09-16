@@ -2,7 +2,8 @@
   "gate": "commercial_layout_before_paid_generation",
   "status": "FAIL_OWNER_PM_REJECTION",
   "approved_for_paid_generation": false,
-  "pm_review_url": "https://github.com/STEPHANIEZHANG329/Mission-of-words/pull/11#pullrequestreview-5228467603",
+  "architecture_reset": "Issue #6 comment 5704681479",
+  "pm_review_url": "https://github.com/STEPHANIEZHANG329/Mission-of-words/issues/6#issuecomment-5704681479",
   "owner_reference_standard": "commercial Christian children's activity-book pages: polished B/W coloring-book illustration, expressive consistent children, dense but colorable fall/church scenes, integrated activity mechanics, playful child-facing typography, authored by one children's-book art director",
   "rejected_artifacts": [
     "LittleLampkeepers_48_Page_Commercial_Layout_Proof.pdf",
@@ -16,26 +17,29 @@
     "sparse pages that look like engineering wireframes or teacher worksheets",
     "calling a technically rendered PDF a commercial product without visual review against the Owner reference standard",
     "showing the Owner another procedural/wireframe PDF as evidence of product quality",
-    "CI green used as sufficient for production_pass"
+    "CI green used as sufficient for production_pass",
+    "Owner-facing PRODUCT labeled on geometry mocks or technical proofs"
   ],
   "required_before_pass": [
+    "PM reviews the rebuilt factory composition against comment 5704681479",
     "consumer-facing pages visually match the density and polish of the Owner-approved references",
     "final artwork is publication-quality, not procedural placeholder art",
     "Mission headers and long titles have no collision or clipping",
     "Search & Find pages are scene-integrated and visually dense enough for ages 5-8",
-    "Maze pages visually integrate illustration and maze rather than stacking unrelated blocks",
-    "Faith in Action pages use the same commercial visual language",
+    "Maze pages are physically part of the illustrated environment",
+    "Faith in Action pages look like a children's activity book, not a form",
     "Answer-key pages remain readable at print size",
     "all typography, trim, gutter, and safe-area checks pass",
-    "PM visual review passes every page at print-size raster preview",
-    "Owner explicitly approves paid artwork generation after design proof quality is demonstrated"
+    "PM visual review passes every page at print-size raster preview after paid art exists",
+    "Owner explicitly reopens this gate and authorizes GPT2 after architecture review"
   ],
-  "delivery_contract": "Do not present another wireframe/procedural PDF to the Owner as product progress. Geometry PDFs are INTERNAL ENGINEERING ONLY. The next Owner-facing product file must contain publication-quality artwork and consumer-ready page design.",
+  "delivery_contract": "Geometry PDFs are INTERNAL ENGINEERING ONLY and are not Owner-facing product files. The next Owner-facing PRODUCT must be the complete 48-page publication-art candidate plus cover. Do not spend GPT2 until this gate is PASS.",
   "consumer_typefaces": {
     "titles": "Fredoka (SIL OFL)",
     "body": "Nunito (SIL OFL)",
     "helvetica_allowed": "internal engineering overlays only"
   },
-  "reason": "Owner/PM review 2026-09-16 rejected treating technical correctness as product quality. Paid generation stays closed.",
+  "consumer_title": "Little Lampkeepers: Shine Your Light This Fall",
+  "reason": "Owner/PM contract 5704681479: rebuild composition first. Paid generation stays closed. Architecture reset is in progress; gate remains FAIL until PM review and Owner reopen.",
   "last_updated": "2026-09-16"
 }

@@ -7,6 +7,8 @@ on:
       - 'cursor/phase-c-gpt2-rebuild-9570'
     paths:
       - 'src/mission_of_words/commercial_layout_proof_v2.py'
+      - 'src/mission_of_words/internal_geometry.py'
+      - 'src/mission_of_words/composition.py'
       - '.github/workflows/commercial-layout-proof.yml'
 
 permissions:
@@ -40,10 +42,10 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Compile proof builder
-        run: python -m py_compile src/mission_of_words/commercial_layout_proof_v2.py
+        run: python -m py_compile src/mission_of_words/commercial_layout_proof_v2.py src/mission_of_words/internal_geometry.py src/mission_of_words/composition.py
 
       - name: Build internal engineering geometry PDF
-        run: python -m mission_of_words.commercial_layout_proof_v2
+        run: python -m mission_of_words.internal_geometry
 
       - name: Verify engineering-only outputs
         run: |

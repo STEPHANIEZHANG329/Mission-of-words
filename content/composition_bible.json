@@ -1,0 +1,141 @@
+{
+  "version": "2026-09-16-architecture-reset",
+  "governing_contract": "Issue #6 comment 5704681479",
+  "owner_facing_product": false,
+  "status": "INTERNAL_ARCHITECTURE_ONLY",
+  "brand": {
+    "consumer_title": "Little Lampkeepers: Shine Your Light This Fall",
+    "series": "Little Lampkeepers",
+    "forbidden_consumer_mark": "Bright Hearts"
+  },
+  "text_ownership": {
+    "gpt_images": "NO letters, numbers, titles, Scripture, logos, signs, captions, watermarks, or page numbers",
+    "code_owns": [
+      "titles",
+      "series lines",
+      "scripture references",
+      "child paraphrase labels",
+      "instructions",
+      "page numbers",
+      "answer markers",
+      "start/finish labels",
+      "legend labels"
+    ]
+  },
+  "book_map": {
+    "pages_1_4": "front matter as a children's book, not onboarding wireframes",
+    "pages_5_36": "8 missions x 4 pages: hero/coloring, search, illustrated maze, faith in action",
+    "pages_37_44": "readable answer keys from the same activity manifests",
+    "pages_45_48": "gratitude, prayer walk, certificate, closing — same visual language"
+  },
+  "live_area": {
+    "trim_inches": [8.5, 11.0],
+    "inner_safety_inches": 0.625,
+    "outer_safety_inches": 0.5,
+    "hero_art_ratio_min": 0.7,
+    "hero_art_ratio_max": 0.8,
+    "search_legend_max_pt": 48,
+    "search_scene_min_ratio": 0.62,
+    "maze_path_min_ratio": 0.72,
+    "faith_drawing_min_sqin": 10.0,
+    "answer_callout_min_pt": 11
+  },
+  "page_types": {
+    "hero": {
+      "art_owns": "70-80% of the live area",
+      "cast": "3-5 recurring children plus optional Pip",
+      "no_empty_panels": true,
+      "instruction": "one child prompt under the scene"
+    },
+    "search": {
+      "scene_first": true,
+      "targets": 8,
+      "targets_are": "separate code assets in plausible hiding zones",
+      "legend": "compact numbered icons, secondary to the scene",
+      "ages": "5-8"
+    },
+    "maze": {
+      "rule": "the maze is physically part of the illustrated environment",
+      "forbidden": "generic rectangular maze pasted over decorative art or sitting in an empty rounded window",
+      "start_finish": "characters and objects belong to the scene"
+    },
+    "faith": {
+      "look": "children's activity-book page, not a form",
+      "parts": ["illustrated choice cards", "meaningful drawing area", "short prayer"],
+      "no_form_labels": true
+    },
+    "answer_key": {
+      "readable_without_zoom": true,
+      "numbered_callouts": true,
+      "same_manifests": true
+    }
+  },
+  "missions": {
+    "mission_01": {
+      "environment": "church fall festival garden",
+      "maze_embed": "hedge_path",
+      "faith_rhythm": "lantern_2x2",
+      "hero_cast": ["mira", "eli", "joy", "caleb", "pip"],
+      "hiding_zones": ["booth shadow", "pumpkin patch", "table edge", "tree base"]
+    },
+    "mission_02": {
+      "environment": "dusk orchard",
+      "maze_embed": "orchard_rows",
+      "faith_rhythm": "sky_strip",
+      "hero_cast": ["caleb", "mira", "pip"],
+      "hiding_zones": ["tree roots", "grass tufts", "fence shadow", "basket under tree"]
+    },
+    "mission_03": {
+      "environment": "harvest barn yard",
+      "maze_embed": "harvest_rows",
+      "faith_rhythm": "wagon_cluster",
+      "hero_cast": ["mira", "eli", "joy", "caleb"],
+      "hiding_zones": ["wagon bed", "barn door", "wheat stand", "crate stack"]
+    },
+    "mission_04": {
+      "environment": "woods trail to a lit porch",
+      "maze_embed": "woods_trail",
+      "faith_rhythm": "path_2x2",
+      "hero_cast": ["eli", "mira", "pip"],
+      "hiding_zones": ["fallen log", "leaf pile", "porch step", "tree hollow"]
+    },
+    "mission_05": {
+      "environment": "neighbor porch and yard",
+      "maze_embed": "porch_fence",
+      "faith_rhythm": "porch_row",
+      "hero_cast": ["mira", "joy", "eli", "caleb", "pip"],
+      "hiding_zones": ["step jar", "bush", "basket rim", "railing"]
+    },
+    "mission_06": {
+      "environment": "festival game booths",
+      "maze_embed": "festival_booths",
+      "faith_rhythm": "booth_2x2",
+      "hero_cast": ["mira", "eli", "joy", "caleb", "pip"],
+      "hiding_zones": ["booth skirt", "prize shelf", "chair seat", "cup rail"]
+    },
+    "mission_07": {
+      "environment": "creek and hillside",
+      "maze_embed": "creek_banks",
+      "faith_rhythm": "creek_strip",
+      "hero_cast": ["caleb", "mira", "eli", "joy", "pip"],
+      "hiding_zones": ["rock shadow", "reed clump", "tree roots", "water edge"]
+    },
+    "mission_08": {
+      "environment": "family table and window",
+      "maze_embed": "table_path",
+      "faith_rhythm": "table_2x2",
+      "hero_cast": ["mira", "eli", "joy", "caleb", "pip"],
+      "hiding_zones": ["chair back", "tablecloth fold", "window ledge", "basket"]
+    }
+  },
+  "hard_rejections": [
+    "procedural stick-figure art in any Owner-facing file",
+    "empty rounded rectangles or dead white boxes",
+    "Helvetica worksheet look on consumer pages",
+    "maze pasted onto an unrelated blank page",
+    "Search & Find with sparse or obvious targets",
+    "answer key that requires zooming",
+    "cloned composition across all 8 missions",
+    "technical proof labeled or presented as product"
+  ]
+}

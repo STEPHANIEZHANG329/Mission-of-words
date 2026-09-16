@@ -50,3 +50,6 @@ Use the Owner-approved reference pages as the layout target, not the previous Ph
 Rebuild all shared templates and render the full 48-page book with deterministic stand-in art. The full contact sheet must show consistent hierarchy, spacing, typography, and page rhythm across all eight missions. Automated collision/overflow/clip checks must pass. Human/PM review must explicitly reject any page that looks like a worksheet prototype rather than a retail children's activity book.
 
 Only after the 48-page architecture passes this zero-cost gate may the Owner be asked whether to re-enable paid GPT2 artwork.
+
+## Governing contract (Issue #6 comment 5704681479)
+This supersedes earlier visual instructions. Rebuild the page composition system first. Create INTERNAL geometry mocks only. Those mocks are not Owner-facing product files. GPT2 stays closed until PM reviews the architecture and the Owner reopens `ops/layout_gate.json`. CI green is never acceptance. The next Owner-facing PRODUCT must be the complete 48-page publication-art candidate plus cover, not a wireframe or technical proof.

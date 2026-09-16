@@ -11,8 +11,9 @@ def test_planned_packets_are_eighteen_and_text_free():
     assert roles.count("cover_front") == 1
     for packet in packets:
         prompt = packet["prompt"].lower()
-        assert "do not draw any letters" in prompt or "no text" in prompt
-        assert "page number" in prompt or "no text" in prompt
+        assert "do not draw any letters" in prompt
+        assert "numbers" in prompt
+        assert "no text" in prompt
         assert packet["size"] == "1664x2160"
 
 

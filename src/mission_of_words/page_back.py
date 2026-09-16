@@ -13,6 +13,7 @@ from mission_of_words.brand import CERTIFICATE_HEADING, CERTIFICATE_LINE, CLOSIN
 from mission_of_words.fonts import FONT_BODY, FONT_BODY_BOLD
 from mission_of_words.geometry import BBox
 from mission_of_words.layout import USED_ANSWER_KEY_PT, USED_INSTRUCTION_PT, USED_TITLE_PT
+from mission_of_words.composition import maze_path_box
 from mission_of_words.maze import Maze
 from mission_of_words.proof import live_box
 from mission_of_words.targets import display_name
@@ -20,7 +21,6 @@ from mission_of_words.templates import (
     draw_activity_header,
     draw_answer_number,
     draw_maze_grid,
-    draw_panel,
     draw_start_finish_badges,
 )
 from mission_of_words.text import ink_text, wrapped_text
@@ -113,8 +113,7 @@ def draw_answer_key_page(
     c.setFont(FONT_BODY_BOLD, 12)
     c.drawString(left, maze_top, "Maze path  ·  the dark line is the only way")
     maze_bottom = bottom + 6
-    window = (left, maze_bottom, right, maze_top - 14)
-    draw_panel(c, window, radius=12, width=1.8)
+    window = maze_path_box((left, maze_bottom, right, maze_top - 14))
     win_left, win_bottom, win_right, win_top = window
     pad = 12
     rows, cols = maze.rows, maze.cols

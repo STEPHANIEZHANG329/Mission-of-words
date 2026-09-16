@@ -11,12 +11,11 @@ from mission_of_words.fonts import FONT_BODY
 from mission_of_words.layout import USED_PUZZLE_LETTER_PT
 from mission_of_words.maze import Maze
 from mission_of_words.proof import live_box
+from mission_of_words.composition import maze_embed, maze_path_box, maze_path_min_ratio
 from mission_of_words.templates import (
     draw_activity_header,
     draw_maze_grid,
-    draw_panel,
     draw_start_finish_badges,
-    maze_window_box,
     place_raster,
 )
 from mission_of_words.text import ink_text
@@ -152,18 +151,17 @@ def draw_maze_page(
     else:
         _scenery(c, mission["id"], art_box)
 
-    window = maze_window_box(art_box)
-    draw_panel(c, window, radius=16, width=2.4)
-    win_left, win_bottom, win_right, win_top = window
-    pad = 18
-    inner_w = win_right - win_left - 2 * pad
-    inner_h = win_top - win_bottom - 2 * pad
+    embed = maze_embed(mission["id"])
+    path_box = maze_path_box(art_box)
+    win_left, win_bottom, win_right, win_top = path_box
+    inner_w = win_right - win_left
+    inner_h = win_top - win_bottom
     cell = min(inner_w / maze.cols, inner_h / maze.rows)
     maze_w = cell * maze.cols
     maze_h = cell * maze.rows
     x0 = win_left + (win_right - win_left - maze_w) / 2
     y0 = win_bottom + (win_top - win_bottom - maze_h) / 2
-    draw_maze_grid(c, maze, x0=x0, y0=y0, cell=cell, answer_key=answer_key)
+    draw_maze_grid(c, maze, x0=x0, y0=y0, cell=cell, answer_key=answer_key, wall_style=embed)
 
     start_x, start_y = x0 + maze.start[1] * cell, y0 + maze.start[0] * cell + cell * 0.5
     fin_x, fin_y = x0 + maze.finish[1] * cell + cell, y0 + maze.finish[0] * cell + cell * 0.5
@@ -171,12 +169,17 @@ def draw_maze_page(
     draw_start_finish_badges(
         c,
         plan.state,
-        start_xy=(win_left + 28, win_bottom - 6),
-        finish_xy=(win_right - 28, win_top + 8),
+        start_xy=(x0 + cell * 0.5, y0 - 10),
+        finish_xy=(x0 + maze_w - cell * 0.5, y0 + maze_h + 12),
         start_label=page["start_label"],
         finish_label=page["finish_label"],
         cell=max(cell, 22),
     )
+    path_ratio = (win_top - win_bottom) / max(top - bottom, 1.0)
+    if path_ratio < maze_path_min_ratio():
+        plan.state.overflow.append(
+            f"maze path occupies {path_ratio:.0%} of the scene; floor is {maze_path_min_ratio():.0%}"
+        )
     ink_text(c)
     c.setFont(FONT_BODY, USED_PUZZLE_LETTER_PT)
 
@@ -191,9 +194,11 @@ def draw_maze_page(
         "placeholder": marked_proof,
         "artwork_status": "placeholder_only" if marked_proof else "procedural_lineart",
         "asset_integration": (
-            "The maze sits in a rounded window inside one scene. Start and finish "
-            "pictures belong to that scene; the unique solution is the generator path."
+            f"The maze is the {embed.replace('_', ' ')} through one illustrated environment. "
+            "Start and finish pictures belong to that scene; the unique solution is the generator path."
         ),
+        "maze_embed": embed,
+        "maze_path_ratio": path_ratio,
         "child_instruction": page["child_instruction"],
         "bible_connection": page["bible_connection"],
         "start": list(maze.start),

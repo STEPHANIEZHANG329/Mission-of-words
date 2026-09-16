@@ -137,7 +137,7 @@ def planned_packets() -> list[dict[str, Any]]:
                 "Full-color children's paperback cover illustration, autumn Christian family activity book mood, "
                 "warm daylight, four children (Mira, Eli, Joy, Caleb) and Pip the dog at a fall festival with lanterns, "
                 "pumpkins, a small church in the distance with an intact steeple cross, harvest baskets. "
-                f"{cast_block(bible)} "
+                f"{STYLE}\n{NO_TEXT}\n{cast_block(bible)} "
                 "NO TEXT, no title, no author name, no Bible verse, no logos. Leave a calm sky area in the upper third "
                 "so layout code can place the title later. Painting-and-ink storybook color, not photoreal."
             ),

@@ -14,6 +14,18 @@ from mission_of_words.text import ink_text
 NON_PRODUCTION_MARK = "NON-PRODUCTION TECHNICAL PROOF"
 NON_PRODUCTION_LINE = "NON-PRODUCTION TECHNICAL PROOF — placeholder art — not for KDP"
 PROOF_FOOTER_PT = 16.0
+INTERNAL_MARK = "INTERNAL ENGINEERING GEOMETRY"
+INTERNAL_LINE = "INTERNAL ENGINEERING GEOMETRY — NOT A PRODUCT — not for KDP"
+
+
+def draw_internal_stamp(c: canvas.Canvas, page_number: int) -> None:
+    """Engineering overlay only. Helvetica is allowed on this stamp, not on consumer type."""
+    left, bottom, right, _top = content_box(page_number)
+    ink_text(c)
+    c.setFont("Helvetica-Bold", 7)
+    c.drawCentredString((left + right) / 2, bottom - 11, INTERNAL_LINE)
+    c.setFont("Helvetica-Bold", 8)
+    c.drawRightString(right, bottom - 11, str(page_number))
 
 
 def live_box(page_number: int) -> tuple[float, float, float, float]:
