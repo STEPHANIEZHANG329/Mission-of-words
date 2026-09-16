@@ -1,0 +1,392 @@
+{
+  "pages": [
+    {
+      "page": 37,
+      "section": "back_matter",
+      "type": "answer_key",
+      "title": "Answer Key: Shine Your Light",
+      "mission_id": "mission_01",
+      "mission_sequence": 1,
+      "mission_slot": null,
+      "canon_id": "matthew_5_16",
+      "activity_mechanic": "answer_key_mission_01",
+      "art_roles": [
+        "answer_key_spot"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [
+        6,
+        7
+      ],
+      "answer_sources": [
+        {
+          "activity_page": 6,
+          "mechanic": "search_find",
+          "source": "compositor_manifest"
+        },
+        {
+          "activity_page": 7,
+          "mechanic": "maze",
+          "source": "unique_maze_path"
+        }
+      ],
+      "source_mission_page": null,
+      "child_instruction_required": false,
+      "notes": "Compact solutions for Mission 1 Search & Find and maze. Answer key type >=9 pt.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 38,
+      "section": "back_matter",
+      "type": "answer_key",
+      "title": "Answer Key: God Made the Seasons",
+      "mission_id": "mission_02",
+      "mission_sequence": 2,
+      "mission_slot": null,
+      "canon_id": "genesis_1_14",
+      "activity_mechanic": "answer_key_mission_02",
+      "art_roles": [
+        "answer_key_spot"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [
+        10,
+        11
+      ],
+      "answer_sources": [
+        {
+          "activity_page": 10,
+          "mechanic": "search_find",
+          "source": "compositor_manifest"
+        },
+        {
+          "activity_page": 11,
+          "mechanic": "maze",
+          "source": "unique_maze_path"
+        }
+      ],
+      "source_mission_page": null,
+      "child_instruction_required": false,
+      "notes": "Compact solutions for Mission 2 Search & Find and maze.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 39,
+      "section": "back_matter",
+      "type": "answer_key",
+      "title": "Answer Key: A Harvest of Thankfulness",
+      "mission_id": "mission_03",
+      "mission_sequence": 3,
+      "mission_slot": null,
+      "canon_id": "psalm_107_1",
+      "activity_mechanic": "answer_key_mission_03",
+      "art_roles": [
+        "answer_key_spot"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [
+        14,
+        15
+      ],
+      "answer_sources": [
+        {
+          "activity_page": 14,
+          "mechanic": "search_find",
+          "source": "compositor_manifest"
+        },
+        {
+          "activity_page": 15,
+          "mechanic": "maze",
+          "source": "unique_maze_path"
+        }
+      ],
+      "source_mission_page": null,
+      "child_instruction_required": false,
+      "notes": "Compact solutions for Mission 3 Search & Find and maze.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 40,
+      "section": "back_matter",
+      "type": "answer_key",
+      "title": "Answer Key: Courage Over Fear",
+      "mission_id": "mission_04",
+      "mission_sequence": 4,
+      "mission_slot": null,
+      "canon_id": "isaiah_41_10",
+      "activity_mechanic": "answer_key_mission_04",
+      "art_roles": [
+        "answer_key_spot"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [
+        18,
+        19
+      ],
+      "answer_sources": [
+        {
+          "activity_page": 18,
+          "mechanic": "search_find",
+          "source": "compositor_manifest"
+        },
+        {
+          "activity_page": 19,
+          "mechanic": "maze",
+          "source": "unique_maze_path"
+        }
+      ],
+      "source_mission_page": null,
+      "child_instruction_required": false,
+      "notes": "Compact solutions for Mission 4 Search & Find and maze.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 41,
+      "section": "back_matter",
+      "type": "answer_key",
+      "title": "Answer Key: Share the Harvest",
+      "mission_id": "mission_05",
+      "mission_sequence": 5,
+      "mission_slot": null,
+      "canon_id": "hebrews_13_16",
+      "activity_mechanic": "answer_key_mission_05",
+      "art_roles": [
+        "answer_key_spot"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [
+        22,
+        23
+      ],
+      "answer_sources": [
+        {
+          "activity_page": 22,
+          "mechanic": "search_find",
+          "source": "compositor_manifest"
+        },
+        {
+          "activity_page": 23,
+          "mechanic": "maze",
+          "source": "unique_maze_path"
+        }
+      ],
+      "source_mission_page": null,
+      "child_instruction_required": false,
+      "notes": "Compact solutions for Mission 5 Search & Find and maze.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 42,
+      "section": "back_matter",
+      "type": "answer_key",
+      "title": "Answer Key: Kindness at the Fall Festival",
+      "mission_id": "mission_06",
+      "mission_sequence": 6,
+      "mission_slot": null,
+      "canon_id": "ephesians_4_32",
+      "activity_mechanic": "answer_key_mission_06",
+      "art_roles": [
+        "answer_key_spot"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [
+        26,
+        27
+      ],
+      "answer_sources": [
+        {
+          "activity_page": 26,
+          "mechanic": "search_find",
+          "source": "compositor_manifest"
+        },
+        {
+          "activity_page": 27,
+          "mechanic": "maze",
+          "source": "unique_maze_path"
+        }
+      ],
+      "source_mission_page": null,
+      "child_instruction_required": false,
+      "notes": "Compact solutions for Mission 6 Search & Find and maze.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 43,
+      "section": "back_matter",
+      "type": "answer_key",
+      "title": "Answer Key: God's Beautiful Creation",
+      "mission_id": "mission_07",
+      "mission_sequence": 7,
+      "mission_slot": null,
+      "canon_id": "genesis_1_31",
+      "activity_mechanic": "answer_key_mission_07",
+      "art_roles": [
+        "answer_key_spot"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [
+        30,
+        31
+      ],
+      "answer_sources": [
+        {
+          "activity_page": 30,
+          "mechanic": "search_find",
+          "source": "compositor_manifest"
+        },
+        {
+          "activity_page": 31,
+          "mechanic": "maze",
+          "source": "unique_maze_path"
+        }
+      ],
+      "source_mission_page": null,
+      "child_instruction_required": false,
+      "notes": "Compact solutions for Mission 7 Search & Find and maze.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 44,
+      "section": "back_matter",
+      "type": "answer_key",
+      "title": "Answer Key: The Thankful Table",
+      "mission_id": "mission_08",
+      "mission_sequence": 8,
+      "mission_slot": null,
+      "canon_id": "1_thessalonians_5_18",
+      "activity_mechanic": "answer_key_mission_08",
+      "art_roles": [
+        "answer_key_spot"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [
+        34,
+        35
+      ],
+      "answer_sources": [
+        {
+          "activity_page": 34,
+          "mechanic": "search_find",
+          "source": "compositor_manifest"
+        },
+        {
+          "activity_page": 35,
+          "mechanic": "maze",
+          "source": "unique_maze_path"
+        }
+      ],
+      "source_mission_page": null,
+      "child_instruction_required": false,
+      "notes": "Compact solutions for Mission 8 Search & Find and maze.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 45,
+      "section": "back_matter",
+      "type": "bonus_activity",
+      "title": "Gratitude Journal",
+      "mission_id": null,
+      "mission_sequence": null,
+      "mission_slot": null,
+      "canon_id": "psalm_107_1",
+      "activity_mechanic": "bonus_gratitude_journal",
+      "art_roles": [
+        "bonus_activity"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": null,
+      "child_instruction_required": true,
+      "notes": "Parent-child gratitude bonus. Unique mechanic: draw-and-write three thanks. Not a copied mission page.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 46,
+      "section": "back_matter",
+      "type": "bonus_activity",
+      "title": "A Prayer Walk Together",
+      "mission_id": null,
+      "mission_sequence": null,
+      "mission_slot": null,
+      "canon_id": "1_thessalonians_5_18",
+      "activity_mechanic": "bonus_parent_child_prayer_walk",
+      "art_roles": [
+        "bonus_activity"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": null,
+      "child_instruction_required": true,
+      "notes": "Parent-child prayer/walk bonus. Unique mechanic: outdoor noticing plus short prayer prompts. Not a copied mission page.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 47,
+      "section": "back_matter",
+      "type": "certificate",
+      "title": "Bright Hearts Completion Certificate",
+      "mission_id": null,
+      "mission_sequence": null,
+      "mission_slot": null,
+      "canon_id": null,
+      "activity_mechanic": "completion_certificate",
+      "art_roles": [
+        "certificate_frame"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": null,
+      "child_instruction_required": true,
+      "notes": "Child name and date lines. Code renders all certificate type.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 48,
+      "section": "back_matter",
+      "type": "closing",
+      "title": "Keep Shining, Bright Hearts",
+      "mission_id": null,
+      "mission_sequence": null,
+      "mission_slot": null,
+      "canon_id": "matthew_5_16",
+      "activity_mechanic": "bright_hearts_closing",
+      "art_roles": [
+        "closing_lockup"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": null,
+      "child_instruction_required": true,
+      "notes": "Final Bright Hearts closing page. Not a duplicate of the title page.",
+      "facing": "verso",
+      "parity": "even"
+    }
+  ]
+}

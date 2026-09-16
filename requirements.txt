@@ -1,0 +1,5 @@
+reportlab>=4.2,<5
+Pillow>=10,<12
+pytest>=8,<10
+jsonschema>=4.21,<5
+pypdfium2>=4.30,<5
