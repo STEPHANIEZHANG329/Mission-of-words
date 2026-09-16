@@ -313,6 +313,10 @@ def closing(c,page):
 
 
 def build():
+    raise SystemExit(
+        "REJECTED: Owner forbade commercial/layout-proof PDFs. "
+        "Run python -m mission_of_words.build_book for INTERNAL geometry mocks only."
+    )
     OUT.mkdir(parents=True,exist_ok=True); PREVIEWS.mkdir(parents=True,exist_ok=True)
     book=load_book_record(); missions=load_mission_records(); canons={m["id"]:bind_mission_record(m) for m in missions}; cache={}
     c=canvas.Canvas(str(PDF),pagesize=(PAGE_W,PAGE_H)); c.setTitle("Little Lampkeepers - Commercial Layout Proof V2")

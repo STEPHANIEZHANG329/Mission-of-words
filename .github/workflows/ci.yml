@@ -43,7 +43,7 @@ jobs:
         env:
           PYTHONPATH: src
         run: |
-          python -m py_compile src/mission_of_words/production_qa.py src/mission_of_words/build_production.py
+          python -m py_compile src/mission_of_words/production_qa.py src/mission_of_words/build_production.py src/mission_of_words/page_factory.py src/mission_of_words/bibles.py
           pytest -q
 
       - name: Evaluate 48-page blueprint (no PDF required)
@@ -51,12 +51,12 @@ jobs:
           PYTHONPATH: src
         run: python -m mission_of_words.evaluate_full_book
 
-      - name: Build 48-page Phase B technical proof
+      - name: Build 48-page INTERNAL geometry mocks (not product)
         env:
           PYTHONPATH: src
         run: python -m mission_of_words.build_book
 
-      - name: Verify Phase B technical proof stays unpublished
+      - name: Verify geometry mocks stay unpublished
         env:
           PYTHONPATH: src
         run: |
@@ -90,14 +90,15 @@ jobs:
           assert report['visual_readiness'] in {'FAIL', 'MISSING'}, report
           assert report['blockers'], report
           for name in (
-              'BrightHearts_Fall_Interior_TechnicalProof.pdf',
-              'BrightHearts_Fall_AnswerKey_TechnicalProof.pdf',
+              'INTERNAL_LittleLampkeepers_48_GeometryMocks_NOT_PRODUCT.pdf',
+              'INTERNAL_LittleLampkeepers_AnswerKey_GeometryMocks_NOT_PRODUCT.pdf',
               'qa_report.json',
               'full_book_qa.json',
               'visual_qa.md',
               'book_manifest.json',
               'page_map.json',
               'asset_register.json',
+              'architecture_qa.json',
               'previews/page_01.png',
               'previews/page_48.png',
               'previews/contact_sheet.png',
@@ -106,20 +107,24 @@ jobs:
               assert path.is_file(), path
           assert 'Asset Integration' in visual
           assert 'FAIL' in visual
+          assert not Path('output/LittleLampkeepers_48_Page_Commercial_Layout_Proof_V2.pdf').exists()
           PY
 
-      - name: Upload QA evidence
+      - name: Upload INTERNAL geometry-mock evidence
         uses: actions/upload-artifact@v4
         with:
-          name: bright-hearts-phase-b-technical-proof
+          name: internal-geometry-mocks-not-product
           path: |
             output/full_book_qa.json
             output/qa_report.json
+            output/architecture_qa.json
             output/book_manifest.json
             output/page_map.json
             content/books/bright_hearts_fall_01/book_manifest.json
-            output/BrightHearts_Fall_Interior_TechnicalProof.pdf
-            output/BrightHearts_Fall_AnswerKey_TechnicalProof.pdf
+            content/cast_style_bible.json
+            content/composition_bible.json
+            output/INTERNAL_LittleLampkeepers_48_GeometryMocks_NOT_PRODUCT.pdf
+            output/INTERNAL_LittleLampkeepers_AnswerKey_GeometryMocks_NOT_PRODUCT.pdf
             output/visual_qa.md
             output/visual_qa.json
             output/asset_register.json

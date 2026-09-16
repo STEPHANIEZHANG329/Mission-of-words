@@ -1,6 +1,8 @@
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
+import json
+
 from mission_of_words.brand import FORBIDDEN_CONSUMER_MARK, TITLE
 from mission_of_words.book_manifest import load_mission_records
 from mission_of_words.build_book import ANSWER_PDF, INTERIOR_PDF, build
@@ -65,7 +67,7 @@ def test_blueprint_cannot_claim_technical_pass_without_the_48_page_proof():
     assert report["pass"] is False
 
 
-def test_build_book_phase_b_technical_proof_is_not_publishable():
+def test_build_book_internal_geometry_mocks_are_not_publishable():
     report = build()
     assert report["page_count"] == 48
     assert report["rendered_page_count"] == 48
@@ -84,9 +86,12 @@ def test_build_book_phase_b_technical_proof_is_not_publishable():
     assert report["facing_page_parity_ok"] is True
     assert report["font_floors_ok"] is True
     assert INTERIOR_PDF.is_file()
+    assert "INTERNAL" in INTERIOR_PDF.name
+    assert "NOT_PRODUCT" in INTERIOR_PDF.name
     interior_text = _pdf_text(INTERIOR_PDF)
     assert TITLE in interior_text
     assert FORBIDDEN_CONSUMER_MARK not in interior_text
+    assert "INTERNAL GEOMETRY MOCK" in interior_text
     assert ANSWER_PDF.is_file()
     assert (OUTPUT_DIR / "qa_report.json").is_file()
     assert (OUTPUT_DIR / "visual_qa.md").is_file()
@@ -99,3 +104,7 @@ def test_build_book_phase_b_technical_proof_is_not_publishable():
     assert (OUTPUT_DIR / "previews" / "contact_sheet.png").is_file()
     assert (OUTPUT_DIR / "previews" / "page_48.png").is_file()
     assert not (OUTPUT_DIR / "previews" / "page_49.png").is_file()
+    hero = next(item for item in json.loads((OUTPUT_DIR / "compositions.json").read_text()) if item["page"] == 5)
+    assert 0.70 <= float(hero["art_fraction"]) <= 0.80
+    maze = next(item for item in json.loads((OUTPUT_DIR / "compositions.json").read_text()) if item["page"] == 7)
+    assert maze.get("white_window") is False

@@ -135,9 +135,14 @@ class LayoutState:
         return box
 
     def collision_messages(self) -> list[str]:
+        skip = {"region", "art", "watermark", "scene", "safety"}
         messages: list[str] = []
         for index, left in enumerate(self.bboxes):
+            if left.kind in skip:
+                continue
             for right in self.bboxes[index + 1 :]:
+                if right.kind in skip:
+                    continue
                 if boxes_overlap(left, right):
                     messages.append(f"{left.name} overlaps {right.name}")
         return messages

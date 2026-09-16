@@ -497,6 +497,10 @@ def _closing(c: canvas.Canvas, page_number: int) -> None:
 
 
 def build() -> dict:
+    raise SystemExit(
+        "REJECTED: Owner forbade commercial/layout-proof PDFs. "
+        "Run python -m mission_of_words.build_book for INTERNAL geometry mocks only."
+    )
     OUT.mkdir(parents=True, exist_ok=True)
     PREVIEWS.mkdir(parents=True, exist_ok=True)
     ASSETS.mkdir(parents=True, exist_ok=True)

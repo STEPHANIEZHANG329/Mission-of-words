@@ -17,7 +17,10 @@ from mission_of_words.layout import DPI, USED_PUZZLE_LETTER_PT
 from mission_of_words.paths import OUTPUT_DIR
 from mission_of_words.proof import live_box
 from mission_of_words.targets import display_name
-from mission_of_words.templates import draw_activity_header, draw_answer_number, measure_activity_header
+from mission_of_words.bibles import mission_recipe
+from mission_of_words.geometry_slots import render_geometry_search_background
+from mission_of_words.page_factory import measure_header, draw_activity_header
+from mission_of_words.templates import draw_answer_number
 from mission_of_words.text import ink_text
 
 REQUIRED_TARGETS = (
@@ -79,9 +82,25 @@ def search_geometry(
     answer_key: bool = False,
 ) -> tuple[tuple[float, float, float, float], float]:
     box = live_box(page_number) if marked_proof else None
-    plan = measure_activity_header(page_number, box=box, **_header_kwargs(mission, page, canon, answer_key=answer_key))
+    recipe = mission_recipe(mission.get("id") or "mission_01")
+    search = recipe["search"]
+    kwargs = _header_kwargs(mission, page, canon, answer_key=answer_key)
+    plan = measure_header(
+        page_number,
+        kicker=f"Mission {kwargs['mission_number']}  ·  {kwargs['activity_label']}",
+        title=str(kwargs["mission_title"] or kwargs["activity_title"]),
+        reference=str(kwargs["reference"] or ""),
+        instruction=str(kwargs["instruction"] or ""),
+        header_fraction=float(search["header_fraction"]),
+        instruction_in_header=True,
+        box=box,
+    )
     left, bottom, right, top = plan.art_box
-    return (left, bottom + LEGEND_H, right, top), LEGEND_H
+    height = top - bottom
+    legend_h = height * float(search["legend_fraction"]) / (
+        float(search["scene_fraction"]) + float(search["legend_fraction"])
+    )
+    return (left, bottom + legend_h, right, top), legend_h
 
 
 def _scene_pixel_size(scene_box: tuple[float, float, float, float]) -> tuple[int, int]:
@@ -127,15 +146,12 @@ def build_search_scene_from_page(
             }
         )
     else:
-        targets = list(search_page["targets"])
-        names = [str(target["name"]) for target in targets]
-        bg_record = procedural.render_search_background(
+        bg_record = render_geometry_search_background(
             bg_path,
             px_w,
             px_h,
-            theme=theme,
+            mission=mission,
             status=status,
-            excluded_targets=names,
         )
         records.append(bg_record)
     targets = list(search_page["targets"])

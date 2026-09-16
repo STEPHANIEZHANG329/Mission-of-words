@@ -1,17 +1,13 @@
 # Mission-of-words
 
-Internal production lab for the **Little Lampkeepers** KDP interior (legacy repo/book ids may still say Bright Hearts).
+Little Lampkeepers publishing production lab.
 
-Current authorized work: **Phase C** of Issue #6 — GPT2 production rebuild on the Phase B 48-page factory. Ordinary PR CI still makes **zero** paid image calls. The paid GPT2 workflow is **dispatch-only** and currently **Owner-stopped**.
+Consumer title: **Little Lampkeepers: Shine Your Light This Fall**.
+Internal ids may still say `bright_hearts_fall_01`.
 
-- Consumer-facing title: `Little Lampkeepers: Shine Your Light This Fall`. Pages, cover, and listing copy must not display Bright Hearts.
-- Models draw; code decides. Final page text is rendered by code.
-- Paid spend is recorded in `ops/asset_ledger.json`. 18 calls from run 35146572312 are billed and lost. `remaining_calls` is **0**. Do not regenerate. Rebuild page architecture at zero cost before asking the Owner about paid art.
+Current scope: visual-architecture reset. GPT2 is closed. The 48-page renderer
+emits **INTERNAL geometry mocks only**. Those files are not product, not a
+commercial proof, and not a KDP candidate.
 
-```bash
-pip install -r requirements.txt
-PYTHONPATH=src pytest -q
-PYTHONPATH=src python -m mission_of_words.build_book
-# Production candidate (uses accepted assets if present):
-PYTHONPATH=src python -m mission_of_words.build_production
-```
+`production_pass` stays false until publication artwork exists, every page
+passes visual QA, and Owner reopens paid generation.

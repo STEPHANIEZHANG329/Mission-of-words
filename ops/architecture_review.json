@@ -1,0 +1,22 @@
+{
+  "gate": "pm_architecture_review_before_gpt2",
+  "status": "PENDING_PM_REVIEW",
+  "approved_for_paid_generation": false,
+  "owner_facing_product_authorized": false,
+  "internal_mocks_only": true,
+  "gpt2_spend_authorized": false,
+  "contract": "Issue #6 comment 5704681479 and the Owner STOP PATCHING THE OLD VISUAL SYSTEM instruction. Geometry mocks are INTERNAL ENGINEERING ONLY and must never be presented as product.",
+  "required_before_gpt2_reopen": [
+    "PM reviews the composition bible against the Owner-approved three-page commercial reference.",
+    "PM confirms hero art owns 70-80% and is not a worksheet header.",
+    "PM confirms Search & Find is scene-first with compact legend and hiding zones.",
+    "PM confirms mazes are environment paths, not white-window grids.",
+    "PM confirms Faith in Action is an activity-book page, not a form.",
+    "PM confirms front matter looks like a children's book, not onboarding wireframes.",
+    "PM confirms answer keys are readable at print size without zoom.",
+    "Owner explicitly reopens GPT2 with a new spend grant. The previous 18 paid calls were lost; remaining recorded cap is 0 until a new grant."
+  ],
+  "lost_paid_calls": 18,
+  "remaining_recorded_calls": 0,
+  "last_updated": "2026-09-16"
+}

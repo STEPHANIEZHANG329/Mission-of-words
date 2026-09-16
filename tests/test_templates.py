@@ -2,21 +2,24 @@ from io import BytesIO
 
 from reportlab.pdfgen import canvas
 
+from mission_of_words.bibles import uniqueness_report, validate_bibles
 from mission_of_words.geometry import measuring_canvas, wrap_lines
-from mission_of_words.layout import PAGE_H, PAGE_W, USED_TITLE_PT, content_box
-from mission_of_words.templates import draw_activity_header, measure_activity_header
+from mission_of_words.layout import PAGE_H, PAGE_W, content_box
+from mission_of_words.page_factory import draw_activity_header, measure_activity_header
+from mission_of_words.typefaces import BODY, DISPLAY, FORBIDDEN_PRIMARY, primary_faces, register
 
 
 def test_long_mission_title_wraps_instead_of_overflowing():
+    register()
     title = "Kindness at the Fall Festival"
     c = measuring_canvas()
     left, _bottom, right, _top = content_box(25)
     width = right - left
-    lines, overflow = wrap_lines(c, title, "Helvetica-Bold", USED_TITLE_PT, width)
+    lines, overflow = wrap_lines(c, title, DISPLAY, 20, width)
     assert overflow == []
     assert lines
     for line in lines:
-        assert c.stringWidth(line, "Helvetica-Bold", USED_TITLE_PT) <= width + 0.01
+        assert c.stringWidth(line, DISPLAY, 20) <= width + 0.01
 
 
 def test_badge_and_title_do_not_collide_on_search_heading():
@@ -31,7 +34,7 @@ def test_badge_and_title_do_not_collide_on_search_heading():
     )
     assert plan.state.ok(), plan.state.as_fields()
     names = [box.name for box in plan.state.bboxes]
-    assert "mission_badge" in names
+    assert any(name.startswith("mission_badge") for name in names)
     assert any(name.startswith("mission_title") for name in names)
     assert any(name.startswith("instruction") for name in names)
 
@@ -53,6 +56,7 @@ def test_hero_header_uses_larger_instruction_type():
     assert plan.state.ok(), plan.state.as_fields()
     art_h = plan.art_box[3] - plan.art_box[1]
     assert art_h > 480
+    assert 0.70 <= plan.art_fraction <= 0.80
 
 
 def test_odd_even_headers_stay_inside_safety():
@@ -68,3 +72,11 @@ def test_odd_even_headers_stay_inside_safety():
         )
         assert plan.state.clipped == []
         assert plan.state.ok(), (page, plan.state.as_fields())
+
+
+def test_primary_faces_are_not_helvetica():
+    faces = primary_faces()
+    for face in faces:
+        assert face not in FORBIDDEN_PRIMARY
+    assert DISPLAY in faces
+    assert BODY in faces

@@ -18,5 +18,5 @@
   "lost_run_id": 35146572312,
   "owner_stop": true,
   "status": "OWNER_REJECTED_CURRENT_PRODUCTION_PATH",
-  "notes": "OWNER STOP 2026-09-16. Current production path is rejected. Do not spend any additional GPT2 calls. The 18 successful calls from run 35146572312 remain recorded as spent/lost. No regeneration, repair, or paid image request is authorized. Redesign the page architecture against the Owner-approved commercial reference standard first, using zero-cost technical mocks and automated geometry/typography checks. Paid generation may only be re-enabled by a new explicit Owner approval after the redesigned pages pass review."
+  "notes": "ARCHITECTURE RESET 2026-09-16. Do not spend GPT2. The 18 successful calls from run 35146572312 remain spent/lost. Remaining recorded calls: 0. Rebuild composition first. Paid generation requires PM architecture review PLUS a new explicit Owner spend grant."
 }

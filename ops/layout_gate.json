@@ -1,33 +1,30 @@
 {
   "gate": "commercial_layout_before_paid_generation",
-  "status": "FAIL_OWNER_REJECTED_V2",
+  "status": "ARCHITECTURE_RESET_PENDING_PM",
   "approved_for_paid_generation": false,
-  "owner_reference_standard": "commercial Christian children's activity-book pages matching the Owner-approved three-page visual reference: polished child-friendly line art, integrated illustration + activity, strong page hierarchy, full-page visual composition, readable typography, no worksheet-like engineering layout",
+  "owner_reference_standard": "Owner-approved three-page commercial children's coloring-book examples: polished line art, expressive recurring children, dense colorable church/fall scenes, integrated activities, playful hierarchy. Not an engineering worksheet.",
   "rejected_artifacts": [
     "LittleLampkeepers_48_Page_Commercial_Layout_Proof.pdf",
-    "LittleLampkeepers_48_Page_Commercial_Layout_Proof_V2.pdf"
+    "LittleLampkeepers_48_Page_Commercial_Layout_Proof_V2.pdf",
+    "BrightHearts_Fall_Interior_TechnicalProof.pdf"
   ],
   "hard_rejections": [
     "procedural stick-figure/vector scenes presented as commercial proof",
     "large unexplained blank boxes or empty decorative panels",
     "generic Helvetica-first visual identity used as final consumer design",
     "sparse pages that look like engineering wireframes or teacher worksheets",
-    "calling a technically rendered PDF a commercial product without visual review against the Owner reference standard",
-    "showing the Owner another procedural/wireframe PDF as evidence of product quality"
+    "calling a technically rendered PDF a commercial product without visual review",
+    "showing the Owner another procedural/wireframe PDF as evidence of product quality",
+    "patching the rejected template system instead of a full visual-architecture reset"
   ],
   "required_before_pass": [
-    "consumer-facing pages visually match the density and polish of the Owner-approved references",
-    "final artwork is publication-quality, not procedural placeholder art",
-    "Mission headers and long titles have no collision or clipping",
-    "Search & Find pages are scene-integrated and visually dense enough for ages 5-8",
-    "Maze pages visually integrate illustration and maze rather than stacking unrelated blocks",
-    "Faith in Action pages use the same commercial visual language",
-    "Answer-key pages remain readable at print size",
-    "all typography, trim, gutter, and safe-area checks pass",
-    "PM visual review passes every page at print-size raster preview",
-    "Owner explicitly approves paid artwork generation after design proof quality is demonstrated"
+    "PM architecture review of composition bible and INTERNAL geometry mocks",
+    "Owner explicitly reopens GPT2 after that review",
+    "publication artwork replaces every geometry slot",
+    "raster visual QA of all 48 pages",
+    "production_pass remains false until every gate passes"
   ],
-  "delivery_contract": "Do not present another wireframe/procedural PDF to the Owner as product progress. The next Owner-facing product file must contain publication-quality artwork and consumer-ready page design, or it must be explicitly labeled INTERNAL ENGINEERING ONLY and withheld unless the Owner asks to see it.",
-  "reason": "Owner visually inspected V2 and rejected it as far below the approved commercial reference standard. Technical render success is not commercial quality.",
+  "delivery_contract": "Do not present another wireframe/procedural PDF to the Owner as product progress. INTERNAL geometry mocks are engineering-only.",
+  "reason": "Owner ordered a full visual-architecture reset. GPT2 stays closed. Geometry mocks are internal only.",
   "last_updated": "2026-09-16"
 }

@@ -1,0 +1,347 @@
+{
+  "version": "2026-09-16-visual-architecture-reset",
+  "product": "Little Lampkeepers: Shine Your Light This Fall",
+  "status": "INTERNAL_ARCHITECTURE_ONLY",
+  "owner_facing": false,
+  "paid_generation": "closed",
+  "reference_floor": "Owner-approved commercial children's coloring-book line art: expressive recurring children, dense colorable church/fall scenes, integrated activities, playful child-facing hierarchy. Not an engineering worksheet.",
+  "hard_rejections": [
+    "procedural or stick-figure art in any Owner-facing file",
+    "empty rounded rectangles or dead white boxes as the page design",
+    "Helvetica worksheet look",
+    "maze pasted onto an unrelated blank page or into a white window",
+    "Search & Find with sparse obvious targets",
+    "answer key that requires zooming",
+    "cloned composition that makes all 8 missions feel identical",
+    "technical proof labeled or presented as product"
+  ],
+  "text_ownership": {
+    "code_owns": ["titles", "kickers", "scripture_references", "instructions", "page_numbers", "answer_markers", "labels", "start_finish"],
+    "image_models_must_not_draw": ["letters", "numbers", "words", "Scripture", "logos", "watermarks", "signs", "name_tags"]
+  },
+  "typography": {
+    "display": "Bubblegum Sans",
+    "kicker": "Sniglet",
+    "body": "Andika",
+    "prayer": "Patrick Hand",
+    "forbidden_primary": ["Helvetica", "Times-Roman", "Courier"],
+    "child_instruction_pt_min": 12,
+    "puzzle_letter_pt_min": 12,
+    "answer_key_pt_min": 9
+  },
+  "page_map": {
+    "front_matter": [1, 2, 3, 4],
+    "missions": {"start": 5, "end": 36, "pattern": ["hero_coloring", "search_find", "illustrated_maze", "faith_in_action"]},
+    "answer_keys": [37, 38, 39, 40, 41, 42, 43, 44],
+    "back_matter": [45, 46, 47, 48]
+  },
+  "fractions": {
+    "hero_art_min": 0.70,
+    "hero_art_max": 0.80,
+    "search_legend_max": 0.14,
+    "search_scene_min": 0.70,
+    "maze_white_window": false
+  },
+  "front_matter": {
+    "page_1": {
+      "id": "title_plate_lantern",
+      "kind": "title",
+      "art_fraction": 0.72,
+      "type_fraction": 0.28,
+      "notes": "Children's-book title plate. Illustration owns the page. Type sits in a compact lantern-banner, not a cover-letter heading stack."
+    },
+    "page_2": {
+      "id": "welcome_story_spread",
+      "kind": "welcome",
+      "art_fraction": 0.58,
+      "type_fraction": 0.42,
+      "notes": "Illustrated how-to as five pictured steps around the cast, not an onboarding wireframe."
+    },
+    "page_3": {
+      "id": "winding_mission_map",
+      "kind": "contents",
+      "art_fraction": 0.82,
+      "type_fraction": 0.18,
+      "notes": "A winding autumn path with eight unique mission stops. Not a numbered syllabus list."
+    },
+    "page_4": {
+      "id": "parent_letter_stationery",
+      "kind": "parent_note",
+      "art_fraction": 0.34,
+      "type_fraction": 0.66,
+      "notes": "Folded stationery letter with a small lantern/leaf motif. Not a terms-of-use worksheet."
+    }
+  },
+  "back_matter": {
+    "page_45": {"id": "gratitude_leaf_journal", "kind": "gratitude"},
+    "page_46": {"id": "prayer_walk_trail", "kind": "prayer_walk"},
+    "page_47": {"id": "certificate_lantern_seal", "kind": "certificate"},
+    "page_48": {"id": "closing_cast_wave", "kind": "closing"}
+  },
+  "missions": {
+    "mission_01": {
+      "title": "Shine Your Light",
+      "environment": "church fall festival courtyard at dusk",
+      "cast": ["mira", "eli", "joy", "caleb", "pip"],
+      "motif": "lantern",
+      "hero": {
+        "banner": "lantern_pennant",
+        "camera": "wide courtyard looking toward the church doors",
+        "art_fraction": 0.76,
+        "header_fraction": 0.14,
+        "instruction_fraction": 0.10
+      },
+      "search": {
+        "scene_frame": "festival_crowd_depth",
+        "header_fraction": 0.12,
+        "scene_fraction": 0.76,
+        "legend_fraction": 0.12
+      },
+      "maze": {
+        "environment_kind": "hedge_garden",
+        "start_slot": "child_with_lantern_left",
+        "finish_slot": "welcome_table_right",
+        "header_fraction": 0.12,
+        "scene_fraction": 0.88,
+        "white_window": false
+      },
+      "faith": {
+        "card_layout": "lantern_row",
+        "drawing_shape": "giant_lantern",
+        "prayer_treatment": "ribbon_under_lantern",
+        "header_fraction": 0.12
+      }
+    },
+    "mission_02": {
+      "title": "God Made the Seasons",
+      "environment": "evening orchard with sun setting and moon rising",
+      "cast": ["caleb", "mira", "pip", "eli"],
+      "motif": "sun_moon",
+      "hero": {
+        "banner": "sky_band",
+        "camera": "low orchard path, huge sky",
+        "art_fraction": 0.78,
+        "header_fraction": 0.12,
+        "instruction_fraction": 0.10
+      },
+      "search": {
+        "scene_frame": "orchard_sky_split",
+        "header_fraction": 0.11,
+        "scene_fraction": 0.78,
+        "legend_fraction": 0.11
+      },
+      "maze": {
+        "environment_kind": "orchard_rows",
+        "start_slot": "sunrise_hill_left",
+        "finish_slot": "harvest_moon_right",
+        "header_fraction": 0.11,
+        "scene_fraction": 0.89,
+        "white_window": false
+      },
+      "faith": {
+        "card_layout": "sun_moon_arc",
+        "drawing_shape": "sky_window",
+        "prayer_treatment": "star_banner",
+        "header_fraction": 0.12
+      }
+    },
+    "mission_03": {
+      "title": "A Harvest of Thankfulness",
+      "environment": "barn yard and harvest wagon, not the church festival",
+      "cast": ["mira", "eli", "joy", "caleb", "pip"],
+      "motif": "wheat",
+      "hero": {
+        "banner": "barn_arch",
+        "camera": "wagon in the barn doorway",
+        "art_fraction": 0.74,
+        "header_fraction": 0.16,
+        "instruction_fraction": 0.10
+      },
+      "search": {
+        "scene_frame": "barn_loft",
+        "header_fraction": 0.12,
+        "scene_fraction": 0.75,
+        "legend_fraction": 0.13
+      },
+      "maze": {
+        "environment_kind": "corn_rows",
+        "start_slot": "child_with_basket_left",
+        "finish_slot": "barn_table_right",
+        "header_fraction": 0.12,
+        "scene_fraction": 0.88,
+        "white_window": false
+      },
+      "faith": {
+        "card_layout": "harvest_baskets",
+        "drawing_shape": "open_basket",
+        "prayer_treatment": "wheat_ribbon",
+        "header_fraction": 0.12
+      }
+    },
+    "mission_04": {
+      "title": "Courage Over Fear",
+      "environment": "autumn woods path toward a lit porch",
+      "cast": ["eli", "mira", "pip"],
+      "motif": "boot",
+      "hero": {
+        "banner": "woods_signpost",
+        "camera": "over-the-shoulder on the dark path, porch glow ahead",
+        "art_fraction": 0.77,
+        "header_fraction": 0.13,
+        "instruction_fraction": 0.10
+      },
+      "search": {
+        "scene_frame": "woods_undergrowth",
+        "header_fraction": 0.12,
+        "scene_fraction": 0.77,
+        "legend_fraction": 0.11
+      },
+      "maze": {
+        "environment_kind": "woods_trail",
+        "start_slot": "child_on_path_left",
+        "finish_slot": "lit_porch_right",
+        "header_fraction": 0.12,
+        "scene_fraction": 0.88,
+        "white_window": false
+      },
+      "faith": {
+        "card_layout": "stepping_stones",
+        "drawing_shape": "porch_window",
+        "prayer_treatment": "path_ribbon",
+        "header_fraction": 0.12
+      }
+    },
+    "mission_05": {
+      "title": "Share the Harvest",
+      "environment": "neighbor porch, fence, and sharing steps",
+      "cast": ["joy", "caleb", "mira", "pip"],
+      "motif": "basket",
+      "hero": {
+        "banner": "porch_rail",
+        "camera": "porch steps with a neighbor at the door",
+        "art_fraction": 0.75,
+        "header_fraction": 0.15,
+        "instruction_fraction": 0.10
+      },
+      "search": {
+        "scene_frame": "neighbor_yard",
+        "header_fraction": 0.12,
+        "scene_fraction": 0.76,
+        "legend_fraction": 0.12
+      },
+      "maze": {
+        "environment_kind": "garden_path",
+        "start_slot": "extra_basket_left",
+        "finish_slot": "neighbor_door_right",
+        "header_fraction": 0.12,
+        "scene_fraction": 0.88,
+        "white_window": false
+      },
+      "faith": {
+        "card_layout": "porch_steps",
+        "drawing_shape": "open_basket_bowl",
+        "prayer_treatment": "twine_tag",
+        "header_fraction": 0.12
+      }
+    },
+    "mission_06": {
+      "title": "Kindness at the Fall Festival",
+      "environment": "game booths, ring toss, extra chair, cider table",
+      "cast": ["joy", "eli", "mira", "caleb", "pip"],
+      "motif": "ticket",
+      "hero": {
+        "banner": "booth_bunting",
+        "camera": "booth aisle with a lonely child and an extra chair",
+        "art_fraction": 0.73,
+        "header_fraction": 0.17,
+        "instruction_fraction": 0.10
+      },
+      "search": {
+        "scene_frame": "booth_alley",
+        "header_fraction": 0.13,
+        "scene_fraction": 0.74,
+        "legend_fraction": 0.13
+      },
+      "maze": {
+        "environment_kind": "booth_aisles",
+        "start_slot": "child_on_bench_left",
+        "finish_slot": "game_table_right",
+        "header_fraction": 0.13,
+        "scene_fraction": 0.87,
+        "white_window": false
+      },
+      "faith": {
+        "card_layout": "festival_tickets",
+        "drawing_shape": "extra_chair_stage",
+        "prayer_treatment": "bunting_prayer",
+        "header_fraction": 0.13
+      }
+    },
+    "mission_07": {
+      "title": "God's Beautiful Creation",
+      "environment": "creek, oaks, hillside lookout, deer and birds",
+      "cast": ["caleb", "joy", "pip", "mira"],
+      "motif": "leaf",
+      "hero": {
+        "banner": "hillside_scroll",
+        "camera": "child on a rock above the creek",
+        "art_fraction": 0.79,
+        "header_fraction": 0.12,
+        "instruction_fraction": 0.09
+      },
+      "search": {
+        "scene_frame": "creek_bend",
+        "header_fraction": 0.11,
+        "scene_fraction": 0.78,
+        "legend_fraction": 0.11
+      },
+      "maze": {
+        "environment_kind": "creek_bank",
+        "start_slot": "creek_stone_left",
+        "finish_slot": "lookout_hill_right",
+        "header_fraction": 0.11,
+        "scene_fraction": 0.89,
+        "white_window": false
+      },
+      "faith": {
+        "card_layout": "leaf_scatter",
+        "drawing_shape": "nature_journal",
+        "prayer_treatment": "leaf_banner",
+        "header_fraction": 0.12
+      }
+    },
+    "mission_08": {
+      "title": "The Thankful Table",
+      "environment": "kitchen and dining room with an autumn table",
+      "cast": ["mira", "eli", "joy", "caleb", "pip"],
+      "motif": "plate",
+      "hero": {
+        "banner": "tablecloth_banner",
+        "camera": "family table, empty chair, leafy window",
+        "art_fraction": 0.72,
+        "header_fraction": 0.18,
+        "instruction_fraction": 0.10
+      },
+      "search": {
+        "scene_frame": "dining_room",
+        "header_fraction": 0.12,
+        "scene_fraction": 0.75,
+        "legend_fraction": 0.13
+      },
+      "maze": {
+        "environment_kind": "table_path",
+        "start_slot": "kitchen_counter_left",
+        "finish_slot": "thank_you_chair_right",
+        "header_fraction": 0.12,
+        "scene_fraction": 0.88,
+        "white_window": false
+      },
+      "faith": {
+        "card_layout": "place_settings",
+        "drawing_shape": "placemat",
+        "prayer_treatment": "napkin_note",
+        "header_fraction": 0.12
+      }
+    }
+  }
+}

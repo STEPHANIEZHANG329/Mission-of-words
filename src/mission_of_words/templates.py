@@ -33,205 +33,16 @@ from mission_of_words.layout import (
     USED_TITLE_PT,
     content_box,
 )
+from mission_of_words.page_factory import (
+    HeaderPlan,
+    draw_activity_header,
+    measure_activity_header,
+    plan_header,
+)
 from mission_of_words.text import ink_text
+from mission_of_words.typefaces import BODY_BOLD, register
 
-BADGE_PT = 9
-BADGE_LEADING = 11
-ACTIVITY_TITLE_PT = 16
-REFERENCE_PT = 11
-HERO_INSTRUCTION_PT = 14
-HERO_INSTRUCTION_LEADING = 18
-HEADER_GAP = 6
-ART_GAP = 10
-FOOTER_PT = 10
-MIN_TITLE_PT = 20
 INK = Color(0.07, 0.07, 0.07)
-
-
-@dataclass
-class HeaderPlan:
-    state: LayoutState
-    art_box: tuple[float, float, float, float]
-    footer_box: BBox
-    y_below: float
-
-
-def _content(page_number: int, box: tuple[float, float, float, float] | None) -> tuple[float, float, float, float]:
-    return box or content_box(page_number)
-
-
-def draw_badge(
-    c: canvas.Canvas,
-    state: LayoutState,
-    *,
-    x: float,
-    y_top: float,
-    number: int,
-    draw: bool,
-    activity_label: str = "",
-) -> BBox:
-    """Compact mission identifier. A small kicker line, not a competing chip."""
-    label = f"MISSION {int(number)}"
-    if activity_label:
-        label = f"{label}  ·  {activity_label.upper()}"
-    font, size = "Helvetica-Bold", BADGE_PT
-    text_w = c.stringWidth(label, font, size)
-    height = size + 4
-    box = BBox("mission_badge", x, y_top - height, x + text_w, y_top, kind="badge")
-    state.add(box)
-    if draw:
-        ink_text(c)
-        c.setFillColor(INK)
-        c.setFont(font, size)
-        c.drawString(x, y_top - size, label)
-    return box
-
-
-def _draw_wrapped(
-    c: canvas.Canvas,
-    state: LayoutState,
-    *,
-    name: str,
-    text: str,
-    x: float,
-    y: float,
-    max_width: float,
-    font: str,
-    size: float,
-    leading: float,
-    draw: bool,
-    kind: str = "text",
-) -> float:
-    lines, overflow = wrap_lines(c, text, font, size, max_width)
-    state.overflow.extend(f"{name}: {item}" if not item.startswith(name) else item for item in overflow)
-    if draw:
-        ink_text(c)
-        c.setFillColor(INK)
-        c.setFont(font, size)
-    for index, line in enumerate(lines):
-        baseline = y - index * leading
-        box = line_bbox(f"{name}:{index}", x, baseline, line, font, size, c, kind=kind)
-        # Extend each line box to the column width only for collision against
-        # sibling header bands, not the full column — use the inked width so
-        # a short kicker cannot collide with a wrapped title beside it.
-        state.add(box)
-        if draw:
-            c.drawString(x, baseline, line)
-    return y - max(len(lines), 1) * leading
-
-
-def plan_activity_header(
-    c: canvas.Canvas,
-    page_number: int,
-    *,
-    mission_number: int | None = None,
-    mission_title: str = "",
-    activity_title: str = "",
-    reference: str = "",
-    activity_label: str = "",
-    instruction: str = "",
-    hero: bool = False,
-    box: tuple[float, float, float, float] | None = None,
-    draw: bool = True,
-) -> HeaderPlan:
-    """Compact kicker + wrapping title + verse. Child prompt sits under the scene."""
-    left, bottom, right, top = _content(page_number, box)
-    width = right - left
-    state = new_state(page_number, (left, bottom, right, top))
-    title_pt = USED_TITLE_PT if not hero else max(USED_TITLE_PT, 22)
-    title_lead = title_pt + 4
-    instr_pt = HERO_INSTRUCTION_PT if hero else USED_INSTRUCTION_PT
-    instr_lead = HERO_INSTRUCTION_LEADING if hero else USED_INSTRUCTION_LEADING
-
-    footer_h = FOOTER_PT + 6
-    prompt_width = width - 42
-    prompt_lines, prompt_overflow = wrap_lines(c, instruction, "Helvetica", instr_pt, prompt_width) if instruction else ([], [])
-    state.overflow.extend(prompt_overflow)
-    prompt_h = max(len(prompt_lines), 1) * instr_lead + 8 if instruction else 0
-    art_bottom = bottom + footer_h + prompt_h + 4
-
-    footer = BBox("page_number", right - 36, bottom, right, bottom + footer_h, kind="folio")
-    state.add(footer)
-    if draw:
-        ink_text(c)
-        c.setFillColor(INK)
-        c.setFont("Helvetica", FOOTER_PT)
-        c.drawRightString(right, bottom + 2, str(page_number))
-
-    if instruction:
-        y_prompt = bottom + footer_h + (len(prompt_lines) - 1) * instr_lead + 4
-        for index, line in enumerate(prompt_lines):
-            baseline = y_prompt - index * instr_lead
-            box_line = line_bbox(f"instruction:{index}", left, baseline, line, "Helvetica", instr_pt, c)
-            state.add(box_line)
-            if draw:
-                ink_text(c)
-                c.setFillColor(INK)
-                c.setFont("Helvetica", instr_pt)
-                c.drawString(left, baseline, line)
-
-    y = top - 2
-    if mission_number is not None:
-        badge = draw_badge(
-            c,
-            state,
-            x=left,
-            y_top=y,
-            number=mission_number,
-            draw=draw,
-            activity_label=activity_label,
-        )
-        y = badge.y0 - HEADER_GAP - title_pt * 0.78
-    else:
-        y = top - title_pt * 0.88 - 4
-    display_title = mission_title or activity_title
-    if display_title:
-        y = _draw_wrapped(
-            c,
-            state,
-            name="mission_title",
-            text=display_title,
-            x=left,
-            y=y,
-            max_width=width,
-            font="Helvetica-Bold",
-            size=title_pt,
-            leading=title_lead,
-            draw=draw,
-        )
-    if reference:
-        y -= 4
-        y = _draw_wrapped(
-            c,
-            state,
-            name="kicker",
-            text=reference,
-            x=left,
-            y=y,
-            max_width=width,
-            font="Helvetica-Oblique",
-            size=REFERENCE_PT,
-            leading=REFERENCE_PT + 3,
-            draw=draw,
-        )
-
-    y_below = y - ART_GAP
-    if y_below - art_bottom < 160:
-        state.overflow.append("header consumed the art area")
-    art_box = (left, art_bottom, right, y_below)
-    return HeaderPlan(state=state, art_box=art_box, footer_box=footer, y_below=y_below)
-
-
-def draw_activity_header(
-    c: canvas.Canvas,
-    page_number: int,
-    **kwargs,
-) -> HeaderPlan:
-    return plan_activity_header(c, page_number, draw=True, **kwargs)
-
-
-def measure_activity_header(page_number: int, **kwargs) -> HeaderPlan:
-    return plan_activity_header(measuring_canvas(), page_number, draw=False, **kwargs)
 
 
 def draw_panel(c: canvas.Canvas, box: tuple[float, float, float, float], *, radius: float = 14, width: float = 2.0) -> None:
@@ -351,7 +162,8 @@ def draw_start_finish_badges(
     finish_label: str,
     cell: float,
 ) -> None:
-    font, size = "Helvetica-Bold", USED_PUZZLE_LETTER_PT
+    register()
+    font, size = BODY_BOLD, USED_PUZZLE_LETTER_PT
     for name, label, (x, y) in (
         ("start_label", start_label, start_xy),
         ("finish_label", finish_label, finish_xy),
@@ -395,7 +207,8 @@ def draw_answer_number(
     c.setFillColor(white)
     c.circle(cx, cy, radius, fill=0, stroke=1)
     label = str(number)
-    font, size = "Helvetica-Bold", max(USED_ANSWER_KEY_PT, 11)
+    register()
+    font, size = BODY_BOLD, max(USED_ANSWER_KEY_PT, 11)
     text_w = c.stringWidth(label, font, size)
     lx = cx - text_w / 2
     ly = cy + radius + 3

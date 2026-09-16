@@ -1,5 +1,9 @@
 {
-  "version": "2026-09-16-phase-c",
+  "version": "2026-09-16-architecture-reset",
+  "related": {
+    "cast_style_bible": "content/cast_style_bible.json",
+    "composition_bible": "content/composition_bible.json"
+  },
   "style_lock": {
     "standard": "Commercial US children's activity and coloring book, black-and-white interior line art.",
     "outlines": "Thick clean outlines, large colorable regions, no tiny noodle lines.",

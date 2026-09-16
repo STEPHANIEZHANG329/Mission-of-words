@@ -1,0 +1,77 @@
+{
+  "version": "2026-09-16-visual-architecture-reset",
+  "series": "Little Lampkeepers",
+  "status": "INTERNAL_ARCHITECTURE_ONLY",
+  "owner_facing": false,
+  "style_lock": {
+    "standard": "Commercial US children's coloring and activity book, black-and-white interior line art.",
+    "line_weight": "Thick clean outlines, 4-8px equivalent at print, large colorable regions, no tiny noodle lines, no gray wash.",
+    "faces": "Round child proportions: large eyes, small noses, simple mouths, ears visible, five fingers. No adult fashion-model faces.",
+    "bodies": "Ages 6-8 proportions, heads about 1/5 of height, simple fall clothing with a consistent palette logic even in B/W (stripe, solid, overalls, hoodie).",
+    "medium": "Ink on paper coloring-book plate. Not 3D, not photoreal, not anime, not watercolor wash, not clip-art stickers.",
+    "composition": "One coherent integrated scene per page. Not a collage, sticker sheet, or pasted strip.",
+    "no_text": "Generate NO titles, verses, instructions, page numbers, signs, logos, captions, watermarks, letters, or numbers. Blank lanterns, blank collar tags, blank banners, blank book covers."
+  },
+  "clothing_logic": {
+    "mira": "Simple crewneck sweater, round-toed shoes, chin-length dark bob with a small round hair clip on the right. Often a paper-bag lantern with no writing.",
+    "eli": "Striped long-sleeve shirt, sneakers, short curly hair.",
+    "joy": "Overalls over a t-shirt, small boots, two puffs with round hair ties that have no letters.",
+    "caleb": "Zip hoodie, sneakers, straight hair with bangs.",
+    "pip": "Medium scruffy mixed-breed dog, floppy ears, oval collar tag that is completely blank."
+  },
+  "environment_language": {
+    "architecture": "Friendly wooden church, barn, porches, and booths with thick posts and simple shingles. Steeple cross stays intact. No ruined or scary buildings.",
+    "fall": "Oak leaves, pumpkins, apples, wheat, corn, acorns. Large colorable shapes, not leaf-confetti noise.",
+    "light": "Lantern glow and porch lamps as simple radiating lines, never lettered.",
+    "depth": "Foreground props, mid-ground cast, background building or trees. Every hero and search scene needs three depths."
+  },
+  "icon_family": {
+    "rule": "One reusable icon set for legends, faith cards, and answer callouts. Same line weight as the cast. Code draws final numbers/labels on top.",
+    "members": ["lantern", "leaf", "basket", "heart", "boot", "ticket", "plate", "star"]
+  },
+  "cast": [
+    {
+      "id": "mira",
+      "name": "Mira",
+      "age": 7,
+      "role": "lantern bearer",
+      "look": "Round cheerful face, chin-length dark bob with a small round hair clip on the right, medium-warm skin, simple crewneck sweater, round-toed shoes. Often holds a paper-bag lantern with a candle glow but no writing on the lantern."
+    },
+    {
+      "id": "eli",
+      "name": "Eli",
+      "age": 8,
+      "role": "path walker",
+      "look": "Short curly hair, medium-deep skin, striped long-sleeve shirt, kind open expression, sneakers."
+    },
+    {
+      "id": "joy",
+      "name": "Joy",
+      "age": 6,
+      "role": "includer",
+      "look": "Two puffs with round hair ties (no letters on the ties), lighter skin, overalls over a t-shirt, small boots."
+    },
+    {
+      "id": "caleb",
+      "name": "Caleb",
+      "age": 7,
+      "role": "noticer",
+      "look": "Straight hair with bangs, light-medium skin, zip hoodie, sneakers, gentle posture."
+    },
+    {
+      "id": "pip",
+      "name": "Pip",
+      "age": null,
+      "role": "companion dog",
+      "look": "Medium scruffy mixed-breed dog, floppy ears, oval collar tag that is completely blank, friendly face, sitting or walking beside the children."
+    }
+  ],
+  "consistency_rules": [
+    "The same five characters appear across all 8 missions with unchanged face, hair, and clothing logic.",
+    "Each mission uses a distinct environment so pages do not look cloned.",
+    "Hero pages show 3-5 children plus optional Pip.",
+    "Search backgrounds never include the eight code-placed targets.",
+    "Mazes are part of the environment, not a grid on a blank plate.",
+    "Faith pages use illustrated choice cards, not form checkboxes as the visual identity."
+  ]
+}

@@ -464,9 +464,23 @@ def evaluate_full_book(
         except Exception as exc:  # pragma: no cover
             pdf_text = ""
             technical_failures.append(f"technical: cannot extract PDF text: {exc}")
-        non_production_mark_present = NON_PRODUCTION_MARK in pdf_text or NON_PRODUCTION_LINE in pdf_text
+        non_production_mark_present = (
+            NON_PRODUCTION_MARK in pdf_text
+            or NON_PRODUCTION_LINE in pdf_text
+            or "INTERNAL GEOMETRY MOCK" in pdf_text
+        )
         if not non_production_mark_present:
-            technical_failures.append("technical: interior PDF is missing the NON-PRODUCTION TECHNICAL PROOF mark")
+            technical_failures.append(
+                "technical: interior PDF is missing the INTERNAL GEOMETRY MOCK mark"
+            )
+        lowered = pdf_text.upper()
+        for label in (
+            "KDP-READY",
+            "COMMERCIAL LAYOUT PROOF",
+            "PRODUCTION CANDIDATE",
+        ):
+            if label in lowered and "NOT PRODUCT" not in lowered:
+                technical_failures.append(f"technical: interior PDF uses forbidden product label {label}")
         if answer_pdf and Path(answer_pdf).is_file():
             try:
                 if _pdf_page_count(Path(answer_pdf)) != 8:

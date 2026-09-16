@@ -1,72 +1,26 @@
-name: Commercial layout proof v2 (zero cost)
+name: Internal geometry mocks (zero cost, not product)
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - 'cursor/phase-c-gpt2-rebuild-9570'
-    paths:
-      - 'src/mission_of_words/commercial_layout_proof_v2.py'
-      - '.github/workflows/commercial-layout-proof.yml'
-      - 'content/missions/**'
-      - 'canon/**'
 
 permissions:
   contents: read
 
 jobs:
-  build-layout-proof:
+  refuse-commercial-proof:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    env:
-      PYTHONPATH: src
+    timeout-minutes: 5
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Confirm no paid image secret is available
+      - name: Refuse commercial layout proofs
         run: |
           set -euo pipefail
           if [ -n "${GPT2:-}" ]; then
-            echo "GPT2_MUST_NOT_BE_AVAILABLE_IN_LAYOUT_PROOF"
+            echo "GPT2_MUST_NOT_BE_AVAILABLE"
             exit 1
           fi
-          echo "ZERO_COST_LAYOUT_PROOF_V2"
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Compile proof builder
-        run: python -m py_compile src/mission_of_words/commercial_layout_proof_v2.py
-
-      - name: Build 48-page commercial layout proof
-        run: python -m mission_of_words.commercial_layout_proof_v2
-
-      - name: Verify proof outputs
-        run: |
           python - <<'PY'
-          import json
-          from pathlib import Path
-          report = json.loads(Path('output/commercial_layout_v2/layout_report.json').read_text())
-          assert report['paid_image_calls'] == 0, report
-          assert report['page_count'] == 48, report
-          assert report['status'] == 'PASS_LAYOUT_PROOF_CREATED', report
-          assert Path(report['pdf']).is_file(), report
-          assert Path(report['contact_sheet']).is_file(), report
-          print(json.dumps(report, indent=2))
+          raise SystemExit('REJECTED: commercial layout proofs are forbidden. Use PR CI geometry mocks labeled INTERNAL / NOT PRODUCT.')
           PY
-
-      - name: Upload proof
-        uses: actions/upload-artifact@v4
-        with:
-          name: little-lampkeepers-commercial-layout-proof-v2
-          path: |
-            output/commercial_layout_v2/LittleLampkeepers_48_Page_Commercial_Layout_Proof_V2.pdf
-            output/commercial_layout_v2/layout_report.json
-            output/commercial_layout_v2/previews/
-          if-no-files-found: error
