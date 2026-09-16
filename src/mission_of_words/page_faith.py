@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from reportlab.lib.colors import black, white
 from reportlab.lib.units import inch
+from reportlab.lib.utils import ImageReader
 from reportlab.pdfgen import canvas
 
 from mission_of_words import art
@@ -65,6 +68,8 @@ def draw_faith_page(
     *,
     page_number: int = 4,
     marked_proof: bool = False,
+    accepted_frame: Path | None = None,
+    accepted_icons: dict[str, Path] | None = None,
 ) -> dict:
     mission = _mission_from_spec(spec)
     page = mission["pages"][3]
@@ -75,6 +80,17 @@ def draw_faith_page(
     frame_top = top - 36
     frame_inset = 8
     cx = (left + right) / 2
+    if accepted_frame is not None:
+        c.drawImage(
+            ImageReader(str(accepted_frame)),
+            left,
+            frame_bottom,
+            width=width,
+            height=frame_top - frame_bottom + 36,
+            preserveAspectRatio=True,
+            anchor="c",
+            mask="auto",
+        )
     art.ink(c, 2.0)
     c.arc(cx - 26, frame_top + 6, cx + 26, top - 2, 0, 180)
     cap_w = width * 0.32
@@ -150,7 +166,20 @@ def draw_faith_page(
         art.ink(c, 1.6)
         c.roundRect(x, cy, card_w, card_h, 12, fill=1, stroke=1)
         c.rect(x + 12, cy + card_h - 28, checkbox, checkbox, fill=0, stroke=1)
-        _choice_icon(c, choice["icon"], x, cy, card_w, card_h)
+        icon_path = (accepted_icons or {}).get(choice["icon"])
+        if icon_path is not None:
+            c.drawImage(
+                ImageReader(str(icon_path)),
+                x + card_w - 70,
+                cy + 8,
+                width=56,
+                height=56,
+                mask="auto",
+                preserveAspectRatio=True,
+                anchor="c",
+            )
+        else:
+            _choice_icon(c, choice["icon"], x, cy, card_w, card_h)
         ink_text(c)
         c.setFont("Helvetica-Bold", USED_INSTRUCTION_PT)
         c.drawString(x + 12 + checkbox + 8, cy + card_h - 26, choice["label"])
@@ -216,10 +245,16 @@ def draw_faith_page(
         "required_objects": required,
         "drawn_objects": drawn,
         "text_in_artwork": False,
-        "placeholder": marked_proof,
-        "artwork_status": "placeholder_only" if marked_proof else "procedural_lineart",
+        "placeholder": marked_proof and accepted_frame is None,
+        "artwork_status": (
+            "accepted"
+            if accepted_frame is not None
+            else ("placeholder_only" if marked_proof else "procedural_lineart")
+        ),
         "asset_integration": (
-            "Frame, four illustrated choices, drawing area, and prayer are one page design."
+            "Accepted faith frame and choice icons ingested; labels, checkboxes, and prayer remain code-rendered."
+            if accepted_frame is not None
+            else "Frame, four illustrated choices, drawing area, and prayer are one page design."
         ),
         "child_instruction": page["child_instruction"],
         "bible_connection": page["bible_connection"],

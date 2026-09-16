@@ -41,7 +41,11 @@ def test_pr_ci_workflow_never_receives_image_secrets():
     assert "images/generations" not in workflow
     assert "evaluate_full_book" in workflow
     assert "build_book" in workflow
+    assert "build_production" in workflow
     assert "production_pass" in workflow
+    paid = (ROOT / ".github" / "workflows" / "paid-image-generation.yml").read_text(encoding="utf-8")
+    assert "pull_request" not in paid.split("on:")[1].split("jobs:")[0]
+    assert "workflow_dispatch" in paid
     planning = ROOT / ".github" / "workflows" / "cursor-agent-architecture-plan.yml"
     assert not planning.exists()
     phase0 = ROOT / ".github" / "workflows" / "phase0.yml"

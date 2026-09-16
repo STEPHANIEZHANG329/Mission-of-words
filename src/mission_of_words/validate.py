@@ -137,6 +137,11 @@ def validate_repo() -> list[str]:
         )
     )
     errors.extend(validate_file(BUDGET_PATH, SCHEMA_DIR / "budget.schema.json", label="budget"))
+    from mission_of_words.art_bible import validate_art_bible_files
+    from mission_of_words.production_assets import validate_production_assets_file
+
+    errors.extend(validate_art_bible_files())
+    errors.extend(validate_production_assets_file())
     if not TASK_PACKET_SCHEMA.is_file():
         errors.append("missing ops/task-packet.schema.json")
     else:

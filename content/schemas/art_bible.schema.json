@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "art_bible.schema.json",
+  "title": "Bright Hearts Art Bible",
+  "type": "object",
+  "required": [
+    "version",
+    "prompt_version",
+    "character_bible_version",
+    "book_id",
+    "trim_inches",
+    "dpi",
+    "style",
+    "cast",
+    "visual_qa_dimensions",
+    "code_renders_all_page_text"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "version": { "type": "string", "minLength": 1 },
+    "prompt_version": { "type": "string", "minLength": 1 },
+    "character_bible_version": { "type": "string", "minLength": 1 },
+    "book_id": { "type": "string", "minLength": 1 },
+    "trim_inches": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "number" }
+    },
+    "dpi": { "type": "integer", "const": 300 },
+    "style": { "type": "object" },
+    "cast": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "role"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "role": { "type": "string" }
+        }
+      }
+    },
+    "visual_qa_dimensions": {
+      "type": "array",
+      "minItems": 9,
+      "items": { "type": "string" }
+    },
+    "code_renders_all_page_text": { "type": "boolean", "const": true }
+  }
+}

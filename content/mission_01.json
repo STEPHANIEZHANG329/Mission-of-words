@@ -57,7 +57,7 @@
           {"name": "lantern", "x": 0.04, "y": 0.46, "scale": 0.11},
           {"name": "pumpkin", "x": 0.78, "y": 0.82, "scale": 0.12},
           {"name": "apple", "x": 0.50, "y": 0.62, "scale": 0.09},
-          {"name": "leaf", "x": 0.90, "y": 0.84, "scale": 0.10},
+          {"name": "leaf", "x": 0.93, "y": 0.84, "scale": 0.10},
           {"name": "acorn", "x": 0.14, "y": 0.84, "scale": 0.09},
           {"name": "scarf", "x": 0.02, "y": 0.72, "scale": 0.11},
           {"name": "basket", "x": 0.36, "y": 0.86, "scale": 0.12},

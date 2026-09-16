@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
+from reportlab.lib.utils import ImageReader
 from reportlab.pdfgen import canvas
 
 from mission_of_words import art
@@ -122,6 +125,7 @@ def draw_maze_page(
     page_number: int = 3,
     marked_proof: bool = False,
     canon: dict | None = None,
+    accepted_scene: Path | None = None,
 ) -> dict:
     mission = _mission_from_spec(spec)
     page = mission["pages"][2]
@@ -156,7 +160,19 @@ def draw_maze_page(
 
     art.ink(c, 1.6)
     c.line(left + 8, y0 - 6, right - 8, y0 - 6)
-    _scenery(c, mission["id"], left, right, stage_bottom, stage_h, width)
+    if accepted_scene is not None:
+        c.drawImage(
+            ImageReader(str(accepted_scene)),
+            left,
+            stage_bottom,
+            width=width,
+            height=stage_h,
+            preserveAspectRatio=True,
+            anchor="c",
+            mask="auto",
+        )
+    else:
+        _scenery(c, mission["id"], left, right, stage_bottom, stage_h, width)
 
     wall = max(2.0, cell * 0.15)
     c.setStrokeColorRGB(0, 0, 0)
@@ -207,10 +223,17 @@ def draw_maze_page(
         "required_objects": list(page["required_objects"]),
         "drawn_objects": drawn,
         "text_in_artwork": False,
-        "placeholder": marked_proof,
-        "artwork_status": "placeholder_only" if marked_proof else "procedural_lineart",
+        "placeholder": marked_proof and accepted_scene is None,
+        "artwork_status": (
+            "accepted"
+            if accepted_scene is not None
+            else ("placeholder_only" if marked_proof else "procedural_lineart")
+        ),
         "asset_integration": (
-            "Start picture, maze path, and finish picture share one scene. "
+            "Accepted maze environment ingested behind the code-drawn unique path. "
+            "START/FINISH labels remain code-rendered."
+            if accepted_scene is not None
+            else "Start picture, maze path, and finish picture share one scene. "
             "The unique solution is the maze generator path."
         ),
         "child_instruction": page["child_instruction"],

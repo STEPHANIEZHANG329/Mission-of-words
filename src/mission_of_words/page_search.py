@@ -15,6 +15,7 @@ from mission_of_words.compositor import AssetPlacement, compose_search_find
 from mission_of_words.layout import DPI, USED_PUZZLE_LETTER_PT, content_box
 from mission_of_words.paths import OUTPUT_DIR
 from mission_of_words.proof import live_box
+from mission_of_words.search_difficulty import evaluate_composed_targets, evaluate_search_difficulty
 from mission_of_words.targets import display_name
 from mission_of_words.text import ink_text, page_header
 
@@ -70,6 +71,8 @@ def build_search_scene_from_page(
     theme: str,
     marked_proof: bool = False,
     status: str = "procedural_lineart",
+    source: str = "procedural",
+    store_root: Path | None = None,
 ) -> tuple[Path, list[dict], list[dict]]:
     box, legend_h = search_geometry(page_number, marked_proof=marked_proof)
     px_w, px_h = _scene_pixel_size(box, legend_h)
@@ -77,32 +80,93 @@ def build_search_scene_from_page(
     bg_path = dest_dir / "search_background.png"
     targets = list(search_page["targets"])
     names = [str(target["name"]) for target in targets]
-    bg_record = procedural.render_search_background(
-        bg_path,
-        px_w,
-        px_h,
-        theme=theme,
-        status=status,
-        excluded_targets=names,
+    difficulty_failures = evaluate_search_difficulty(
+        targets,
+        excluded_background_objects=names,
+        owner=f"{theme} search_find",
     )
-    records = [bg_record]
+    if difficulty_failures:
+        raise ValueError("; ".join(difficulty_failures))
+    records: list[dict] = []
     placements: list[AssetPlacement] = []
-    by_name = {t["name"]: t for t in targets}
-    for name in names:
-        target = by_name[name]
-        asset_path = dest_dir / f"target_{name}.png"
-        records.append(procedural.render_target(name, asset_path, status=status))
-        placements.append(
-            AssetPlacement(
-                name=name,
-                asset_path=asset_path,
-                x_ratio=float(target["x"]),
-                y_ratio=float(target["y"]),
-                width_ratio=float(target["scale"]),
-            )
+    if source == "accepted":
+        from mission_of_words.ingest import search_kit
+
+        kit = search_kit(theme, store_root)
+        Image.open(kit["background"].path).convert("RGB").save(bg_path)
+        records.append(
+            {
+                "asset_id": kit["background"].asset_id,
+                "role": "search_background",
+                "status": "accepted",
+                "file": str(kit["background"].path),
+                "sha256": kit["background"].sha256,
+                "paid_call": False,
+                "cost_usd": 0.0,
+            }
         )
+        by_name = {t["name"]: t for t in targets}
+        for name in names:
+            loaded = kit["targets"][name]
+            asset_path = dest_dir / f"target_{name}.png"
+            Image.open(loaded.path).convert("RGBA").save(asset_path)
+            records.append(
+                {
+                    "asset_id": loaded.asset_id,
+                    "role": "search_target",
+                    "status": "accepted",
+                    "file": str(loaded.path),
+                    "sha256": loaded.sha256,
+                    "paid_call": False,
+                    "cost_usd": 0.0,
+                }
+            )
+            target = by_name[name]
+            placements.append(
+                AssetPlacement(
+                    name=name,
+                    asset_path=asset_path,
+                    x_ratio=float(target["x"]),
+                    y_ratio=float(target["y"]),
+                    width_ratio=float(target["scale"]),
+                )
+            )
+    else:
+        bg_record = procedural.render_search_background(
+            bg_path,
+            px_w,
+            px_h,
+            theme=theme,
+            status=status,
+            excluded_targets=names,
+        )
+        records = [bg_record]
+        by_name = {t["name"]: t for t in targets}
+        for name in names:
+            target = by_name[name]
+            asset_path = dest_dir / f"target_{name}.png"
+            records.append(procedural.render_target(name, asset_path, status=status))
+            placements.append(
+                AssetPlacement(
+                    name=name,
+                    asset_path=asset_path,
+                    x_ratio=float(target["x"]),
+                    y_ratio=float(target["y"]),
+                    width_ratio=float(target["scale"]),
+                )
+            )
     composed = dest_dir / "search_composed.jpg"
     manifest = compose_search_find(bg_path, placements, composed)
+    with Image.open(composed) as composed_image:
+        scene_w, scene_h = composed_image.size
+    composed_failures = evaluate_composed_targets(
+        manifest,
+        scene_width_px=scene_w,
+        scene_height_px=scene_h,
+        owner=f"{theme} search_find",
+    )
+    if composed_failures:
+        raise ValueError("; ".join(composed_failures))
     return composed, manifest, records
 
 

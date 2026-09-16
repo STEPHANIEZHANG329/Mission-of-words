@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "production_asset.schema.json",
+  "title": "One production art slot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "asset_id",
+    "page",
+    "role",
+    "needs_ai_art",
+    "prompt_version",
+    "art_bible_version",
+    "character_bible_version",
+    "width_px",
+    "height_px",
+    "dpi",
+    "status",
+    "provider",
+    "model",
+    "cost_usd",
+    "attempt",
+    "accepted",
+    "rejected",
+    "rejection_reason",
+    "source_prompt_hash",
+    "final_file_hash",
+    "prompt",
+    "crop_rules"
+  ],
+  "properties": {
+    "asset_id": { "type": "string", "minLength": 1 },
+    "page": { "type": "integer", "minimum": 1, "maximum": 48 },
+    "mission_id": { "type": ["string", "null"] },
+    "role": {
+      "type": "string",
+      "enum": [
+        "title_lockup",
+        "welcome_spot",
+        "missions_map",
+        "parent_letter",
+        "coloring_hero",
+        "search_background",
+        "search_target",
+        "maze_scene",
+        "faith_frame",
+        "faith_choice",
+        "bonus_activity",
+        "certificate_frame",
+        "closing_lockup"
+      ]
+    },
+    "needs_ai_art": { "type": "boolean" },
+    "prompt_version": { "type": "string" },
+    "art_bible_version": { "type": "string" },
+    "character_bible_version": { "type": "string" },
+    "width_px": { "type": "integer", "minimum": 1 },
+    "height_px": { "type": "integer", "minimum": 1 },
+    "dpi": { "type": "integer", "const": 300 },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "raw", "accepted", "rejected"]
+    },
+    "provider": { "type": ["string", "null"] },
+    "model": { "type": ["string", "null"] },
+    "cost_usd": { "type": "number", "minimum": 0 },
+    "attempt": { "type": "integer", "minimum": 0 },
+    "accepted": { "type": "boolean" },
+    "rejected": { "type": "boolean" },
+    "rejection_reason": { "type": ["string", "null"] },
+    "source_prompt_hash": { "type": "string", "minLength": 8 },
+    "final_file_hash": { "type": ["string", "null"] },
+    "prompt": { "type": "string", "minLength": 40 },
+    "negative_prompt": { "type": "string" },
+    "crop_rules": { "type": "string", "minLength": 1 },
+    "target_name": { "type": ["string", "null"] },
+    "choice_icon": { "type": ["string", "null"] },
+    "required_objects": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "excluded_targets": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "file": { "type": ["string", "null"] }
+  }
+}

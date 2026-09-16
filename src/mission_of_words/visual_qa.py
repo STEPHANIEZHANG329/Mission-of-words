@@ -11,6 +11,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from mission_of_words.art_bible import REQUIRED_QA_DIMENSIONS
 from mission_of_words.layout import MIN_FAITH_DRAWING_SQIN, USED_INSTRUCTION_PT
 
 PLACEHOLDER_NEEDLES = (
@@ -68,6 +69,33 @@ def _integration_ok(record: dict[str, Any]) -> tuple[bool, str]:
     return True, note
 
 
+def _dimension(record: dict[str, Any], human: dict[str, Any], name: str) -> tuple[bool, str]:
+    if record.get("placeholder") or record.get("artwork_status") in {"unfilled_slot", "placeholder_only"}:
+        return False, f"{name}: placeholder art cannot satisfy production visual QA."
+    raw = human.get(name)
+    if isinstance(raw, dict):
+        return bool(raw.get("pass")), str(raw.get("notes") or "")
+    if isinstance(raw, bool):
+        return raw, "Human visual review recorded a boolean for this dimension."
+    if isinstance(raw, str):
+        return raw.upper() == "PASS", raw
+    if name == "text_in_artwork":
+        if record.get("text_in_artwork"):
+            return False, "Artwork contains letters; coloring art must not."
+        return True, "No letters recorded in the composition."
+    if name == "coloring_usability":
+        ok, note = _child_ok(record)
+        return ok, note
+    if name == "prompt_to_art":
+        return _objects_ok(record)
+    if name == "asset_integration":
+        return _integration_ok(record)
+    if name == "age_suitability":
+        ok, note = _child_ok(record)
+        return ok, note
+    return False, f"{name}: not recorded; human visual review required."
+
+
 def evaluate_visual(
     *,
     compositions: list[dict[str, Any]],
@@ -101,6 +129,7 @@ def evaluate_visual(
             human_notes = "FAIL: visual review was not recorded for this page."
         page_fail_reasons: list[str] = []
         visual_readiness = "PASS"
+        dimensions: dict[str, dict[str, Any]] = {}
         if record.get("placeholder") or record.get("artwork_status") in {
             "unfilled_slot",
             "placeholder_only",
@@ -119,6 +148,12 @@ def evaluate_visual(
             page_fail_reasons.append(prompt_note)
         if not human_pass:
             page_fail_reasons.append(human_notes)
+        for name in REQUIRED_QA_DIMENSIONS:
+            dim_ok, dim_note = _dimension(record, human, name)
+            dimensions[name] = {"pass": dim_ok, "notes": dim_note or name}
+            if not dim_ok and visual_readiness == "PASS":
+                visual_readiness = "FAIL"
+                page_fail_reasons.append(dim_note)
 
         status = "PASS" if not page_fail_reasons else "FAIL"
         if page_fail_reasons:
@@ -133,6 +168,13 @@ def evaluate_visual(
                 "child_usability": {"pass": child_ok, "notes": child_note},
                 "prompt_to_art": {"pass": prompt_ok, "notes": prompt_note},
                 "human_visual_review": {"pass": human_pass, "notes": human_notes},
+                "anatomy": dimensions.get("anatomy"),
+                "line_consistency": dimensions.get("line_consistency"),
+                "coloring_usability": dimensions.get("coloring_usability"),
+                "composition": dimensions.get("composition"),
+                "text_in_artwork": dimensions.get("text_in_artwork"),
+                "age_suitability": dimensions.get("age_suitability"),
+                "brand_consistency": dimensions.get("brand_consistency"),
             }
         )
 
@@ -197,8 +239,17 @@ def write_visual_qa_markdown(
             ("child_usability", "Child Usability"),
             ("prompt_to_art", "Prompt-to-Art"),
             ("human_visual_review", "Human visual review"),
+            ("anatomy", "Anatomy"),
+            ("line_consistency", "Line consistency"),
+            ("coloring_usability", "Coloring usability"),
+            ("composition", "Composition"),
+            ("text_in_artwork", "Text-in-artwork"),
+            ("age_suitability", "Age suitability"),
+            ("brand_consistency", "Brand consistency"),
         ):
-            item = page[key]
+            item = page.get(key)
+            if not item:
+                continue
             mark = "PASS" if item["pass"] else "FAIL"
             lines.append(f"- **{label}:** {mark} — {item['notes']}")
         lines.append("")

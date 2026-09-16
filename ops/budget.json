@@ -7,5 +7,5 @@
   "spent_calls": 0,
   "currency": "USD",
   "owner_only_changes": true,
-    "notes": "Phase B technical proof: paid image generation is disabled. Owner must later enable a protected paid-image gate before any spend. spent_calls and spent_usd must remain 0."
+    "notes": "Phase C: paid image generation remains disabled by default. Ordinary PR CI must keep spent_calls and spent_usd at 0. Owner must supply an approved budget and call cap plus OWNER_APPROVES_PAID_IMAGE_GENERATION before any spend."
 }

@@ -1,4 +1,4 @@
-name: Bright Hearts Phase B technical proof
+name: Bright Hearts Phase C production gates
 
 on:
   pull_request:
@@ -48,6 +48,48 @@ jobs:
         env:
           PYTHONPATH: src
         run: python -m mission_of_words.evaluate_full_book
+
+      - name: Confirm production assets are pending and paid generation stays refused
+        env:
+          PYTHONPATH: src
+        run: |
+          python -m mission_of_words.build_production
+          python - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+          from mission_of_words.production_assets import role_counts, load_production_manifest
+          completed = subprocess.run(
+              [
+                  "python",
+                  "-m",
+                  "mission_of_words.paid_generation",
+                  "--approved-budget-usd",
+                  "0",
+                  "--call-cap",
+                  "0",
+                  "--confirm-phrase",
+                  "no",
+              ],
+              check=False,
+          )
+          assert completed.returncode != 0, "paid generation must refuse in PR CI"
+          report = json.loads(Path("output/production_readiness.json").read_text())
+          manifest = load_production_manifest()
+          print(json.dumps({
+              "roles": role_counts(manifest),
+              "production_pass": report["production_pass"],
+              "required": report["required_ai_asset_count"],
+              "accepted": report["accepted_ai_asset_count"],
+          }, indent=2))
+          assert report["production_pass"] is False
+          assert report["pass"] is False
+          assert report["paid_image_calls"] == 0
+          assert report["required_ai_asset_count"] == 136
+          assert report["accepted_ai_asset_count"] == 0
+          assert not (Path("output") / "BrightHearts_Fall_Interior.pdf").is_file()
+          assert Path("output/production_readiness.md").is_file()
+          PY
 
       - name: Build 48-page Phase B technical proof
         env:
@@ -103,19 +145,25 @@ jobs:
               path = Path('output') / name
               assert path.is_file(), path
           assert 'Asset Integration' in visual
+          assert 'Anatomy' in visual
           assert 'FAIL' in visual
           PY
 
       - name: Upload QA evidence
         uses: actions/upload-artifact@v4
         with:
-          name: bright-hearts-phase-b-technical-proof
+          name: bright-hearts-phase-c-production-gates
           path: |
             output/full_book_qa.json
             output/qa_report.json
             output/book_manifest.json
             output/page_map.json
+            output/production_readiness.json
+            output/production_readiness.md
+            content/art_bible.md
+            content/art_bible.json
             content/books/bright_hearts_fall_01/book_manifest.json
+            content/books/bright_hearts_fall_01/production_assets.json
             output/BrightHearts_Fall_Interior_TechnicalProof.pdf
             output/BrightHearts_Fall_AnswerKey_TechnicalProof.pdf
             output/visual_qa.md

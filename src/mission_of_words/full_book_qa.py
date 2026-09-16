@@ -39,21 +39,17 @@ from mission_of_words.layout import (
 from mission_of_words.maze import Maze
 from mission_of_words.paths import BOOK_RECORD, OUTPUT_DIR, SCHEMA_DIR
 from mission_of_words.proof import NON_PRODUCTION_MARK, NON_PRODUCTION_LINE
+from mission_of_words.search_difficulty import evaluate_search_difficulty
 from mission_of_words.validate import validate_instance, validate_repo
 
 PHASE_C_BLOCKERS = [
-    "Phase C: paid artwork is not authorized; keep paid_image_calls == 0",
+    "Phase C: required production assets are pending; production_pass stays false",
+    "Phase C: human visual review is not PASS on the 48-page production interior",
+    "Phase C: paid artwork remains unauthorized; ordinary CI must keep paid_image_calls == 0",
     "Phase D: production_pass cannot become true while placeholder art remains",
-    "Phase D: independent visual QA is FAIL/MISSING for placeholder-dependent pages",
     "Phase E: cover is deferred until interior page count is locked and Owner-approved",
     "Do not merge, publish, or upload to KDP without Owner approval",
 ]
-
-
-def _boxes_overlap(a: tuple[float, float, float, float], b: tuple[float, float, float, float]) -> bool:
-    ax0, ay0, ax1, ay1 = a
-    bx0, by0, bx1, by1 = b
-    return not (ax1 <= bx0 or bx1 <= ax0 or ay1 <= by0 or by1 <= ay0)
 
 
 def uniqueness_failures(missions: list[dict[str, Any]], pages: list[dict[str, Any]]) -> list[str]:
@@ -207,29 +203,14 @@ def search_target_failures(missions: list[dict[str, Any]]) -> list[str]:
             if page.get("type") != "search_find":
                 continue
             targets = list(page.get("targets") or [])
-            names = [target.get("name") for target in targets]
-            if len(targets) != 8 or len(set(names)) != 8:
-                failures.append(
-                    f"search_find: {mission['id']} must have 8 uniquely named targets, got {names}"
+            names = [str(target.get("name") or "") for target in targets]
+            failures.extend(
+                evaluate_search_difficulty(
+                    targets,
+                    excluded_background_objects=names,
+                    owner=f"{mission['id']} search_find",
                 )
-                continue
-            boxes = []
-            for target in targets:
-                x = float(target["x"])
-                y = float(target["y"])
-                scale = float(target["scale"])
-                box = (x, y, x + scale, y + scale)
-                boxes.append((str(target["name"]), box))
-                if min(x, y) < 0 or max(x + scale, y + scale) > 1.05:
-                    failures.append(
-                        f"search_find: {mission['id']} target {target['name']} is outside the safe scene"
-                    )
-            for index, (name_a, box_a) in enumerate(boxes):
-                for name_b, box_b in boxes[index + 1 :]:
-                    if _boxes_overlap(box_a, box_b):
-                        failures.append(
-                            f"search_find: {mission['id']} unsafe overlap between {name_a} and {name_b}"
-                        )
+            )
     return failures
 
 
@@ -609,6 +590,24 @@ def evaluate_full_book(
             }
         )
 
+    required_ai_asset_count = 0
+    accepted_ai_asset_count = 0
+    production_assets_complete = False
+    art_bible_version = None
+    try:
+        from mission_of_words.art_bible import ART_BIBLE_VERSION
+        from mission_of_words.ingest import missing_accepted_assets
+        from mission_of_words.production_assets import load_production_manifest
+
+        art_bible_version = ART_BIBLE_VERSION
+        prod = load_production_manifest()
+        required_ai = [asset for asset in prod.get("assets") or [] if asset.get("needs_ai_art")]
+        required_ai_asset_count = len(required_ai)
+        accepted_ai_asset_count = required_ai_asset_count - len(missing_accepted_assets(manifest=prod))
+        production_assets_complete = required_ai_asset_count == 136 and len(prod.get("pages") or []) == 48
+    except (OSError, json.JSONDecodeError, KeyError, TypeError, ValueError):
+        production_assets_complete = False
+
     report = {
         "book_id": manifest.get("book_id") or json.loads(BOOK_RECORD.read_text()).get("book_id"),
         "phase": "B" if interior_present else manifest.get("phase", "A"),
@@ -636,6 +635,11 @@ def evaluate_full_book(
         "artwork_status_summary": "placeholder_only" if placeholder_assets_present else "mixed",
         "image_client_mode": client["mode"],
         "paid_generation_gate_implemented": PAID_GENERATION_GATE_IMPLEMENTED,
+        "required_ai_asset_count": required_ai_asset_count,
+        "accepted_ai_asset_count": accepted_ai_asset_count,
+        "search_difficulty_ok": not search_target_failures(missions),
+        "art_bible_version": art_bible_version,
+        "production_assets_complete": production_assets_complete,
         "blueprint_pass": blueprint_pass,
         "technical_pass": technical_pass,
         "production_pass": production_pass,

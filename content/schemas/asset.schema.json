@@ -30,6 +30,7 @@
         "search_target",
         "maze_scene",
         "faith_frame",
+        "faith_choice",
         "answer_key_spot",
         "bonus_activity",
         "certificate_frame",

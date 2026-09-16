@@ -1,6 +1,7 @@
-"""Phase B full-book evaluation helper. Zero paid image calls.
+"""Phase C full-book evaluation helper. Zero paid image calls.
 
-Use `python -m mission_of_words.build_book` to render the 48-page technical proof.
+Use `python -m mission_of_words.build_book` for the marked 48-page technical proof.
+Use `python -m mission_of_words.build_production` for the fail-closed production-readiness report.
 This module still writes blueprint evidence without claiming production_pass.
 """
 
