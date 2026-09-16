@@ -1,0 +1,118 @@
+{
+  "version": "c1.0",
+  "prompt_version": "c1.0",
+  "character_bible_version": "c1.0",
+  "book_id": "bright_hearts_fall_01",
+  "title": "Bright Hearts: Shine Your Light This Fall",
+  "audience": "ages_5_8",
+  "trim_inches": [8.5, 11.0],
+  "dpi": 300,
+  "interior": "black_and_white",
+  "principle": "models_draw_code_decides",
+  "code_renders_all_page_text": true,
+  "style": {
+    "medium": "professional_childrens_activity_book_line_art",
+    "palette": "black_outlines_on_white",
+    "stroke_hierarchy": ["heavy_outer", "medium_structure", "light_interior"],
+    "coloring_usability": "large_open_regions_ages_5_8",
+    "depth": ["foreground", "midground", "background"],
+    "forbidden": [
+      "muddy_gray_fills",
+      "photoreal_shading",
+      "watercolor",
+      "sketch_noise",
+      "over_hatching",
+      "generated_letters",
+      "generated_numbers",
+      "signage",
+      "logos",
+      "watermarks",
+      "franchise_characters",
+      "copied_competitor_layouts",
+      "broken_anatomy",
+      "micro_detail_that_blocks_crayons"
+    ]
+  },
+  "cast": [
+    {
+      "id": "mira_bright",
+      "name": "Mira Bright",
+      "role": "focal_girl",
+      "age_appearance": 7,
+      "hair": "shoulder_bob_side_part",
+      "face": "round_friendly_commercial_childrens_book",
+      "notes": "Lantern-bearer. Clothing changes by mission; proportions and face language stay locked."
+    },
+    {
+      "id": "eli_bright",
+      "name": "Eli Bright",
+      "role": "focal_boy",
+      "age_appearance": 6,
+      "hair": "short_textured",
+      "face": "sibling_resemblance_to_mira",
+      "notes": "Often holds a basket, map, or second lantern. Same line style as Mira."
+    },
+    {
+      "id": "pastor_grace",
+      "name": "Pastor Grace",
+      "role": "church_adult",
+      "age_appearance": 38,
+      "hair": "simple_low_bun",
+      "face": "warm_adult_not_caricature",
+      "notes": "Correct adult proportions. Use only when a church/community adult is needed."
+    },
+    {
+      "id": "neighbor_han",
+      "name": "Neighbor Han",
+      "role": "neighbor_adult",
+      "age_appearance": 55,
+      "hair": "short_graying",
+      "face": "kind_adult",
+      "notes": "Porch and sharing scenes. Correct adult proportions."
+    },
+    {
+      "id": "supporting_child",
+      "name": "Supporting child",
+      "role": "supporting_child",
+      "age_appearance": 6,
+      "hair": "varies_never_copy_mira_or_eli_combo",
+      "face": "same_style_language",
+      "notes": "At most one extra child per scene."
+    }
+  ],
+  "figure_limit": {"min": 1, "max": 5, "preferred": 2},
+  "page_types": {
+    "coloring": {
+      "composition": "one_integrated_scene",
+      "must": ["focal_child_foreground", "story_objects", "open_coloring_regions", "clear_depth"]
+    },
+    "search_find": {
+      "background_excludes_targets": true,
+      "targets_are_independent_assets": true,
+      "placement": "code_compositor"
+    },
+    "maze": {
+      "logic": "code_generated",
+      "scene_must_reserve_empty_maze_rectangle": true,
+      "no_maze_walls_in_artwork": true,
+      "no_start_finish_lettering_in_artwork": true
+    },
+    "faith_interaction": {
+      "frame_separate_from_choice_icons": true,
+      "large_drawing_area": true,
+      "no_labels_or_prayer_text_in_artwork": true
+    }
+  },
+  "visual_qa_dimensions": [
+    "anatomy",
+    "line_consistency",
+    "coloring_usability",
+    "composition",
+    "text_in_artwork",
+    "prompt_to_art",
+    "asset_integration",
+    "age_suitability",
+    "brand_consistency"
+  ],
+  "negative_prompt": "letters, numbers, words, titles, captions, scripture verses, page numbers, START, FINISH, watermarks, logos, Disney, anime, photoreal, grayscale shading, watercolor, sketchy construction lines, extra fingers, melted hands, broken crosses, franchise characters"
+}

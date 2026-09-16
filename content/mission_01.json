@@ -1,0 +1,111 @@
+{
+  "book": {
+    "book_id": "bright_hearts_fall_01",
+    "working_title": "Bright Hearts: Shine Your Light This Fall",
+    "audience": "Ages 5-8",
+    "trim_inches": [8.5, 11.0],
+    "dpi": 300,
+    "interior": "black_and_white",
+    "safe_margin_inches": 0.5,
+    "min_instruction_pt": 12,
+    "min_puzzle_letter_pt": 12,
+    "min_answer_key_pt": 9
+  },
+  "mission": {
+    "id": "mission_01",
+    "title": "Shine Your Light",
+    "scripture_reference": "Matthew 5:16",
+    "canon_id": "matthew_5_16",
+    "pages": [
+      {
+        "page": 1,
+        "type": "coloring",
+        "title": "Shine Your Light",
+        "child_instruction": "Color the children carrying lanterns to the church fall festival.",
+        "bible_connection": "The lanterns remind us that Jesus said to let our light shine by doing good.",
+        "visual_prompt": "Integrated black line-art coloring scene: church fall festival, two children carrying lanterns, pumpkins, leaves, church with intact steeple cross, string lights, welcome table. No letters in the artwork.",
+        "required_objects": [
+          "church",
+          "steeple_cross",
+          "children",
+          "lanterns",
+          "pumpkins",
+          "leaves",
+          "string_lights"
+        ]
+      },
+      {
+        "page": 2,
+        "type": "search_find",
+        "title": "Find the Festival Gifts",
+        "instruction": "Find and circle all 8 items.",
+        "child_instruction": "Find and circle all 8 gifts. Each one can help you remember to shine God's light by doing good.",
+        "bible_connection": "Looking carefully for each gift is practice for noticing good things we can do.",
+        "visual_prompt": "Controlled festival-grounds background without the eight targets. Independently placed lantern, pumpkin, apple, leaf, acorn, scarf, basket, and Bible.",
+        "required_objects": [
+          "search_background",
+          "lantern",
+          "pumpkin",
+          "apple",
+          "leaf",
+          "acorn",
+          "scarf",
+          "basket",
+          "Bible"
+        ],
+        "targets": [
+          {"name": "lantern", "x": 0.04, "y": 0.46, "scale": 0.11},
+          {"name": "pumpkin", "x": 0.78, "y": 0.82, "scale": 0.12},
+          {"name": "apple", "x": 0.50, "y": 0.62, "scale": 0.09},
+          {"name": "leaf", "x": 0.93, "y": 0.84, "scale": 0.10},
+          {"name": "acorn", "x": 0.14, "y": 0.84, "scale": 0.09},
+          {"name": "scarf", "x": 0.02, "y": 0.72, "scale": 0.11},
+          {"name": "basket", "x": 0.36, "y": 0.86, "scale": 0.12},
+          {"name": "Bible", "x": 0.62, "y": 0.58, "scale": 0.11}
+        ]
+      },
+      {
+        "page": 3,
+        "type": "maze",
+        "title": "Bring Your Lantern",
+        "child_instruction": "Start at the child. Follow the hedge path to the welcome table.",
+        "bible_connection": "Bringing the lantern to the table is a picture of taking God's light to people.",
+        "visual_prompt": "One garden scene: child with lantern at the hedge opening, unique maze path, welcome table at the church festival. Not a maze pasted on a blank page.",
+        "required_objects": [
+          "child_with_lantern",
+          "hedge_maze",
+          "welcome_table",
+          "start_label",
+          "finish_label"
+        ],
+        "start_label": "START",
+        "finish_label": "FINISH",
+        "difficulty": "medium_easy",
+        "seed": 20260916,
+        "grid": [9, 11]
+      },
+      {
+        "page": 4,
+        "type": "faith_interaction",
+        "title": "How Can You Shine This Week?",
+        "child_instruction": "Check the ways you can shine. Then draw yourself inside the lantern.",
+        "bible_connection": "These good works are how a child can let light shine, as Matthew 5:16 teaches.",
+        "visual_prompt": "One lantern-framed page: four illustrated choices, a large lantern drawing area, and a short prayer ribbon.",
+        "required_objects": [
+          "lantern_frame",
+          "choice_cards",
+          "drawing_lantern",
+          "prayer_ribbon"
+        ],
+        "choices": [
+          {"label": "Help someone", "icon": "help"},
+          {"label": "Share with a friend", "icon": "share"},
+          {"label": "Say something kind", "icon": "kind"},
+          {"label": "Thank God today", "icon": "thank"}
+        ],
+        "drawing_prompt": "Draw yourself shining God's light",
+        "prayer": "Jesus, help me shine Your light."
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "paid_calls_enabled": false,
+  "allow_paid_image_calls": false,
+  "max_usd": 0.0,
+  "max_paid_calls": 0,
+  "spent_usd": 0.0,
+  "spent_calls": 0,
+  "currency": "USD",
+  "owner_only_changes": true,
+    "notes": "Phase C: paid image generation remains disabled by default. Ordinary PR CI must keep spent_calls and spent_usd at 0. Owner must supply an approved budget and call cap plus OWNER_APPROVES_PAID_IMAGE_GENERATION before any spend."
+}

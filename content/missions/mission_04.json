@@ -1,0 +1,107 @@
+{
+  "book_id": "bright_hearts_fall_01",
+  "id": "mission_04",
+  "title": "Courage Over Fear",
+  "scripture_reference": "Isaiah 41:10",
+  "canon_id": "isaiah_41_10",
+  "sequence": 4,
+  "global_page_start": 17,
+  "pages": [
+    {
+      "page": 1,
+      "type": "coloring",
+      "title": "God Is With You",
+      "activity_mechanic": "integrated_coloring_courage_path",
+      "art_roles": ["coloring_hero"],
+      "child_instruction": "Color the child walking the autumn path toward the lit porch.",
+      "bible_connection": "The lit path is a picture that we do not have to be afraid, because God is with us.",
+      "visual_prompt": "Integrated black line-art coloring scene: a child walking an autumn woods path toward a warmly lit porch, tall trees, fallen leaves, a small handheld light. Do not depict God as a cartoon person. No letters in the artwork.",
+      "required_objects": [
+        "walking_child",
+        "autumn_path",
+        "tall_trees",
+        "lit_porch",
+        "handheld_light",
+        "fallen_leaves"
+      ]
+    },
+    {
+      "page": 2,
+      "type": "search_find",
+      "title": "Find the Courage Helpers",
+      "activity_mechanic": "search_find_courage_helpers",
+      "art_roles": ["search_background", "search_target"],
+      "instruction": "Find and circle all 8 items.",
+      "child_instruction": "Find and circle all 8 courage helpers. They can remind you that God is with you.",
+      "bible_connection": "Noticing helpers is practice for remembering Isaiah 41:10: do not be afraid, God is with you.",
+      "visual_prompt": "Controlled woods-path background without the eight targets. Independently placed hiking boot, walking stick, small lantern, map, compass, owl, blanket, and brave badge.",
+      "required_objects": [
+        "search_background",
+        "hiking_boot",
+        "walking_stick",
+        "small_lantern",
+        "trail_map",
+        "compass",
+        "owl",
+        "blanket",
+        "brave_badge"
+      ],
+      "targets": [
+        {"name": "hiking_boot", "x": 0.10, "y": 0.78, "scale": 0.11},
+        {"name": "walking_stick", "x": 0.04, "y": 0.40, "scale": 0.08},
+        {"name": "small_lantern", "x": 0.78, "y": 0.72, "scale": 0.10},
+        {"name": "trail_map", "x": 0.52, "y": 0.80, "scale": 0.11},
+        {"name": "compass", "x": 0.32, "y": 0.70, "scale": 0.09},
+        {"name": "owl", "x": 0.82, "y": 0.22, "scale": 0.10},
+        {"name": "blanket", "x": 0.36, "y": 0.86, "scale": 0.11},
+        {"name": "brave_badge", "x": 0.60, "y": 0.28, "scale": 0.09}
+      ]
+    },
+    {
+      "page": 3,
+      "type": "maze",
+      "title": "Walk to the Lit Porch",
+      "activity_mechanic": "maze_woods_to_lit_porch",
+      "art_roles": ["maze_scene"],
+      "child_instruction": "Start at the child on the path. Follow the woods trail to the lit porch.",
+      "bible_connection": "Walking all the way to the porch is a picture of taking a brave step because God is with you.",
+      "visual_prompt": "One autumn-woods scene: child at START on a leaf-strewn opening, unique tree-path maze, lit porch at FINISH. Not a maze pasted on a blank page.",
+      "required_objects": [
+        "child_on_path",
+        "woods_maze",
+        "lit_porch",
+        "start_label",
+        "finish_label"
+      ],
+      "start_label": "START",
+      "finish_label": "FINISH",
+      "difficulty": "medium_easy",
+      "seed": 20260919,
+      "grid": [10, 11]
+    },
+    {
+      "page": 4,
+      "type": "faith_interaction",
+      "title": "When I Feel Afraid",
+      "activity_mechanic": "faith_courage_choices",
+      "art_roles": ["faith_frame"],
+      "child_instruction": "Check what you can do when you feel afraid. Then draw a place you feel safe.",
+      "bible_connection": "These choices help a child practice Isaiah 41:10: do not fear, God is with you and will help you.",
+      "visual_prompt": "One porch-framed page: four illustrated choices, a large window drawing area, and a short prayer ribbon.",
+      "required_objects": [
+        "porch_frame",
+        "choice_cards",
+        "drawing_window",
+        "prayer_ribbon"
+      ],
+      "choices": [
+        {"label": "Pray and tell God", "icon": "pray"},
+        {"label": "Tell a grown-up", "icon": "adult"},
+        {"label": "Remember God is with me", "icon": "heart"},
+        {"label": "Help a friend who is scared", "icon": "friend"}
+      ],
+      "drawing_prompt": "Draw a place you feel safe because God is with you",
+      "prayer": "God, when I feel afraid, help me remember You are with me."
+    }
+  ]
+}

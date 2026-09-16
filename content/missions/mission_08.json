@@ -1,0 +1,107 @@
+{
+  "book_id": "bright_hearts_fall_01",
+  "id": "mission_08",
+  "title": "The Thankful Table",
+  "scripture_reference": "1 Thessalonians 5:18",
+  "canon_id": "1_thessalonians_5_18",
+  "sequence": 8,
+  "global_page_start": 33,
+  "pages": [
+    {
+      "page": 1,
+      "type": "coloring",
+      "title": "Give Thanks at the Table",
+      "activity_mechanic": "integrated_coloring_thankful_table",
+      "art_roles": ["coloring_hero"],
+      "child_instruction": "Color the family gathering at the table to give thanks before the meal.",
+      "bible_connection": "Pausing at the table is a picture of giving thanks in everything, as 1 Thessalonians 5:18 teaches.",
+      "visual_prompt": "Integrated black line-art coloring scene: family table with simple autumn meal, empty chair being pulled in, clasped hands before eating, bread basket, window with falling leaves. Not a copy of Mission 3's harvest wagon. No letters in the artwork.",
+      "required_objects": [
+        "family_table",
+        "autumn_meal",
+        "empty_chair",
+        "clasped_hands",
+        "bread_basket",
+        "leafy_window"
+      ]
+    },
+    {
+      "page": 2,
+      "type": "search_find",
+      "title": "Find the Table Gifts",
+      "activity_mechanic": "search_find_table_gifts",
+      "art_roles": ["search_background", "search_target"],
+      "instruction": "Find and circle all 8 items.",
+      "child_instruction": "Find and circle all 8 table gifts. Each one can help you remember to give thanks.",
+      "bible_connection": "Setting the table carefully is practice for giving thanks in every part of the day.",
+      "visual_prompt": "Controlled dining-room background without the eight targets. Independently placed plate, cup, napkin, chair, bread basket, candle, place card, and serving spoon.",
+      "required_objects": [
+        "search_background",
+        "plate",
+        "cup",
+        "napkin",
+        "chair",
+        "bread_basket",
+        "candle",
+        "place_card",
+        "serving_spoon"
+      ],
+      "targets": [
+        {"name": "plate", "x": 0.40, "y": 0.58, "scale": 0.12},
+        {"name": "cup", "x": 0.58, "y": 0.14, "scale": 0.08},
+        {"name": "napkin", "x": 0.16, "y": 0.14, "scale": 0.10},
+        {"name": "chair", "x": 0.02, "y": 0.80, "scale": 0.11},
+        {"name": "bread_basket", "x": 0.78, "y": 0.78, "scale": 0.11},
+        {"name": "candle", "x": 0.46, "y": 0.08, "scale": 0.09},
+        {"name": "place_card", "x": 0.80, "y": 0.16, "scale": 0.09},
+        {"name": "serving_spoon", "x": 0.30, "y": 0.82, "scale": 0.10}
+      ]
+    },
+    {
+      "page": 3,
+      "type": "maze",
+      "title": "Set the Thankful Table",
+      "activity_mechanic": "maze_kitchen_to_thank_you_chair",
+      "art_roles": ["maze_scene"],
+      "child_instruction": "Start at the kitchen. Follow the path to the thank-you chair.",
+      "bible_connection": "Carrying the dish to the table is a picture of getting ready to give thanks in everything.",
+      "visual_prompt": "One home-interior scene: kitchen counter at START, unique hallway-and-rug maze, thank-you chair at the set table at FINISH. Not a maze pasted on a blank page.",
+      "required_objects": [
+        "kitchen_counter",
+        "hallway_maze",
+        "thank_you_chair",
+        "start_label",
+        "finish_label"
+      ],
+      "start_label": "START",
+      "finish_label": "FINISH",
+      "difficulty": "medium_easy",
+      "seed": 20260923,
+      "grid": [8, 9]
+    },
+    {
+      "page": 4,
+      "type": "faith_interaction",
+      "title": "Give Thanks in Everything",
+      "activity_mechanic": "faith_table_thanks",
+      "art_roles": ["faith_frame"],
+      "child_instruction": "Check when you can give thanks. Then draw your table.",
+      "bible_connection": "These moments help a child practice 1 Thessalonians 5:18: give thanks in everything.",
+      "visual_prompt": "One table-framed page: four illustrated choices, a large table drawing area, and a short prayer ribbon.",
+      "required_objects": [
+        "table_frame",
+        "choice_cards",
+        "drawing_table",
+        "prayer_ribbon"
+      ],
+      "choices": [
+        {"label": "Give thanks at meals", "icon": "meal"},
+        {"label": "Give thanks for people", "icon": "people"},
+        {"label": "Give thanks on hard days", "icon": "cloud"},
+        {"label": "Give thanks before bed", "icon": "moon"}
+      ],
+      "drawing_prompt": "Draw your thankful table",
+      "prayer": "Jesus, help me give thanks in every part of my day."
+    }
+  ]
+}

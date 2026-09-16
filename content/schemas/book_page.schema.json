@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "book_page.schema.json",
+  "title": "One page in the 48-page Bright Hearts map",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "page",
+    "section",
+    "type",
+    "title",
+    "activity_mechanic",
+    "art_roles",
+    "artwork_status",
+    "facing",
+    "parity"
+  ],
+  "properties": {
+    "page": { "type": "integer", "minimum": 1, "maximum": 48 },
+    "section": {
+      "type": "string",
+      "enum": ["front_matter", "missions", "back_matter"]
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "title",
+        "welcome",
+        "contents",
+        "parent_note",
+        "coloring",
+        "search_find",
+        "maze",
+        "faith_interaction",
+        "answer_key",
+        "bonus_activity",
+        "certificate",
+        "closing"
+      ]
+    },
+    "title": { "type": "string", "minLength": 1 },
+    "mission_id": { "type": ["string", "null"] },
+    "mission_sequence": { "type": ["integer", "null"] },
+    "mission_slot": {
+      "anyOf": [
+        { "type": "string", "enum": ["A", "B", "C", "D"] },
+        { "type": "null" }
+      ]
+    },
+    "canon_id": { "type": ["string", "null"] },
+    "activity_mechanic": { "type": "string", "minLength": 1 },
+    "art_roles": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "artwork_status": {
+      "type": "string",
+      "enum": ["unfilled_slot", "placeholder_only", "procedural_lineart", "accepted"]
+    },
+    "answer_key_page": { "type": ["integer", "null"] },
+    "answers_activity_pages": {
+      "type": "array",
+      "items": { "type": "integer", "minimum": 1, "maximum": 48 }
+    },
+    "answer_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["activity_page", "mechanic", "source"],
+        "properties": {
+          "activity_page": { "type": "integer", "minimum": 1, "maximum": 48 },
+          "mechanic": {
+            "type": "string",
+            "enum": ["search_find", "maze"]
+          },
+          "source": {
+            "type": "string",
+            "enum": ["compositor_manifest", "unique_maze_path"]
+          }
+        }
+      }
+    },
+    "facing": { "type": "string", "enum": ["recto", "verso"] },
+    "parity": { "type": "string", "enum": ["odd", "even"] },
+    "source_mission_page": { "type": ["integer", "null"] },
+    "child_instruction_required": { "type": "boolean" },
+    "notes": { "type": "string" }
+  }
+}

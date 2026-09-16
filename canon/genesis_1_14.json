@@ -1,0 +1,22 @@
+{
+  "canon_id": "genesis_1_14",
+  "translation": "KJV",
+  "source_edition": "1769 Oxford KJV (public domain)",
+  "reference": "Genesis 1:14",
+  "source_text": "And God said, Let there be lights in the firmament of the heaven to divide the day from the night; and let them be for signs, and for seasons, and for days, and years:",
+  "child_paraphrase": "God made lights in the sky to separate day and night, and to mark seasons, days, and years.",
+  "license": "public_domain",
+  "license_note": "Short quotation of the 1769 Oxford King James Version. That edition is public domain in the United States. No bulk copyrighted Bible text is used.",
+  "lock_note": "Issue #6 Mission 2 lock: God Made the Seasons. Distinct from Genesis 1:31, which locks Mission 7.",
+  "allowed_visual_motifs": [
+    "lights in the sky",
+    "day and night",
+    "seasons",
+    "days and years"
+  ],
+  "forbidden_claims": [
+    "Do not invent extra narrative as scripture",
+    "Do not treat pumpkins, festivals, or other fall props as facts from this verse",
+    "Do not add the rest of the creation week, names, or events that are not in Genesis 1:14"
+  ]
+}

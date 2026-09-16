@@ -1,0 +1,64 @@
+name: Manual paid image generation (disabled by default)
+
+on:
+  workflow_dispatch:
+    inputs:
+      approved_budget_usd:
+        description: "Owner-approved budget in USD. Must be > 0 and cannot exceed ops/budget.json."
+        required: true
+        default: "0"
+      call_cap:
+        description: "Maximum paid image calls for this run."
+        required: true
+        default: "0"
+      confirm_phrase:
+        description: "Must be exactly OWNER_APPROVES_PAID_IMAGE_GENERATION"
+        required: true
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  refuse-unless-owner-budget:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      ALLOW_PAID_IMAGE_CALLS: ${{ github.event.inputs.confirm_phrase == 'OWNER_APPROVES_PAID_IMAGE_GENERATION' && '1' || '0' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Fail closed unless every owner budget gate is present
+        env:
+          PYTHONPATH: src
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "PAID_GENERATION_MUST_NOT_RUN_ON_PULL_REQUEST"
+            exit 1
+          fi
+          python3 - <<'PY'
+          import os, sys
+          sys.path.insert(0, "src")
+          from mission_of_words.paid_generation import run_manual_generation, PaidGenerationRefused
+          try:
+              run_manual_generation(
+                  approved_budget_usd=float("${{ github.event.inputs.approved_budget_usd }}"),
+                  call_cap=int("${{ github.event.inputs.call_cap }}"),
+                  confirm_phrase="${{ github.event.inputs.confirm_phrase }}",
+              )
+          except PaidGenerationRefused as exc:
+              print(exc)
+              raise SystemExit(2)
+          raise SystemExit("paid generation must refuse in this pass")
+          PY
+          echo "NO_IMAGE_GENERATION_REQUEST_WILL_BE_SENT"
