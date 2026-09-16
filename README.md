@@ -1,7 +1,5 @@
 # Mission-of-words
 
-Bright Hearts publishing production lab.
+Clean rebuild. The only deliverable is a finished 48-page KDP-ready Christian children's activity book PDF, plus matching cover.
 
-Current scope: Phase 0 only — build and validate a deterministic 4-page activity-book production harness before any paid image generation.
-
-No paid image API calls are authorized in Phase 0.
+Do not revive legacy proof/placeholder systems.
