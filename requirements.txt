@@ -1,0 +1,5 @@
+Pillow>=10.0.0
+reportlab>=4.0.0
+pypdf>=4.0.0
+pypdfium2>=4.30.0
+pytest>=8.0.0

@@ -1,0 +1,158 @@
+name: KDP 48-page production (GPT2 image API)
+
+on:
+  push:
+    branches: ['cursor/kdp-48-page-final-974f']
+    paths:
+      - 'ops/AUTHORIZE_PAID_RUN'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kdp-production-48
+  cancel-in-progress: false
+
+jobs:
+  produce-book:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      PYTHONPATH: src
+      GPT2: ${{ secrets.GPT2 }}
+      PAID_CALL_CAP: '48'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install
+        run: pip install -r requirements.txt
+
+      - name: Verify GPT2 secret and authorization
+        run: |
+          set -euo pipefail
+          if [ -z "${GPT2:-}" ]; then
+            echo "GPT2_SECRET_MISSING"
+            exit 1
+          fi
+          grep -q OWNER_APPROVES_PAID_IMAGE_GENERATION ops/AUTHORIZE_PAID_RUN
+          echo "GPT2_SECRET_PRESENT"
+
+      - name: Preflight before first paid call
+        run: python3 -m llk.preflight --before-paid
+
+      - name: Generate front matter art
+        run: python3 -m llk.generate --group front
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: art-front
+          path: assets/generated
+          if-no-files-found: warn
+
+      - name: Generate coloring art
+        run: python3 -m llk.generate --group coloring
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: art-coloring
+          path: assets/generated
+          if-no-files-found: warn
+
+      - name: Generate search backgrounds
+        run: python3 -m llk.generate --group search
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: art-search
+          path: assets/generated
+          if-no-files-found: warn
+
+      - name: Generate maze scenes
+        run: python3 -m llk.generate --group maze
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: art-maze
+          path: assets/generated
+          if-no-files-found: warn
+
+      - name: Generate faith frames
+        run: python3 -m llk.generate --group faith
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: art-faith
+          path: assets/generated
+          if-no-files-found: warn
+
+      - name: Generate search target sheets
+        run: python3 -m llk.generate --group targets
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: art-targets
+          path: assets/generated
+          if-no-files-found: warn
+
+      - name: Generate back matter art
+        run: python3 -m llk.generate --group back
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: art-back
+          path: assets/generated
+          if-no-files-found: warn
+
+      - name: Generate cover art
+        run: python3 -m llk.generate --group cover
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: art-cover
+          path: assets/generated
+          if-no-files-found: warn
+
+      - name: Persist accepted JPEGs and ledger on the branch
+        if: always()
+        run: |
+          set -euo pipefail
+          git config user.name "kdp-production-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/accepted/*.jpg assets/provenance/*.json ops/ledger.jsonl || true
+          if git diff --cached --quiet; then
+            echo "NO_ACCEPTED_ART_TO_COMMIT"
+          else
+            git commit -m "Persist GPT2 artwork immediately after generation"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+
+      - name: Compose interior, cover, contact sheet, and QA
+        run: python3 -m llk.produce
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kdp-final-pdfs
+          path: |
+            output/LittleLampkeepers_48Page_Interior_KDP.pdf
+            output/LittleLampkeepers_Cover_KDP.pdf
+            output/contact_sheet_all_pages.jpg
+            output/qa_report.json
+
+      - name: Commit finished PDFs
+        run: |
+          set -euo pipefail
+          git add output/LittleLampkeepers_48Page_Interior_KDP.pdf \
+                  output/LittleLampkeepers_Cover_KDP.pdf \
+                  output/contact_sheet_all_pages.jpg \
+                  output/qa_report.json
+          git commit -m "Add finished 48-page KDP interior, cover, and contact sheet"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

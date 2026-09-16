@@ -1,0 +1,7 @@
+{
+  "paid_call_cap": 48,
+  "model": "gpt-image-2",
+  "fallback_models": ["gpt-image-1"],
+  "secret_name": "GPT2",
+  "provider": "openai_images_api"
+}
