@@ -1,4 +1,4 @@
-name: Commercial layout proof (zero cost)
+name: Commercial layout proof v2 (zero cost)
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
     branches:
       - 'cursor/phase-c-gpt2-rebuild-9570'
     paths:
-      - 'src/mission_of_words/commercial_layout_proof.py'
+      - 'src/mission_of_words/commercial_layout_proof_v2.py'
       - '.github/workflows/commercial-layout-proof.yml'
       - 'content/missions/**'
       - 'canon/**'
@@ -31,7 +31,7 @@ jobs:
             echo "GPT2_MUST_NOT_BE_AVAILABLE_IN_LAYOUT_PROOF"
             exit 1
           fi
-          echo "ZERO_COST_LAYOUT_PROOF"
+          echo "ZERO_COST_LAYOUT_PROOF_V2"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -42,17 +42,17 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Compile proof builder
-        run: python -m py_compile src/mission_of_words/commercial_layout_proof.py
+        run: python -m py_compile src/mission_of_words/commercial_layout_proof_v2.py
 
       - name: Build 48-page commercial layout proof
-        run: python -m mission_of_words.commercial_layout_proof
+        run: python -m mission_of_words.commercial_layout_proof_v2
 
       - name: Verify proof outputs
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          report = json.loads(Path('output/commercial_layout/layout_report.json').read_text())
+          report = json.loads(Path('output/commercial_layout_v2/layout_report.json').read_text())
           assert report['paid_image_calls'] == 0, report
           assert report['page_count'] == 48, report
           assert report['status'] == 'PASS_LAYOUT_PROOF_CREATED', report
@@ -64,9 +64,9 @@ jobs:
       - name: Upload proof
         uses: actions/upload-artifact@v4
         with:
-          name: little-lampkeepers-commercial-layout-proof
+          name: little-lampkeepers-commercial-layout-proof-v2
           path: |
-            output/commercial_layout/LittleLampkeepers_48_Page_Commercial_Layout_Proof.pdf
-            output/commercial_layout/layout_report.json
-            output/commercial_layout/previews/
+            output/commercial_layout_v2/LittleLampkeepers_48_Page_Commercial_Layout_Proof_V2.pdf
+            output/commercial_layout_v2/layout_report.json
+            output/commercial_layout_v2/previews/
           if-no-files-found: error
