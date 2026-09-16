@@ -1,0 +1,11 @@
+{
+  "paid_calls_enabled": false,
+  "allow_paid_image_calls": false,
+  "max_usd": 0.0,
+  "max_paid_calls": 0,
+  "spent_usd": 0.0,
+  "spent_calls": 0,
+  "currency": "USD",
+  "owner_only_changes": true,
+    "notes": "Zero-defect 4-page prototype pass: paid image generation is disabled. Owner must later enable a protected paid-image gate before any spend."
+}

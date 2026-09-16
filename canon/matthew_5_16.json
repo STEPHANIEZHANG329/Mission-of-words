@@ -1,0 +1,18 @@
+{
+  "canon_id": "matthew_5_16",
+  "translation": "KJV",
+  "source_edition": "1769 Oxford KJV (public domain)",
+  "reference": "Matthew 5:16",
+  "source_text": "Let your light so shine before men, that they may see your good works, and glorify your Father which is in heaven.",
+  "child_paraphrase": "Let your light shine so people can see the good things you do, and thank God.",
+  "allowed_visual_motifs": [
+    "light",
+    "good works",
+    "glorify the Father"
+  ],
+  "forbidden_claims": [
+    "Do not invent extra narrative as scripture",
+    "Do not treat activity-book props such as lanterns, pumpkins, or fall scenes as facts from this verse",
+    "Do not add verses, names, or events that are not in Matthew 5:16"
+  ]
+}

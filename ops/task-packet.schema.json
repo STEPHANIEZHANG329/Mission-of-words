@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mission-of-words.local/ops/task-packet.schema.json",
+  "title": "ChatGPT-to-Cursor Task Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "request_id",
+    "goal",
+    "book_id",
+    "mission_id",
+    "paid_calls_allowed",
+    "max_paid_calls",
+    "acceptance_checks",
+    "out_of_scope"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Idempotency key for this packet. A retry that changes work needs a new request_id."
+    },
+    "goal": { "type": "string", "minLength": 1 },
+    "book_id": { "type": "string", "minLength": 1 },
+    "mission_id": { "type": "string", "minLength": 1 },
+    "allowed_files": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "paid_calls_allowed": {
+      "type": "boolean",
+      "description": "Must stay false until Owner implements a protected paid-image gate."
+    },
+    "max_paid_calls": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Must stay 0 while paid generation is disabled."
+    },
+    "acceptance_checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "out_of_scope": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}
