@@ -1,0 +1,32 @@
+{
+  "interior": {
+    "pages": 48,
+    "width_in": 8.5,
+    "height_in": 11.0,
+    "font_resources": [
+      "/F1",
+      "/F2+0",
+      "/F3+0",
+      "/F4+0",
+      "/F5+0",
+      "/F6+0",
+      "/F7+0"
+    ]
+  },
+  "cover": {
+    "pages": 1,
+    "width_in": 17.35809722222222,
+    "height_in": 11.25,
+    "font_resources": [
+      "/F1",
+      "/F2+0",
+      "/F3+0",
+      "/F4+0"
+    ]
+  },
+  "contact_sheet_bytes": 344794,
+  "page_count": 48,
+  "missions": 8,
+  "assets_planned": 44,
+  "pass": true
+}
