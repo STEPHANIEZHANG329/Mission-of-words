@@ -2,8 +2,6 @@ __pycache__/
 .pytest_cache/
 .venv/
 venv/
-output/*.pdf
-output/*.png
-output/*.json
+output/*
 !output/.gitkeep
 .DS_Store

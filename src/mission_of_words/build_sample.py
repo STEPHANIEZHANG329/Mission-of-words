@@ -3,233 +3,113 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from reportlab.lib.pagesizes import inch
 from reportlab.pdfgen import canvas
 
-from mission_of_words.maze import Maze, generate_maze
+from mission_of_words.bible import bind_mission_canon
+from mission_of_words.image_client import paid_call_count
+from mission_of_words.layout import PAGE_H, PAGE_W
+from mission_of_words.maze import generate_maze
+from mission_of_words.page_coloring import draw_coloring_page
+from mission_of_words.page_faith import draw_faith_page
+from mission_of_words.page_maze import draw_maze_page
+from mission_of_words.page_search import build_search_scene, draw_search_find_page
+from mission_of_words.paths import MISSION_SPEC, OUTPUT_DIR, ROOT
+from mission_of_words.qa import evaluate_build, write_report
+from mission_of_words.render import contact_sheet, render_pdf_pages
+from mission_of_words.visual_qa import evaluate_visual, write_visual_qa_markdown
 
-ROOT = Path(__file__).resolve().parents[2]
-CONTENT = ROOT / "content" / "mission_01.json"
-OUTPUT = ROOT / "output"
-PAGE_W = 8.5 * inch
-PAGE_H = 11 * inch
-MARGIN = 0.5 * inch
+INTERIOR_PDF = OUTPUT_DIR / "BrightHearts_ShineYourLight_Interior.pdf"
+ANSWER_PDF = OUTPUT_DIR / "BrightHearts_ShineYourLight_AnswerKey.pdf"
+ASSET_REGISTER = OUTPUT_DIR / "asset_register.json"
+VISUAL_REVIEW = ROOT / "content" / "books" / "bright_hearts_fall_01" / "visual_review.json"
 
 
 def load_spec() -> dict:
-    return json.loads(CONTENT.read_text(encoding="utf-8"))
+    return json.loads(MISSION_SPEC.read_text(encoding="utf-8"))
 
 
-def header(c: canvas.Canvas, title: str, subtitle: str | None = None) -> None:
-    c.setFont("Helvetica-Bold", 20)
-    c.drawCentredString(PAGE_W / 2, PAGE_H - MARGIN - 18, title)
-    if subtitle:
-        c.setFont("Helvetica", 12)
-        c.drawCentredString(PAGE_W / 2, PAGE_H - MARGIN - 38, subtitle)
-
-
-def draw_coloring_placeholder(c: canvas.Canvas, spec: dict) -> None:
-    page = spec["mission"]["pages"][0]
-    header(c, page["title"], spec["mission"]["scripture_reference"])
-    x = MARGIN + 18
-    y = MARGIN + 30
-    w = PAGE_W - 2 * MARGIN - 36
-    h = PAGE_H - 2 * MARGIN - 100
-    c.setLineWidth(2)
-    c.rect(x, y, w, h)
-    c.setFont("Helvetica-Bold", 15)
-    c.drawCentredString(PAGE_W / 2, y + h / 2 + 10, "ARTWORK PLACEHOLDER")
-    c.setFont("Helvetica", 12)
-    c.drawCentredString(PAGE_W / 2, y + h / 2 - 12, "No paid image was generated in Phase 0")
-
-
-def _target_icon(c: canvas.Canvas, name: str, x: float, y: float, s: float) -> None:
-    c.setLineWidth(1.5)
-    if name == "lantern":
-        c.rect(x, y, s * 0.7, s)
-        c.arc(x, y + s * 0.65, x + s * 0.7, y + s * 1.35, 0, 180)
-        c.line(x + s * 0.35, y, x + s * 0.35, y + s)
-    elif name == "pumpkin":
-        c.ellipse(x, y, x + s, y + s * 0.75)
-        c.line(x + s * 0.5, y + s * 0.75, x + s * 0.5, y + s)
-    elif name == "apple":
-        c.circle(x + s * 0.45, y + s * 0.42, s * 0.38)
-        c.line(x + s * 0.45, y + s * 0.8, x + s * 0.55, y + s)
-    elif name == "leaf":
-        c.ellipse(x, y, x + s, y + s * 0.5)
-        c.line(x, y, x + s, y + s * 0.5)
-    elif name == "acorn":
-        c.ellipse(x, y, x + s * 0.65, y + s * 0.8)
-        c.line(x, y + s * 0.58, x + s * 0.65, y + s * 0.58)
-    elif name == "scarf":
-        c.rect(x, y, s * 0.3, s)
-        c.rect(x + s * 0.32, y + s * 0.25, s * 0.3, s * 0.75)
-    elif name == "basket":
-        c.rect(x, y, s, s * 0.6)
-        c.arc(x, y + s * 0.25, x + s, y + s * 1.15, 0, 180)
-    elif name == "Bible":
-        c.rect(x, y, s * 0.9, s * 0.7)
-        c.line(x + s * 0.45, y + s * 0.14, x + s * 0.45, y + s * 0.56)
-        c.line(x + s * 0.30, y + s * 0.35, x + s * 0.60, y + s * 0.35)
-    else:
-        c.circle(x + s / 2, y + s / 2, s / 2)
-
-
-def draw_search_find(c: canvas.Canvas, spec: dict, answer_key: bool = False) -> None:
-    page = spec["mission"]["pages"][1]
-    title = page["title"] if not answer_key else "Search & Find — Answer Key"
-    header(c, title, page["instruction"] if not answer_key else "Phase 0 deterministic placement map")
-
-    scene_x = MARGIN + 20
-    scene_y = MARGIN + 95
-    scene_w = PAGE_W - 2 * MARGIN - 40
-    scene_h = PAGE_H - 2 * MARGIN - 155
-    c.setLineWidth(1.5)
-    c.rect(scene_x, scene_y, scene_w, scene_h)
-
-    # Simple deterministic placeholder background: ground, church, tree and table.
-    c.line(scene_x, scene_y + scene_h * 0.27, scene_x + scene_w, scene_y + scene_h * 0.27)
-    c.rect(scene_x + scene_w * 0.08, scene_y + scene_h * 0.28, scene_w * 0.24, scene_h * 0.30)
-    c.line(scene_x + scene_w * 0.08, scene_y + scene_h * 0.58, scene_x + scene_w * 0.20, scene_y + scene_h * 0.70)
-    c.line(scene_x + scene_w * 0.20, scene_y + scene_h * 0.70, scene_x + scene_w * 0.32, scene_y + scene_h * 0.58)
-    c.rect(scene_x + scene_w * 0.70, scene_y + scene_h * 0.28, scene_w * 0.18, scene_h * 0.10)
-    c.line(scene_x + scene_w * 0.56, scene_y + scene_h * 0.28, scene_x + scene_w * 0.56, scene_y + scene_h * 0.62)
-    c.circle(scene_x + scene_w * 0.56, scene_y + scene_h * 0.68, scene_w * 0.09)
-
-    for target in page["targets"]:
-        size = max(18, scene_w * target["scale"])
-        x = scene_x + target["x"] * (scene_w - size)
-        y = scene_y + target["y"] * (scene_h - size)
-        _target_icon(c, target["name"], x, y, size)
-        if answer_key:
-            c.setLineWidth(1)
-            c.circle(x + size * 0.45, y + size * 0.45, size * 0.75)
-            c.setFont("Helvetica", 9)
-            c.drawString(x, y + size + 2, target["name"])
-
-    if not answer_key:
-        c.setFont("Helvetica", 12)
-        labels = " • ".join(t["name"] for t in page["targets"])
-        c.drawCentredString(PAGE_W / 2, MARGIN + 54, labels)
-
-
-def draw_maze(c: canvas.Canvas, maze: Maze, title: str, show_solution: bool = False) -> None:
-    header(c, title, "Start → Finish")
-    box_x = MARGIN + 32
-    box_y = MARGIN + 55
-    box_w = PAGE_W - 2 * MARGIN - 64
-    box_h = PAGE_H - 2 * MARGIN - 125
-    cell = min(box_w / maze.cols, box_h / maze.rows)
-    maze_w = cell * maze.cols
-    maze_h = cell * maze.rows
-    x0 = (PAGE_W - maze_w) / 2
-    y0 = box_y + (box_h - maze_h) / 2
-
-    c.setLineWidth(1.5)
-    for r in range(maze.rows):
-        for col in range(maze.cols):
-            x = x0 + col * cell
-            y = y0 + (maze.rows - 1 - r) * cell
-            here = (r, col)
-            linked = maze.passages[here]
-            if (r - 1, col) not in linked:
-                c.line(x, y + cell, x + cell, y + cell)
-            if (r + 1, col) not in linked:
-                c.line(x, y, x + cell, y)
-            if (r, col - 1) not in linked:
-                c.line(x, y, x, y + cell)
-            if (r, col + 1) not in linked:
-                c.line(x + cell, y, x + cell, y + cell)
-
-    c.setFont("Helvetica-Bold", 12)
-    c.drawString(x0 + 3, y0 + maze_h + 6, "START")
-    c.drawRightString(x0 + maze_w - 3, y0 - 15, "FINISH")
-
-    if show_solution:
-        path = maze.solve()
-        c.setLineWidth(3)
-        points = []
-        for r, col in path:
-            px = x0 + (col + 0.5) * cell
-            py = y0 + (maze.rows - r - 0.5) * cell
-            points.append((px, py))
-        for a, b in zip(points, points[1:]):
-            c.line(a[0], a[1], b[0], b[1])
-
-
-def draw_faith_page(c: canvas.Canvas, spec: dict) -> None:
-    page = spec["mission"]["pages"][3]
-    header(c, page["title"], spec["mission"]["scripture_reference"])
-    y = PAGE_H - MARGIN - 85
-    c.setFont("Helvetica-Bold", 14)
-    c.drawString(MARGIN + 20, y, "Check one:")
-    y -= 28
-    c.setFont("Helvetica", 13)
-    for item in page["checkboxes"]:
-        c.rect(MARGIN + 26, y - 2, 13, 13)
-        c.drawString(MARGIN + 50, y, item)
-        y -= 28
-
-    c.setFont("Helvetica-Bold", 14)
-    c.drawString(MARGIN + 20, y - 4, page["drawing_prompt"])
-    draw_y = y - 230
-    c.setLineWidth(1.5)
-    c.rect(MARGIN + 20, draw_y, PAGE_W - 2 * MARGIN - 40, 190)
-
-    c.setFont("Helvetica-Bold", 14)
-    c.drawString(MARGIN + 20, draw_y - 40, "Prayer:")
-    c.setFont("Helvetica", 13)
-    c.drawString(MARGIN + 80, draw_y - 40, page["prayer"])
+def _load_visual_review() -> list[dict]:
+    if not VISUAL_REVIEW.is_file():
+        return []
+    payload = json.loads(VISUAL_REVIEW.read_text(encoding="utf-8"))
+    return list(payload.get("pages") or [])
 
 
 def build() -> dict:
     spec = load_spec()
-    OUTPUT.mkdir(parents=True, exist_ok=True)
-    sample_path = OUTPUT / "BrightHearts_ShineYourLight_Phase0.pdf"
-    answer_path = OUTPUT / "BrightHearts_ShineYourLight_AnswerKey.pdf"
+    canon = bind_mission_canon(spec)
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    asset_dir = OUTPUT_DIR / "assets"
+    asset_dir.mkdir(parents=True, exist_ok=True)
 
     maze_page = spec["mission"]["pages"][2]
     rows, cols = maze_page["grid"]
     maze = generate_maze(rows=rows, cols=cols, seed=maze_page["seed"])
 
-    c = canvas.Canvas(str(sample_path), pagesize=(PAGE_W, PAGE_H))
-    draw_coloring_placeholder(c, spec)
+    composed, manifest, asset_records = build_search_scene(spec, asset_dir)
+    ASSET_REGISTER.write_text(
+        json.dumps(
+            {
+                "paid_image_calls": 0,
+                "estimated_spend_usd": 0.0,
+                "model": "procedural-lineart",
+                "assets": asset_records,
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    compositions: list[dict] = []
+    c = canvas.Canvas(str(INTERIOR_PDF), pagesize=(PAGE_W, PAGE_H))
+    compositions.append(draw_coloring_page(c, spec, canon))
     c.showPage()
-    draw_search_find(c, spec, answer_key=False)
+    compositions.append(
+        draw_search_find_page(c, spec, composed, manifest, answer_key=False)
+    )
     c.showPage()
-    draw_maze(c, maze, maze_page["title"], show_solution=False)
+    compositions.append(draw_maze_page(c, spec, maze))
     c.showPage()
-    draw_faith_page(c, spec)
+    compositions.append(draw_faith_page(c, spec, canon))
     c.save()
 
-    a = canvas.Canvas(str(answer_path), pagesize=(PAGE_W, PAGE_H))
-    draw_search_find(a, spec, answer_key=True)
+    a = canvas.Canvas(str(ANSWER_PDF), pagesize=(PAGE_W, PAGE_H))
+    draw_search_find_page(a, spec, composed, manifest, answer_key=True)
     a.showPage()
-    draw_maze(a, maze, "Maze — Answer Key", show_solution=True)
+    draw_maze_page(a, spec, maze, answer_key=True, page_number=2)
     a.save()
 
-    min_font_pt = 12
-    qa = {
-        "phase": 0,
-        "paid_image_calls": 0,
-        "sample_pages": 4,
-        "trim_inches": spec["book"]["trim_inches"],
-        "safe_margin_inches": spec["book"]["safe_margin_inches"],
-        "minimum_instruction_font_pt": min_font_pt,
-        "search_find_target_count": len(spec["mission"]["pages"][1]["targets"]),
-        "search_find_targets_unique": len({t["name"] for t in spec["mission"]["pages"][1]["targets"]}) == 8,
-        "maze_solvable": bool(maze.solve()),
-        "maze_perfect_unique_path": maze.is_perfect(),
-        "artwork_status": "placeholder_only",
-        "pass": (
-            len(spec["mission"]["pages"][1]["targets"]) == 8
-            and len({t["name"] for t in spec["mission"]["pages"][1]["targets"]}) == 8
-            and maze.is_perfect()
-            and spec["book"]["safe_margin_inches"] >= 0.5
-            and min_font_pt >= 12
-        ),
-    }
-    (OUTPUT / "qa_report.json").write_text(json.dumps(qa, indent=2), encoding="utf-8")
+    preview_dir = OUTPUT_DIR / "previews"
+    previews = render_pdf_pages(INTERIOR_PDF, preview_dir, dpi=150, prefix="page")
+    render_pdf_pages(ANSWER_PDF, preview_dir, dpi=130, prefix="answer")
+    contact_sheet(previews, preview_dir / "contact_sheet.png")
+
+    visual = evaluate_visual(
+        compositions=compositions,
+        preview_paths=previews,
+        interior_pdf=INTERIOR_PDF,
+        human_findings=_load_visual_review(),
+    )
+    write_visual_qa_markdown(visual, OUTPUT_DIR / "visual_qa.md")
+    (OUTPUT_DIR / "visual_qa.json").write_text(json.dumps(visual, indent=2) + "\n", encoding="utf-8")
+    (OUTPUT_DIR / "compositions.json").write_text(
+        json.dumps(compositions, indent=2, default=str) + "\n", encoding="utf-8"
+    )
+
+    qa = evaluate_build(
+        spec=spec,
+        maze=maze,
+        paid_image_calls=paid_call_count(),
+        sample_pages=4,
+        search_manifest=manifest,
+        compositions=compositions,
+        interior_pdf=INTERIOR_PDF,
+        visual_qa_pass=visual["pass"],
+        preview_count=len(previews),
+        asset_records=asset_records,
+    )
+    write_report(qa)
     return qa
 
 
