@@ -1,0 +1,53 @@
+name: Cursor API Smoke Test
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/cursor-api-smoke-test.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cursor-api-smoke-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CURSOR: ${{ secrets.CURSOR }}
+    steps:
+      - name: Verify CURSOR secret exists
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${CURSOR:-}" ]; then
+            echo "CURSOR_SECRET_MISSING"
+            exit 1
+          fi
+          echo "CURSOR_SECRET_PRESENT"
+
+      - name: Verify Cursor Cloud Agents API authentication
+        shell: bash
+        run: |
+          set -euo pipefail
+          HTTP_CODE=$(curl --silent --show-error \
+            --output /tmp/cursor-response.json \
+            --write-out '%{http_code}' \
+            --user "${CURSOR}:" \
+            --header 'Accept: application/json' \
+            'https://api.cursor.com/v1/agents?limit=1')
+
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "CURSOR_API_AUTH_FAILED_HTTP_${HTTP_CODE}"
+            exit 1
+          fi
+
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('/tmp/cursor-response.json').read_text())
+          items = payload.get('items', []) if isinstance(payload, dict) else []
+          print('CURSOR_API_AUTH_OK')
+          print(f'CURSOR_API_REACHABLE agents_returned={len(items)}')
+          PY
