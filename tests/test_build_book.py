@@ -1,9 +1,10 @@
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
+from mission_of_words.brand import FORBIDDEN_CONSUMER_MARK, TITLE
 from mission_of_words.book_manifest import load_mission_records
 from mission_of_words.build_book import ANSWER_PDF, INTERIOR_PDF, build
-from mission_of_words.full_book_qa import evaluate_full_book
+from mission_of_words.full_book_qa import _pdf_text, evaluate_full_book
 from mission_of_words.image_client import paid_call_count
 from mission_of_words.maze import generate_maze
 from mission_of_words.page_search import build_search_scene_from_page
@@ -83,6 +84,9 @@ def test_build_book_phase_b_technical_proof_is_not_publishable():
     assert report["facing_page_parity_ok"] is True
     assert report["font_floors_ok"] is True
     assert INTERIOR_PDF.is_file()
+    interior_text = _pdf_text(INTERIOR_PDF)
+    assert TITLE in interior_text
+    assert FORBIDDEN_CONSUMER_MARK not in interior_text
     assert ANSWER_PDF.is_file()
     assert (OUTPUT_DIR / "qa_report.json").is_file()
     assert (OUTPUT_DIR / "visual_qa.md").is_file()

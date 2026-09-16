@@ -9,6 +9,7 @@ from reportlab.lib.units import inch
 from reportlab.lib.utils import ImageReader
 from reportlab.pdfgen import canvas
 
+from mission_of_words.brand import COVER_PDF_NAME, SERIES, SUBTITLE
 from mission_of_words.layout import TRIM_INCHES
 from mission_of_words.paths import OUTPUT_DIR
 from mission_of_words.text import ink_text, wrapped_text
@@ -19,8 +20,6 @@ SPINE_IN = PAGE_COUNT * 0.002252  # KDP white B&W
 WRAP_W_IN = BLEED_IN + TRIM_INCHES[0] + SPINE_IN + TRIM_INCHES[0] + BLEED_IN
 WRAP_H_IN = TRIM_INCHES[1] + 2 * BLEED_IN
 SAFE = 0.5 * inch
-TITLE = "Bright Hearts"
-SUBTITLE = "Shine Your Light This Fall"
 TAG = "A Christian Fall Activity Book for Kids Ages 5–8"
 BLURB = (
     "Eight Bible-first fall missions for ages 5-8: coloring, Search & Find, mazes, "
@@ -60,7 +59,7 @@ def draw_cover(c: canvas.Canvas, *, artwork: Path | None = None) -> dict:
     ink_text(c)
     c.setFillColor(white)
     c.setFont("Helvetica-Bold", 28)
-    c.drawString(text_left, ft - 1.1 * inch, TITLE)
+    c.drawString(text_left, ft - 1.1 * inch, SERIES)
     c.setFont("Helvetica-Bold", 16)
     wrapped_text(c, SUBTITLE, text_left, ft - 1.45 * inch, text_right - text_left, font="Helvetica-Bold", size=16, leading=20)
     c.setFont("Helvetica", 12)
@@ -70,7 +69,7 @@ def draw_cover(c: canvas.Canvas, *, artwork: Path | None = None) -> dict:
     back_right = spine_left - SAFE
     c.setFillColor(white)
     c.setFont("Helvetica-Bold", 16)
-    c.drawString(back_left, ft - 1.3 * inch, TITLE)
+    c.drawString(back_left, ft - 1.3 * inch, SERIES)
     wrapped_text(c, BLURB, back_left, ft - 1.7 * inch, back_right - back_left, size=12, leading=16)
     c.setFont("Helvetica", 10)
     c.drawString(back_left, fb + 0.7 * inch, "Ages 5–8  ·  Paperback  ·  8.5 × 11 in")
@@ -80,7 +79,7 @@ def draw_cover(c: canvas.Canvas, *, artwork: Path | None = None) -> dict:
     c.rotate(90)
     c.setFillColor(white)
     c.setFont("Helvetica-Bold", 9)
-    c.drawCentredString(0, -3, "Bright Hearts  ·  Shine Your Light This Fall")
+    c.drawCentredString(0, -3, f"{SERIES}  ·  {SUBTITLE}")
     c.restoreState()
     return {
         "trim_inches": list(TRIM_INCHES),
@@ -93,7 +92,7 @@ def draw_cover(c: canvas.Canvas, *, artwork: Path | None = None) -> dict:
 
 
 def write_cover_pdf(path: Path | None = None, artwork: Path | None = None) -> Path:
-    dest = path or (OUTPUT_DIR / "BrightHearts_Fall_Cover.pdf")
+    dest = path or (OUTPUT_DIR / COVER_PDF_NAME)
     dest.parent.mkdir(parents=True, exist_ok=True)
     w, h = wrap_points()
     c = canvas.Canvas(str(dest), pagesize=(w, h))

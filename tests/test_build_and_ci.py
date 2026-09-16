@@ -46,9 +46,13 @@ def test_pr_ci_workflow_never_receives_image_secrets():
     assert "secrets.GPT2" in paid
     assert "py_compile" in paid
     assert "from mission_of_words.production_qa import evaluate_production" in paid
+    assert "generate-assets:" in paid
+    assert "compose-production:" in paid
+    assert "needs: generate-assets" in paid
     assert "Upload generated assets immediately" in paid
-    assert paid.index("Upload generated assets immediately") < paid.index("Build production candidate")
-    assert paid.count("if: always()") >= 2
+    assert "push:" not in paid.split("jobs:")[0]
+    assert "RUN_PAID_GENERATION" not in paid
+    assert paid.count("if: always()") >= 4
     assert "max_paid" not in paid.lower() or "24" in (ROOT / "ops" / "phase_c_paid_gate.json").read_text()
     planning = ROOT / ".github" / "workflows" / "cursor-agent-architecture-plan.yml"
     assert not planning.exists()

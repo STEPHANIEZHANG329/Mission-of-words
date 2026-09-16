@@ -9,6 +9,7 @@ from reportlab.lib.utils import ImageReader
 from reportlab.pdfgen import canvas
 
 from mission_of_words import art
+from mission_of_words.brand import CERTIFICATE_HEADING, CERTIFICATE_LINE, CLOSING_HEADING
 from mission_of_words.geometry import BBox
 from mission_of_words.layout import USED_ANSWER_KEY_PT, USED_INSTRUCTION_PT, USED_TITLE_PT
 from mission_of_words.maze import Maze
@@ -23,7 +24,6 @@ from mission_of_words.templates import (
 )
 from mission_of_words.text import ink_text, wrapped_text
 
-CERTIFICATE_LINE = "This certifies that ________________________ completed the Bright Hearts Fall missions."
 DATE_LINE = "Date ________________________    Grown-up ________________________"
 ANSWER_LIST_PT = max(USED_ANSWER_KEY_PT, 11)
 
@@ -248,7 +248,7 @@ def draw_certificate(c: canvas.Canvas, book: dict, page_number: int = 47) -> dic
     plan = draw_activity_header(
         c,
         page_number,
-        mission_title="Bright Hearts Completion Certificate",
+        mission_title=CERTIFICATE_HEADING,
         activity_title="",
         instruction="Write your name and the date on the certificate.",
         box=(left + 18, bottom + 18, right - 18, top - 18),
@@ -291,7 +291,7 @@ def draw_closing_page(c: canvas.Canvas, book: dict, page_number: int = 48) -> di
     plan = draw_activity_header(
         c,
         page_number,
-        mission_title="Keep Shining, Bright Hearts",
+        mission_title=CLOSING_HEADING,
         activity_title="",
         instruction="Remember one way you can shine God's light this week.",
         box=box,

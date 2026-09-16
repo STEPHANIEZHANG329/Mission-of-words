@@ -2,17 +2,12 @@ name: Phase C GPT2 production generation
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - 'cursor/phase-c-gpt2-rebuild-9570'
-    paths:
-      - 'ops/RUN_PAID_GENERATION'
 
 permissions:
   contents: read
 
 jobs:
-  generate-and-compose:
+  generate-assets:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
@@ -46,7 +41,7 @@ jobs:
           set -euo pipefail
           python -m py_compile src/mission_of_words/production_qa.py src/mission_of_words/build_production.py src/mission_of_words/generate_assets.py src/mission_of_words/paid_images.py src/mission_of_words/asset_ledger.py
           python -c "from mission_of_words.production_qa import evaluate_production"
-          pytest -q
+          pytest -q tests/test_production_qa.py tests/test_generate_assets.py tests/test_paid_images.py tests/test_brand.py
 
       - name: Generate bounded GPT2 assets
         run: python -m mission_of_words.generate_assets --confirm OWNER_PHASE_C_GPT2_REBUILD
@@ -55,7 +50,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: bright-hearts-phase-c-assets
+          name: little-lampkeepers-phase-c-assets
           path: |
             assets/accepted/
             assets/raw/
@@ -65,43 +60,78 @@ jobs:
             output/generation_summary.json
           if-no-files-found: warn
 
-      - name: Build production candidate
-        if: success()
-        run: python -m mission_of_words.build_production
-
       - name: Summarize ledger without secrets
         if: always()
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          for name in (
-              'ops/asset_ledger.json',
-              'output/asset_ledger.json',
-              'output/generation_summary.json',
-              'output/qa_report.json',
-          ):
+          for name in ('ops/asset_ledger.json', 'output/asset_ledger.json', 'output/generation_summary.json'):
+              path = Path(name)
+              if not path.is_file():
+                  print('MISSING', name)
+                  continue
+              data = json.loads(path.read_text())
+              print(name, json.dumps({k: data[k] for k in data if k not in {'assets', 'packets'}}, indent=2))
+          PY
+
+  compose-production:
+    needs: generate-assets
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONPATH: src
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Download generated assets
+        if: always()
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: little-lampkeepers-phase-c-assets
+          path: .
+
+      - name: Build production candidate
+        run: python -m mission_of_words.build_production
+
+      - name: Summarize QA without secrets
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          for name in ('ops/asset_ledger.json', 'output/asset_ledger.json', 'output/generation_summary.json', 'output/qa_report.json'):
               path = Path(name)
               if not path.is_file():
                   print('MISSING', name)
                   continue
               data = json.loads(path.read_text())
               if name.endswith('qa_report.json'):
-                  keep = {k: data[k] for k in data if k != 'pages'}
-                  print(name, json.dumps(keep, indent=2)[:4000])
+                  print(name, json.dumps({k: data[k] for k in data if k != 'pages'}, indent=2)[:4000])
               else:
-                  print(name, json.dumps({k: data[k] for k in data if k != 'assets' and k != 'packets'}, indent=2))
+                  print(name, json.dumps({k: data[k] for k in data if k not in {'assets', 'packets'}}, indent=2))
           PY
 
       - name: Upload production artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: bright-hearts-phase-c-production
+          name: little-lampkeepers-phase-c-production
           path: |
-            output/BrightHearts_Fall_Interior.pdf
-            output/BrightHearts_Fall_AnswerKey.pdf
-            output/BrightHearts_Fall_Cover.pdf
+            output/LittleLampkeepers_Fall_Interior.pdf
+            output/LittleLampkeepers_Fall_AnswerKey.pdf
+            output/LittleLampkeepers_Fall_Cover.pdf
             output/qa_report.json
             output/visual_qa.json
             output/visual_qa.md

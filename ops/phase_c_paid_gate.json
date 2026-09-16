@@ -1,6 +1,6 @@
 {
-  "paid_calls_enabled": true,
-  "allow_paid_image_calls": true,
+  "paid_calls_enabled": false,
+  "allow_paid_image_calls": false,
   "max_usd": 60.0,
   "max_paid_calls": 24,
   "spent_usd": 3.6,
@@ -16,5 +16,6 @@
   "endpoint": "https://api.openai.com/v1/images/generations",
   "lost_run_url": "https://github.com/STEPHANIEZHANG329/Mission-of-words/actions/runs/35146572312",
   "lost_run_id": 35146572312,
-  "notes": "Phase C Owner-authorized bounded production run. Do not exceed 24 paid image requests. Repo ops/budget.json stays closed so ordinary PR CI cannot spend. Run 35146572312 billed 18 successful GPT2 images then lost the PNGs because artifact upload ran only after a later IndentationError. Those 18 calls stay billed. remaining_calls=6 is reserved for Owner-authorized repairs. Do not regenerate the 18 lost files without a raised cap."
+  "owner_stop": true,
+  "notes": "OWNER STOP 2026-09-16: do not spend until replacement-call authorization. Run 35146572312 billed 18 successful GPT2 images then lost the PNGs. Those 18 calls stay billed. remaining_calls=6 cannot replace 18 files. Recovering the lost production set requires 18 additional Owner-authorized calls (new cumulative cap 42) or an explicit 18-call replacement grant. Ordinary PR CI stays closed via ops/budget.json."
 }

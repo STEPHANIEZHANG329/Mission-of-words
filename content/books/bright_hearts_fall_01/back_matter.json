@@ -346,7 +346,7 @@
       "page": 47,
       "section": "back_matter",
       "type": "certificate",
-      "title": "Bright Hearts Completion Certificate",
+      "title": "Little Lampkeepers Completion Certificate",
       "mission_id": null,
       "mission_sequence": null,
       "mission_slot": null,
@@ -369,7 +369,7 @@
       "page": 48,
       "section": "back_matter",
       "type": "closing",
-      "title": "Keep Shining, Bright Hearts",
+      "title": "Keep Shining, Little Lampkeepers",
       "mission_id": null,
       "mission_sequence": null,
       "mission_slot": null,
@@ -384,7 +384,7 @@
       "answer_sources": [],
       "source_mission_page": null,
       "child_instruction_required": true,
-      "notes": "Final Bright Hearts closing page. Not a duplicate of the title page. Marked NON-PRODUCTION placeholder art in Phase B.",
+      "notes": "Final closing page. Not a duplicate of the title page. Marked NON-PRODUCTION placeholder art in Phase B.",
       "facing": "verso",
       "parity": "even"
     }

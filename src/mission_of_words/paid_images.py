@@ -66,6 +66,8 @@ def generation_authorized(*, confirm: str | None = None) -> tuple[bool, str]:
     if not secret_present():
         return False, "GPT2 secret is not present"
     gate = _gate()
+    if gate.get("owner_stop"):
+        return False, "Owner STOP is in effect; paid generation is closed"
     if not gate.get("paid_calls_enabled") or not gate.get("allow_paid_image_calls"):
         return False, "phase C paid gate is closed"
     if int(gate.get("max_paid_calls") or 0) > MAX_PAID_CALLS:

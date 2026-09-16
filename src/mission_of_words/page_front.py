@@ -5,6 +5,7 @@ from __future__ import annotations
 from reportlab.pdfgen import canvas
 
 from mission_of_words import art
+from mission_of_words.brand import SERIES_LINE, WELCOME_HEADING
 from mission_of_words.layout import USED_INSTRUCTION_PT, USED_SUBTITLE_PT
 from mission_of_words.proof import live_box
 from mission_of_words.templates import draw_activity_header
@@ -18,7 +19,7 @@ WELCOME_BODY = (
 )
 
 PARENT_NOTE = (
-    "Bright Hearts is Bible-first, not only Bible-themed. Each mission is locked to one "
+    "Little Lampkeepers is Bible-first, not only Bible-themed. Each mission is locked to one "
     "public-domain 1769 Oxford King James verse. Short quotations appear as source_text. "
     "The child paraphrase is labeled and is never mixed into the Bible wording. We do not "
     "use bulk copyrighted Bible text. Activities help ages 5-8 practice the verse with "
@@ -51,7 +52,7 @@ def draw_title_page(c: canvas.Canvas, book: dict, page_number: int = 1) -> dict:
     art.draw_heart(c, cx, y, 16)
     y -= 36
     c.setFont("Helvetica-Oblique", USED_INSTRUCTION_PT)
-    c.drawCentredString(cx, y, "A Bright Hearts Christian Fall Activity Book")
+    c.drawCentredString(cx, y, SERIES_LINE)
     y -= 28
     c.setFont("Helvetica", USED_INSTRUCTION_PT)
     c.drawCentredString(cx, bottom + 48, "Text rendered by code. Artwork slots are NON-PRODUCTION placeholders.")
@@ -63,7 +64,7 @@ def draw_welcome_page(c: canvas.Canvas, book: dict, page_number: int = 2) -> dic
     plan = draw_activity_header(
         c,
         page_number,
-        mission_title="Welcome, Bright Hearts",
+        mission_title=WELCOME_HEADING,
         activity_title="How to use this book",
         instruction="Read how to use the book, then start Mission 1 with a grown-up.",
         box=box,
@@ -88,7 +89,7 @@ def draw_welcome_page(c: canvas.Canvas, book: dict, page_number: int = 2) -> dic
     return _record(
         page_number,
         "welcome",
-        "Welcome, Bright Hearts",
+        WELCOME_HEADING,
         ["welcome_spot"],
         instruction="Read how to use the book, then start Mission 1 with a grown-up.",
         layout=plan.state.as_fields(),
@@ -130,7 +131,7 @@ def draw_parent_note_page(c: canvas.Canvas, book: dict, page_number: int = 4) ->
         page_number,
         mission_title="A Note for Parents and Caregivers",
         activity_title="Bible source note",
-        instruction="Bright Hearts is Bible-first. Each mission is locked to one public-domain verse.",
+        instruction="Little Lampkeepers is Bible-first. Each mission is locked to one public-domain verse.",
         box=box,
     )
     left, bottom, right, top = plan.art_box

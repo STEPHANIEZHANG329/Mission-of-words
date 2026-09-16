@@ -47,6 +47,14 @@ def test_generate_png_does_not_open_network_when_unauthorized(monkeypatch, tmp_p
         )
 
 
+def test_owner_stop_closes_paid_generation_even_with_secret(monkeypatch):
+    monkeypatch.setenv("ALLOW_PAID_IMAGE_CALLS", "1")
+    monkeypatch.setenv("GPT2", "must-not-be-used")
+    ok, reason = generation_authorized(confirm=CONFIRM_PHRASE)
+    assert ok is False
+    assert "STOP" in reason or "closed" in reason.lower()
+
+
 def test_owner_cap_is_24():
     assert MAX_PAID_CALLS == 24
     assert CONFIRM_PHRASE == "OWNER_PHASE_C_GPT2_REBUILD"

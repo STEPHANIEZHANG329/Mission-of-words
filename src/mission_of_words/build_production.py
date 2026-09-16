@@ -14,6 +14,7 @@ from reportlab.pdfgen import canvas
 
 from mission_of_words.asset_ledger import load_ledger, write_ledger
 from mission_of_words.bible import bind_mission_record
+from mission_of_words.brand import ANSWER_PDF_NAME, COVER_PDF_NAME, INTERIOR_PDF_NAME
 from mission_of_words.book_manifest import load_book_record, load_manifest, load_mission_records, write_manifest
 from mission_of_words.full_book_qa import export_page_map, write_full_book_report
 from mission_of_words.layout import PAGE_H, PAGE_W
@@ -38,9 +39,9 @@ from mission_of_words.raster import resample_to_print_box
 from mission_of_words.render import contact_sheet_grid, render_pdf_pages
 from mission_of_words.visual_qa import evaluate_visual, write_visual_qa_markdown
 
-INTERIOR_PDF = OUTPUT_DIR / "BrightHearts_Fall_Interior.pdf"
-ANSWER_PDF = OUTPUT_DIR / "BrightHearts_Fall_AnswerKey.pdf"
-COVER_PDF = OUTPUT_DIR / "BrightHearts_Fall_Cover.pdf"
+INTERIOR_PDF = OUTPUT_DIR / INTERIOR_PDF_NAME
+ANSWER_PDF = OUTPUT_DIR / ANSWER_PDF_NAME
+COVER_PDF = OUTPUT_DIR / COVER_PDF_NAME
 ACCEPTED = ASSETS_DIR / "accepted"
 
 

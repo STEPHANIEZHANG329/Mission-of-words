@@ -1,14 +1,12 @@
 # Mission-of-words
 
-Bright Hearts publishing production lab.
+Internal production lab for the **Little Lampkeepers** KDP interior (legacy repo/book ids may still say Bright Hearts).
 
-Current authorized work: **Phase C** of Issue #6 — GPT2 production rebuild on the Phase B 48-page factory. Ordinary PR CI still makes **zero** paid image calls. A separate workflow uses `secrets.GPT2` with a hard cap of **24** paid image requests.
+Current authorized work: **Phase C** of Issue #6 — GPT2 production rebuild on the Phase B 48-page factory. Ordinary PR CI still makes **zero** paid image calls. The paid GPT2 workflow is **dispatch-only** and currently **Owner-stopped**.
 
+- Consumer-facing title: `Little Lampkeepers: Shine Your Light This Fall`. Pages, cover, and listing copy must not display Bright Hearts.
 - Models draw; code decides. Final page text is rendered by code.
-- Reusable templates wrap long mission titles, keep the mission badge from colliding with headings, and fail closed on bbox collisions.
-- Search targets are code assets. Mazes are deterministic and unique. Faith in Action is code layout.
-- `technical_pass` and `production_pass` stay separate. `production_pass` cannot become true while placeholders, collisions, or missing visual review remain.
-- Paid spend is recorded in `ops/asset_ledger.json`. Already-billed asset ids are never requested again, even if PNG files were lost. Owner cap remains 24 (`remaining_calls` is 6 after run 35146572312).
+- Paid spend is recorded in `ops/asset_ledger.json`. 18 calls from run 35146572312 are billed and lost. `remaining_calls` is 6 and cannot replace 18 files. Do not regenerate without a raised cap.
 
 ```bash
 pip install -r requirements.txt
