@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - integrate-scriveno-3.8.0
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
