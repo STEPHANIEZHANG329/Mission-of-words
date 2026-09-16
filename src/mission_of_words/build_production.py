@@ -12,7 +12,7 @@ from pathlib import Path
 
 from reportlab.pdfgen import canvas
 
-from mission_of_words.asset_ledger import LEDGER_JSON, load_ledger
+from mission_of_words.asset_ledger import load_ledger, write_ledger
 from mission_of_words.bible import bind_mission_record
 from mission_of_words.book_manifest import load_book_record, load_manifest, load_mission_records, write_manifest
 from mission_of_words.full_book_qa import export_page_map, write_full_book_report
@@ -242,8 +242,7 @@ def build() -> dict:
     write_visual_qa_markdown(visual, OUTPUT_DIR / "visual_qa.md", title="Visual QA — Phase C production candidate")
     (OUTPUT_DIR / "visual_qa.json").write_text(json.dumps(visual, indent=2) + "\n", encoding="utf-8")
     (OUTPUT_DIR / "compositions.json").write_text(json.dumps(compositions, indent=2, default=str) + "\n", encoding="utf-8")
-    if LEDGER_JSON.is_file():
-        (OUTPUT_DIR / "asset_ledger.json").write_text(LEDGER_JSON.read_text(encoding="utf-8"), encoding="utf-8")
+    write_ledger(ledger)
 
     mazes = {mission_id: runtime["maze"] for mission_id, runtime in mission_runtime.items()}
     search_manifests = {

@@ -106,7 +106,12 @@ def evaluate_production(
     if visual.get("visual_readiness") != "PASS" or visual.get("pass") is not True:
         failures.append("independent visual QA is not PASS")
 
-failures.extend(answer_key_linkage_failures(manifest_pages=list(manifest.get("pages") or []), missions=missions))
+    failures.extend(
+        answer_key_linkage_failures(
+            manifest_pages=list(manifest.get("pages") or []),
+            missions=missions,
+        )
+    )
 
     technical_ok = (
         rendered == TARGET_PAGE_COUNT

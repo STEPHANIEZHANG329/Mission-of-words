@@ -42,7 +42,9 @@ jobs:
       - name: Run tests
         env:
           PYTHONPATH: src
-        run: pytest -q
+        run: |
+          python -m py_compile src/mission_of_words/production_qa.py src/mission_of_words/build_production.py
+          pytest -q
 
       - name: Evaluate 48-page blueprint (no PDF required)
         env:

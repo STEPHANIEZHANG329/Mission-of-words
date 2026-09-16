@@ -8,6 +8,7 @@ Current authorized work: **Phase C** of Issue #6 — GPT2 production rebuild on 
 - Reusable templates wrap long mission titles, keep the mission badge from colliding with headings, and fail closed on bbox collisions.
 - Search targets are code assets. Mazes are deterministic and unique. Faith in Action is code layout.
 - `technical_pass` and `production_pass` stay separate. `production_pass` cannot become true while placeholders, collisions, or missing visual review remain.
+- Paid spend is recorded in `ops/asset_ledger.json`. Already-billed asset ids are never requested again, even if PNG files were lost. Owner cap remains 24 (`remaining_calls` is 6 after run 35146572312).
 
 ```bash
 pip install -r requirements.txt

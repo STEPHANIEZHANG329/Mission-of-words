@@ -41,18 +41,46 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Compile and test before any paid image call
+        run: |
+          set -euo pipefail
+          python -m py_compile src/mission_of_words/production_qa.py src/mission_of_words/build_production.py src/mission_of_words/generate_assets.py src/mission_of_words/paid_images.py src/mission_of_words/asset_ledger.py
+          python -c "from mission_of_words.production_qa import evaluate_production"
+          pytest -q
+
       - name: Generate bounded GPT2 assets
         run: python -m mission_of_words.generate_assets --confirm OWNER_PHASE_C_GPT2_REBUILD
 
+      - name: Upload generated assets immediately
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bright-hearts-phase-c-assets
+          path: |
+            assets/accepted/
+            assets/raw/
+            ops/asset_ledger.json
+            ops/asset_ledger.jsonl
+            output/asset_ledger.json
+            output/generation_summary.json
+          if-no-files-found: warn
+
       - name: Build production candidate
+        if: success()
         run: python -m mission_of_words.build_production
 
       - name: Summarize ledger without secrets
+        if: always()
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          for name in ('output/asset_ledger.json', 'output/generation_summary.json', 'output/qa_report.json'):
+          for name in (
+              'ops/asset_ledger.json',
+              'output/asset_ledger.json',
+              'output/generation_summary.json',
+              'output/qa_report.json',
+          ):
               path = Path(name)
               if not path.is_file():
                   print('MISSING', name)
@@ -66,6 +94,7 @@ jobs:
           PY
 
       - name: Upload production artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: bright-hearts-phase-c-production
@@ -82,6 +111,7 @@ jobs:
             output/previews/
             assets/accepted/
             assets/raw/
+            ops/asset_ledger.json
             ops/asset_ledger.jsonl
             content/books/bright_hearts_fall_01/prompt_packets.json
-          if-no-files-found: error
+          if-no-files-found: warn

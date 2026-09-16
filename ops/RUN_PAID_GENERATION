@@ -2,3 +2,7 @@ OWNER_PHASE_C_GPT2_REBUILD
 This flag file is the Owner-authorized trigger for the bounded GPT2 production run.
 Max paid image calls: 24.
 Do not re-run by editing this file unless a repair pass is explicitly authorized.
+
+Incident 35146572312 billed 18/18 GPT2 images then lost the PNGs after a build IndentationError skipped artifact upload.
+This file change re-runs generate-and-compose so compile/tests run first and assets upload immediately.
+The committed ops/asset_ledger.json already records those 18 calls. generate_assets MUST skip them and spend 0 new paid calls. remaining_calls=6 is reserved for Owner-authorized repairs only.
