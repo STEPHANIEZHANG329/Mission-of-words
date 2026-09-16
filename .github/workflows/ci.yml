@@ -64,7 +64,14 @@ jobs:
           assert report['search_find_all_targets_present'] is True, report
           assert report['maze_solvable'] is True, report
           assert report['layout_ok'] is True, report
-          assert report['pass'] is True, report['failures']
+          assert report['facing_page_safety']['ok'] is True, report
+          assert report['search_find_print_space']['ok'] is True, report
+          assert report['technical_pass'] is True, report['technical_failures']
+          assert report['artwork_status'] == 'placeholder_only', report
+          assert report['visual_qa']['missing_evidence'] is True, report
+          assert report['prototype_pass'] is False, report
+          assert report['production_pass'] is False, report
+          assert report['pass'] is False, 'pass must not be true for placeholder artwork'
           PY
 
       - name: Upload QA evidence

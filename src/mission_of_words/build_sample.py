@@ -7,13 +7,15 @@ from reportlab.pdfgen import canvas
 from mission_of_words.bible import bind_mission_canon
 from mission_of_words.image_client import paid_call_count
 from mission_of_words.layout import (
-    MARGIN,
     PAGE_H,
     PAGE_W,
     USED_ANSWER_KEY_PT,
     USED_INSTRUCTION_PT,
     USED_PUZZLE_LETTER_PT,
     USED_TITLE_PT,
+    page_geometry,
+    search_find_print_space,
+    search_find_scene_rect,
 )
 from mission_of_words.maze import Maze, generate_maze
 from mission_of_words.paths import MISSION_SPEC, OUTPUT_DIR
@@ -53,29 +55,31 @@ def _draw_wrapped(
     return y
 
 
-def header(c: canvas.Canvas, title: str, subtitle: str | None = None) -> None:
+def header(c: canvas.Canvas, title: str, subtitle: str | None = None, *, page_number: int = 1) -> None:
+    geo = page_geometry(page_number)
     c.setFont("Helvetica-Bold", USED_TITLE_PT)
-    c.drawCentredString(PAGE_W / 2, PAGE_H - MARGIN - 18, title)
+    c.drawCentredString(PAGE_W / 2, PAGE_H - geo["top_pt"] - 18, title)
     if subtitle:
         c.setFont("Helvetica", USED_INSTRUCTION_PT)
-        c.drawCentredString(PAGE_W / 2, PAGE_H - MARGIN - 38, subtitle)
+        c.drawCentredString(PAGE_W / 2, PAGE_H - geo["top_pt"] - 38, subtitle)
 
 
 def draw_coloring_placeholder(c: canvas.Canvas, spec: dict, canon: dict) -> None:
     page = spec["mission"]["pages"][0]
-    header(c, page["title"], canon["reference"])
+    geo = page_geometry(1)
+    header(c, page["title"], canon["reference"], page_number=1)
     y = _draw_wrapped(
         c,
         canon["source_text"],
-        MARGIN + 20,
-        PAGE_H - MARGIN - 62,
-        PAGE_W - 2 * MARGIN - 40,
+        geo["left_pt"] + 20,
+        PAGE_H - geo["top_pt"] - 62,
+        PAGE_W - geo["left_pt"] - geo["right_pt"] - 40,
         size=USED_INSTRUCTION_PT,
     )
-    x = MARGIN + 18
+    x = geo["left_pt"] + 18
     box_top = y - 10
-    box_bottom = MARGIN + 30
-    w = PAGE_W - 2 * MARGIN - 36
+    box_bottom = geo["bottom_pt"] + 30
+    w = PAGE_W - geo["left_pt"] - geo["right_pt"] - 36
     h = box_top - box_bottom
     c.setLineWidth(2)
     c.rect(x, box_bottom, w, h)
@@ -123,17 +127,20 @@ def _target_icon(c: canvas.Canvas, name: str, x: float, y: float, s: float) -> N
 
 def draw_search_find(c: canvas.Canvas, spec: dict, answer_key: bool = False) -> None:
     page = spec["mission"]["pages"][1]
+    geo = page_geometry(2)
     title = page["title"] if not answer_key else "Search & Find — Answer Key"
     header(
         c,
         title,
         page["instruction"] if not answer_key else "Deterministic placement map",
+        page_number=2,
     )
 
-    scene_x = MARGIN + 20
-    scene_y = MARGIN + 95
-    scene_w = PAGE_W - 2 * MARGIN - 40
-    scene_h = PAGE_H - 2 * MARGIN - 155
+    scene = search_find_scene_rect(2)
+    scene_x = scene["x_pt"]
+    scene_y = scene["y_pt"]
+    scene_w = scene["width_pt"]
+    scene_h = scene["height_pt"]
     c.setLineWidth(1.5)
     c.rect(scene_x, scene_y, scene_w, scene_h)
 
@@ -146,29 +153,29 @@ def draw_search_find(c: canvas.Canvas, spec: dict, answer_key: bool = False) -> 
     c.line(scene_x + scene_w * 0.56, scene_y + scene_h * 0.28, scene_x + scene_w * 0.56, scene_y + scene_h * 0.62)
     c.circle(scene_x + scene_w * 0.56, scene_y + scene_h * 0.68, scene_w * 0.09)
 
-    for target in page["targets"]:
-        size = max(18, scene_w * target["scale"])
-        x = scene_x + target["x"] * (scene_w - size)
-        y = scene_y + target["y"] * (scene_h - size)
-        _target_icon(c, target["name"], x, y, size)
+    placements = search_find_print_space(page["targets"])
+    for item in placements["targets"]:
+        _target_icon(c, item["name"], item["x_pt"], item["y_pt"], item["width_pt"])
         if answer_key:
             c.setLineWidth(1)
-            c.circle(x + size * 0.45, y + size * 0.45, size * 0.75)
+            size = item["width_pt"]
+            c.circle(item["x_pt"] + size * 0.45, item["y_pt"] + size * 0.45, size * 0.75)
             c.setFont("Helvetica", USED_ANSWER_KEY_PT)
-            c.drawString(x, y + size + 2, target["name"])
+            c.drawString(item["x_pt"], item["y_pt"] + size + 2, item["name"])
 
     if not answer_key:
         c.setFont("Helvetica", USED_PUZZLE_LETTER_PT)
         labels = " • ".join(t["name"] for t in page["targets"])
-        c.drawCentredString(PAGE_W / 2, MARGIN + 54, labels)
+        c.drawCentredString(PAGE_W / 2, geo["bottom_pt"] + 54, labels)
 
 
-def draw_maze(c: canvas.Canvas, maze: Maze, title: str, show_solution: bool = False) -> None:
-    header(c, title, "Start → Finish")
-    box_x = MARGIN + 32
-    box_y = MARGIN + 55
-    box_w = PAGE_W - 2 * MARGIN - 64
-    box_h = PAGE_H - 2 * MARGIN - 125
+def draw_maze(c: canvas.Canvas, maze: Maze, title: str, show_solution: bool = False, *, page_number: int = 3) -> None:
+    geo = page_geometry(page_number)
+    header(c, title, "Start → Finish", page_number=page_number)
+    box_x = geo["left_pt"] + 32
+    box_y = geo["bottom_pt"] + 55
+    box_w = PAGE_W - geo["left_pt"] - geo["right_pt"] - 64
+    box_h = PAGE_H - geo["top_pt"] - geo["bottom_pt"] - 125
     cell = min(box_w / maze.cols, box_h / maze.rows)
     maze_w = cell * maze.cols
     maze_h = cell * maze.rows
@@ -209,38 +216,39 @@ def draw_maze(c: canvas.Canvas, maze: Maze, title: str, show_solution: bool = Fa
 
 def draw_faith_page(c: canvas.Canvas, spec: dict, canon: dict) -> None:
     page = spec["mission"]["pages"][3]
-    header(c, page["title"], canon["reference"])
-    y = PAGE_H - MARGIN - 70
+    geo = page_geometry(4)
+    header(c, page["title"], canon["reference"], page_number=4)
+    y = PAGE_H - geo["top_pt"] - 70
     c.setFont("Helvetica", USED_INSTRUCTION_PT)
-    c.drawString(MARGIN + 20, y, "For kids (not scripture):")
+    c.drawString(geo["left_pt"] + 20, y, "For kids (not scripture):")
     y = _draw_wrapped(
         c,
         canon["child_paraphrase"],
-        MARGIN + 20,
+        geo["left_pt"] + 20,
         y - 18,
-        PAGE_W - 2 * MARGIN - 40,
+        PAGE_W - geo["left_pt"] - geo["right_pt"] - 40,
         size=USED_INSTRUCTION_PT,
     )
     y -= 8
     c.setFont("Helvetica-Bold", 14)
-    c.drawString(MARGIN + 20, y, "Check one:")
+    c.drawString(geo["left_pt"] + 20, y, "Check one:")
     y -= 28
     c.setFont("Helvetica", 13)
     for item in page["checkboxes"]:
-        c.rect(MARGIN + 26, y - 2, 13, 13)
-        c.drawString(MARGIN + 50, y, item)
+        c.rect(geo["left_pt"] + 26, y - 2, 13, 13)
+        c.drawString(geo["left_pt"] + 50, y, item)
         y -= 28
 
     c.setFont("Helvetica-Bold", 14)
-    c.drawString(MARGIN + 20, y - 4, page["drawing_prompt"])
+    c.drawString(geo["left_pt"] + 20, y - 4, page["drawing_prompt"])
     draw_y = y - 210
     c.setLineWidth(1.5)
-    c.rect(MARGIN + 20, draw_y, PAGE_W - 2 * MARGIN - 40, 170)
+    c.rect(geo["left_pt"] + 20, draw_y, PAGE_W - geo["left_pt"] - geo["right_pt"] - 40, 170)
 
     c.setFont("Helvetica-Bold", 14)
-    c.drawString(MARGIN + 20, draw_y - 40, "Prayer:")
+    c.drawString(geo["left_pt"] + 20, draw_y - 40, "Prayer:")
     c.setFont("Helvetica", 13)
-    c.drawString(MARGIN + 80, draw_y - 40, page["prayer"])
+    c.drawString(geo["left_pt"] + 80, draw_y - 40, page["prayer"])
 
 
 def build() -> dict:
@@ -259,7 +267,7 @@ def build() -> dict:
     c.showPage()
     draw_search_find(c, spec, answer_key=False)
     c.showPage()
-    draw_maze(c, maze, maze_page["title"], show_solution=False)
+    draw_maze(c, maze, maze_page["title"], show_solution=False, page_number=3)
     c.showPage()
     draw_faith_page(c, spec, canon)
     c.save()
@@ -267,7 +275,7 @@ def build() -> dict:
     a = canvas.Canvas(str(answer_path), pagesize=(PAGE_W, PAGE_H))
     draw_search_find(a, spec, answer_key=True)
     a.showPage()
-    draw_maze(a, maze, "Maze — Answer Key", show_solution=True)
+    draw_maze(a, maze, "Maze — Answer Key", show_solution=True, page_number=3)
     a.save()
 
     qa = evaluate_build(spec=spec, maze=maze, paid_image_calls=paid_call_count(), sample_pages=4)
@@ -278,5 +286,5 @@ def build() -> dict:
 if __name__ == "__main__":
     result = build()
     print(json.dumps(result, indent=2))
-    if not result["pass"]:
+    if not result["technical_pass"]:
         raise SystemExit(1)

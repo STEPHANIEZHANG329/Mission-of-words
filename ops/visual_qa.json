@@ -1,0 +1,27 @@
+{
+  "asset_integration": {
+    "status": "missing",
+    "evidence_ref": null,
+    "notes": "No accepted artwork to integrate; placeholder vectors only."
+  },
+  "child_usability": {
+    "status": "missing",
+    "evidence_ref": null,
+    "notes": "No independent child-usability review is recorded."
+  },
+  "prompt_to_art": {
+    "status": "missing",
+    "evidence_ref": null,
+    "notes": "No image generation has been run; Prompt-to-Art cannot pass."
+  },
+  "pages": {
+    "1": { "status": "missing", "evidence_ref": null },
+    "2": { "status": "missing", "evidence_ref": null },
+    "3": { "status": "missing", "evidence_ref": null },
+    "4": { "status": "missing", "evidence_ref": null }
+  },
+  "owner_production_signoff": {
+    "status": "missing",
+    "evidence_ref": null
+  }
+}

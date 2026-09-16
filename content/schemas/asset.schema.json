@@ -34,6 +34,7 @@
     "sha256": { "type": "string", "minLength": 1 },
     "cost_usd": { "type": "number", "minimum": 0 },
     "attempts": { "type": "integer", "minimum": 0 },
-    "paid_call": { "type": "boolean" }
+    "paid_call": { "type": "boolean" },
+    "name": { "type": "string", "minLength": 1 }
   }
 }

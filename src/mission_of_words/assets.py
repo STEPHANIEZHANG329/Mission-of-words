@@ -108,3 +108,58 @@ def load_provenance(asset_id: str, root: Path | None = None) -> dict[str, Any]:
     if not path.is_file():
         raise AssetStoreError(f"missing provenance: {asset_id}")
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+REQUIRED_SEARCH_TARGET_NAMES = {
+    "lantern",
+    "pumpkin",
+    "apple",
+    "leaf",
+    "acorn",
+    "scarf",
+    "basket",
+    "Bible",
+}
+
+
+def accepted_artwork_inventory(root: Path | None = None) -> dict[str, Any]:
+    """Return whether required accepted artwork exists. Empty store is valid but incomplete."""
+    dirs = asset_dirs(root)
+    accepted = dirs["accepted"]
+    provenance_dir = dirs["provenance"]
+    roles: dict[str, list[str]] = {}
+    names: set[str] = set()
+    if accepted.is_dir():
+        for asset in _asset_files(accepted):
+            record: dict[str, Any] = {}
+            provenance_path = provenance_dir / f"{asset.stem}.json"
+            if provenance_path.is_file():
+                try:
+                    loaded = json.loads(provenance_path.read_text(encoding="utf-8"))
+                    if isinstance(loaded, dict):
+                        record = loaded
+                except json.JSONDecodeError:
+                    record = {}
+            role = str(record.get("role") or "other")
+            roles.setdefault(role, []).append(asset.stem)
+            if record.get("name"):
+                names.add(str(record["name"]))
+            elif role == "search_target":
+                names.add(asset.stem)
+    missing: list[str] = []
+    if not roles.get("coloring_background"):
+        missing.append("accepted coloring_background")
+    if not roles.get("search_background"):
+        missing.append("accepted search_background")
+    found_targets = names & REQUIRED_SEARCH_TARGET_NAMES
+    if found_targets != REQUIRED_SEARCH_TARGET_NAMES:
+        missing.append(
+            "accepted search_target assets for "
+            + ", ".join(sorted(REQUIRED_SEARCH_TARGET_NAMES - found_targets))
+        )
+    return {
+        "complete": not missing,
+        "missing": missing,
+        "roles": roles,
+        "search_target_names": sorted(found_targets),
+    }

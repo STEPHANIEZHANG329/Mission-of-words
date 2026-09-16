@@ -18,6 +18,7 @@ from mission_of_words.paths import (
     MISSION_SPEC,
     SCHEMA_DIR,
     TASK_PACKET_SCHEMA,
+    VISUAL_QA_PATH,
 )
 
 
@@ -97,6 +98,9 @@ def validate_repo() -> list[str]:
         )
     )
     errors.extend(validate_file(BUDGET_PATH, SCHEMA_DIR / "budget.schema.json", label="budget"))
+    errors.extend(
+        validate_file(VISUAL_QA_PATH, SCHEMA_DIR / "visual_qa.schema.json", label="visual_qa")
+    )
     if not TASK_PACKET_SCHEMA.is_file():
         errors.append("missing ops/task-packet.schema.json")
     else:

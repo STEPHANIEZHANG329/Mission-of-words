@@ -3,9 +3,13 @@ from mission_of_words.image_client import paid_call_count
 from mission_of_words.paths import OUTPUT_DIR, ROOT
 
 
-def test_build_sample_writes_passing_qa_and_pdfs():
+def test_build_sample_writes_technical_pass_without_production_pass():
     report = build()
-    assert report["pass"] is True
+    assert report["technical_pass"] is True
+    assert report["prototype_pass"] is False
+    assert report["production_pass"] is False
+    assert report["pass"] is False
+    assert report["artwork_status"] == "placeholder_only"
     assert report["paid_image_calls"] == 0
     assert paid_call_count() == 0
     assert (OUTPUT_DIR / "BrightHearts_ShineYourLight_Phase0.pdf").is_file()

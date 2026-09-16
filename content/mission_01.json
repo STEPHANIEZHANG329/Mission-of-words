@@ -7,6 +7,10 @@
     "dpi": 300,
     "interior": "black_and_white",
     "safe_margin_inches": 0.5,
+    "inner_margin_inches": 0.5,
+    "outer_margin_inches": 0.5,
+    "top_margin_inches": 0.5,
+    "bottom_margin_inches": 0.5,
     "min_instruction_pt": 12,
     "min_puzzle_letter_pt": 12,
     "min_answer_key_pt": 9

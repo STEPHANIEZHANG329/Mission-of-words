@@ -30,6 +30,10 @@
         "dpi": { "type": "integer", "const": 300 },
         "interior": { "type": "string" },
         "safe_margin_inches": { "type": "number", "minimum": 0.5 },
+        "inner_margin_inches": { "type": "number", "minimum": 0.5 },
+        "outer_margin_inches": { "type": "number", "minimum": 0.5 },
+        "top_margin_inches": { "type": "number", "minimum": 0.5 },
+        "bottom_margin_inches": { "type": "number", "minimum": 0.5 },
         "min_instruction_pt": { "type": "number", "minimum": 12 },
         "min_puzzle_letter_pt": { "type": "number", "minimum": 12 },
         "min_answer_key_pt": { "type": "number", "minimum": 9 }
