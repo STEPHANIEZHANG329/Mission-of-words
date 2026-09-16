@@ -1,0 +1,107 @@
+{
+  "book_id": "bright_hearts_fall_01",
+  "id": "mission_02",
+  "title": "God Made the Seasons",
+  "scripture_reference": "Genesis 1:14",
+  "canon_id": "genesis_1_14",
+  "sequence": 2,
+  "global_page_start": 9,
+  "pages": [
+    {
+      "page": 1,
+      "type": "coloring",
+      "title": "Lights for the Seasons",
+      "activity_mechanic": "integrated_coloring_sky_lights_orchard",
+      "art_roles": ["coloring_hero"],
+      "child_instruction": "Color the sun, moon, and stars above the orchard God made for the seasons.",
+      "bible_connection": "God made lights in the sky to mark day, night, seasons, days, and years.",
+      "visual_prompt": "Integrated black line-art coloring scene: evening orchard with a setting sun, rising moon, stars in a clear sky, apple trees, a simple path, and a child looking up. No letters in the artwork. Do not bake verse text into the drawing.",
+      "required_objects": [
+        "setting_sun",
+        "rising_moon",
+        "stars",
+        "apple_trees",
+        "orchard_path",
+        "child_looking_up"
+      ]
+    },
+    {
+      "page": 2,
+      "type": "search_find",
+      "title": "Find the Sky Signs",
+      "activity_mechanic": "search_find_sky_signs",
+      "art_roles": ["search_background", "search_target"],
+      "instruction": "Find and circle all 8 items.",
+      "child_instruction": "Find and circle all 8 sky signs. God made lights to mark seasons, days, and years.",
+      "bible_connection": "Noticing sun, moon, and stars is practice for remembering that God made the seasons.",
+      "visual_prompt": "Controlled dusk-orchard background without the eight targets. Independently placed sun disk, crescent moon, star, cloud, sundial, hourglass, sparrow, and season leaf.",
+      "required_objects": [
+        "search_background",
+        "sun_disk",
+        "crescent_moon",
+        "star",
+        "cloud",
+        "sundial",
+        "hourglass",
+        "sparrow",
+        "season_leaf"
+      ],
+      "targets": [
+        {"name": "sun_disk", "x": 0.08, "y": 0.18, "scale": 0.12},
+        {"name": "crescent_moon", "x": 0.72, "y": 0.16, "scale": 0.10},
+        {"name": "star", "x": 0.48, "y": 0.12, "scale": 0.08},
+        {"name": "cloud", "x": 0.28, "y": 0.22, "scale": 0.11},
+        {"name": "sundial", "x": 0.12, "y": 0.70, "scale": 0.12},
+        {"name": "hourglass", "x": 0.62, "y": 0.74, "scale": 0.10},
+        {"name": "sparrow", "x": 0.84, "y": 0.42, "scale": 0.09},
+        {"name": "season_leaf", "x": 0.40, "y": 0.82, "scale": 0.10}
+      ]
+    },
+    {
+      "page": 3,
+      "type": "maze",
+      "title": "Follow the Day to Night",
+      "activity_mechanic": "maze_sunrise_to_harvest_moon",
+      "art_roles": ["maze_scene"],
+      "child_instruction": "Start at the sunrise hill. Follow the path to the harvest moon.",
+      "bible_connection": "The path from day to night is a picture of the lights God made to divide day from night.",
+      "visual_prompt": "One hillside orchard scene: sunrise hill at START, unique hedge-and-path maze, harvest moon over the trees at FINISH. Not a maze pasted on a blank page.",
+      "required_objects": [
+        "sunrise_hill",
+        "orchard_maze",
+        "harvest_moon",
+        "start_label",
+        "finish_label"
+      ],
+      "start_label": "START",
+      "finish_label": "FINISH",
+      "difficulty": "medium_easy",
+      "seed": 20260917,
+      "grid": [8, 10]
+    },
+    {
+      "page": 4,
+      "type": "faith_interaction",
+      "title": "Thank God for the Seasons",
+      "activity_mechanic": "faith_season_noticing",
+      "art_roles": ["faith_frame"],
+      "child_instruction": "Check how you can notice God's seasons. Then draw your favorite time of day.",
+      "bible_connection": "Watching day, night, and seasons is one way a child can remember Genesis 1:14.",
+      "visual_prompt": "One sky-framed page: four illustrated choices, a large round sky drawing area, and a short prayer ribbon.",
+      "required_objects": [
+        "sky_frame",
+        "choice_cards",
+        "drawing_sky",
+        "prayer_ribbon"
+      ],
+      "choices": [
+        {"label": "Watch the sunrise", "icon": "sunrise"},
+        {"label": "Look for the moon", "icon": "moon"},
+        {"label": "Name this season", "icon": "leaf"},
+        {"label": "Thank God for today", "icon": "pray"}
+      ],
+      "drawing_prompt": "Draw your favorite time of day in God's sky",
+      "prayer": "God, thank You for the lights that mark our days."
+    }
+  ]
+}

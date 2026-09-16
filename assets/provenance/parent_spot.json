@@ -1,0 +1,8 @@
+{
+  "asset_id": "parent_spot",
+  "model": "gpt-image-2",
+  "size": "1024x1536",
+  "bytes": 1410804,
+  "prompt_chars": 1426,
+  "created_unix": 1789595202
+}

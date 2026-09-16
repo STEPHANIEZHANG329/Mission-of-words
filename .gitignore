@@ -1,0 +1,11 @@
+__pycache__/
+.pytest_cache/
+.venv/
+*.pyc
+.env
+assets/generated/*.png
+assets/generated/*.tmp
+output/*.png
+output/_pages/
+output/page_pngs/
+.DS_Store

@@ -1,0 +1,22 @@
+{
+  "canon_id": "ephesians_4_32",
+  "translation": "KJV",
+  "source_edition": "1769 Oxford KJV (public domain)",
+  "reference": "Ephesians 4:32",
+  "source_text": "And be ye kind one to another, tenderhearted, forgiving one another, even as God for Christ's sake hath forgiven you.",
+  "child_paraphrase": "Be kind and gentle to each other, and forgive, because God has forgiven you.",
+  "license": "public_domain",
+  "license_note": "Short quotation of the 1769 Oxford King James Version. That edition is public domain in the United States. No bulk copyrighted Bible text is used.",
+  "lock_note": "Issue #6 Mission 6 lock: Kindness at the Fall Festival. Ephesians 4:32 is the source-locked kindness verse; no substitute was needed.",
+  "allowed_visual_motifs": [
+    "kindness",
+    "tender heart",
+    "forgiving one another",
+    "God has forgiven"
+  ],
+  "forbidden_claims": [
+    "Do not invent extra narrative as scripture",
+    "Do not treat festival tickets, games, or other fall props as facts from this verse",
+    "Do not add verses, names, or events that are not in Ephesians 4:32"
+  ]
+}

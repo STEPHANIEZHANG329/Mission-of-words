@@ -1,0 +1,8 @@
+{
+  "asset_id": "gratitude_spot",
+  "model": "gpt-image-2",
+  "size": "1024x1536",
+  "bytes": 1548298,
+  "prompt_chars": 1372,
+  "created_unix": 1789598913
+}

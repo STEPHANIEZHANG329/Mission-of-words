@@ -1,0 +1,8 @@
+{
+  "asset_id": "welcome_cast",
+  "model": "gpt-image-2",
+  "size": "1024x1536",
+  "bytes": 1886539,
+  "prompt_chars": 1425,
+  "created_unix": 1789595020
+}

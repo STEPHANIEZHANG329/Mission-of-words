@@ -1,0 +1,55 @@
+{
+  "pages_rendered": 48,
+  "maze_openings": [
+    {
+      "mission": "mission_01",
+      "start_ink": 0.0,
+      "finish_ink": 0.0,
+      "closed_west_ink": 0.42857142857142855
+    },
+    {
+      "mission": "mission_02",
+      "start_ink": 0.0,
+      "finish_ink": 0.0,
+      "closed_west_ink": 0.42857142857142855
+    },
+    {
+      "mission": "mission_03",
+      "start_ink": 0.0,
+      "finish_ink": 0.0,
+      "closed_west_ink": 0.42857142857142855
+    },
+    {
+      "mission": "mission_04",
+      "start_ink": 0.0,
+      "finish_ink": 0.0,
+      "closed_west_ink": 0.42857142857142855
+    },
+    {
+      "mission": "mission_05",
+      "start_ink": 0.0,
+      "finish_ink": 0.0,
+      "closed_west_ink": 0.42857142857142855
+    },
+    {
+      "mission": "mission_06",
+      "start_ink": 0.0,
+      "finish_ink": 0.0,
+      "closed_west_ink": 0.42857142857142855
+    },
+    {
+      "mission": "mission_07",
+      "start_ink": 0.0,
+      "finish_ink": 0.0,
+      "closed_west_ink": 0.42857142857142855
+    },
+    {
+      "mission": "mission_08",
+      "start_ink": 0.0,
+      "finish_ink": 0.0,
+      "closed_west_ink": 0.42857142857142855
+    }
+  ],
+  "paid_calls_this_repair": 0,
+  "pass": true
+}

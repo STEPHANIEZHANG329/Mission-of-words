@@ -1,0 +1,5 @@
+OWNER_APPROVES_PAID_IMAGE_GENERATION
+cap=48
+secret=GPT2
+provider=openai_images_api
+book=Little Lampkeepers 48-page KDP interior + cover

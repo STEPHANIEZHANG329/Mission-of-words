@@ -1,0 +1,22 @@
+{
+  "canon_id": "hebrews_13_16",
+  "translation": "KJV",
+  "source_edition": "1769 Oxford KJV (public domain)",
+  "reference": "Hebrews 13:16",
+  "source_text": "But to do good and to communicate forget not: for with such sacrifices God is well pleased.",
+  "child_paraphrase": "Do not forget to do good and to share with others. God is pleased when we give.",
+  "license": "public_domain",
+  "license_note": "Short quotation of the 1769 Oxford King James Version. That edition is public domain in the United States. No bulk copyrighted Bible text is used.",
+  "lock_note": "Issue #6 Mission 5 lock: Share the Harvest. KJV 'communicate' is locked as sharing/giving, not modern talking.",
+  "allowed_visual_motifs": [
+    "do good",
+    "share with others",
+    "God is pleased"
+  ],
+  "forbidden_claims": [
+    "Do not invent extra narrative as scripture",
+    "Do not treat harvest baskets or neighbor porches as facts from this verse",
+    "Do not read 'communicate' as 'talk more'; this verse is about doing good and sharing",
+    "Do not add verses, names, or events that are not in Hebrews 13:16"
+  ]
+}

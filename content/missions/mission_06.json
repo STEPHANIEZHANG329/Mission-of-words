@@ -1,0 +1,107 @@
+{
+  "book_id": "bright_hearts_fall_01",
+  "id": "mission_06",
+  "title": "Kindness at the Fall Festival",
+  "scripture_reference": "Ephesians 4:32",
+  "canon_id": "ephesians_4_32",
+  "sequence": 6,
+  "global_page_start": 25,
+  "pages": [
+    {
+      "page": 1,
+      "type": "coloring",
+      "title": "Be Kind One to Another",
+      "activity_mechanic": "integrated_coloring_include_a_friend",
+      "art_roles": ["coloring_hero"],
+      "child_instruction": "Color the children inviting a lonely child to join the festival game.",
+      "bible_connection": "Inviting someone in is a picture of being kind and tenderhearted, as Ephesians 4:32 teaches.",
+      "visual_prompt": "Integrated black line-art coloring scene: fall-festival game booth, two children waving a lonely child over to an extra chair, cider cups on a rail, a ring-toss game. Not a copy of Mission 1's church-and-lanterns scene. No letters in the artwork.",
+      "required_objects": [
+        "game_booth",
+        "ring_toss",
+        "inviting_children",
+        "lonely_child",
+        "extra_chair",
+        "cider_cups"
+      ]
+    },
+    {
+      "page": 2,
+      "type": "search_find",
+      "title": "Find the Kindness Gifts",
+      "activity_mechanic": "search_find_kindness_gifts",
+      "art_roles": ["search_background", "search_target"],
+      "instruction": "Find and circle all 8 items.",
+      "child_instruction": "Find and circle all 8 kindness gifts. Each one can help you be kind at the festival.",
+      "bible_connection": "Looking for kindness gifts is practice for being kind, tenderhearted, and ready to forgive.",
+      "visual_prompt": "Controlled festival-booth background without the eight targets. Independently placed ticket, cider cup, kind note, extra chair, smile badge, bandage, shared pretzel, and extra game ring.",
+      "required_objects": [
+        "search_background",
+        "ticket",
+        "cider_cup",
+        "kind_note",
+        "extra_chair",
+        "smile_badge",
+        "bandage",
+        "shared_pretzel",
+        "game_ring"
+      ],
+      "targets": [
+        {"name": "ticket", "x": 0.08, "y": 0.24, "scale": 0.10},
+        {"name": "cider_cup", "x": 0.74, "y": 0.30, "scale": 0.09},
+        {"name": "kind_note", "x": 0.46, "y": 0.20, "scale": 0.10},
+        {"name": "extra_chair", "x": 0.14, "y": 0.70, "scale": 0.12},
+        {"name": "smile_badge", "x": 0.58, "y": 0.62, "scale": 0.09},
+        {"name": "bandage", "x": 0.34, "y": 0.82, "scale": 0.09},
+        {"name": "shared_pretzel", "x": 0.82, "y": 0.74, "scale": 0.11},
+        {"name": "game_ring", "x": 0.64, "y": 0.84, "scale": 0.08}
+      ]
+    },
+    {
+      "page": 3,
+      "type": "maze",
+      "title": "Bring a Friend to the Game",
+      "activity_mechanic": "maze_lonely_child_to_game_table",
+      "art_roles": ["maze_scene"],
+      "child_instruction": "Start at the child sitting alone. Follow the path to the game table.",
+      "bible_connection": "Walking over to include a friend is a picture of being kind one to another.",
+      "visual_prompt": "One festival-grounds scene: child on a bench at START, unique booth-and-path maze, game table with an extra chair at FINISH. Not a maze pasted on a blank page.",
+      "required_objects": [
+        "child_on_bench",
+        "booth_maze",
+        "game_table",
+        "start_label",
+        "finish_label"
+      ],
+      "start_label": "START",
+      "finish_label": "FINISH",
+      "difficulty": "medium_easy",
+      "seed": 20260921,
+      "grid": [9, 9]
+    },
+    {
+      "page": 4,
+      "type": "faith_interaction",
+      "title": "How Can You Be Kind?",
+      "activity_mechanic": "faith_kindness_choices",
+      "art_roles": ["faith_frame"],
+      "child_instruction": "Check ways you can be kind. Then draw yourself saving a seat for a friend.",
+      "bible_connection": "These choices help a child practice being kind, tenderhearted, and forgiving.",
+      "visual_prompt": "One chair-framed page: four illustrated choices, a large extra-chair drawing area, and a short prayer ribbon.",
+      "required_objects": [
+        "chair_frame",
+        "choice_cards",
+        "drawing_extra_chair",
+        "prayer_ribbon"
+      ],
+      "choices": [
+        {"label": "Use kind words", "icon": "words"},
+        {"label": "Include someone", "icon": "include"},
+        {"label": "Forgive a friend", "icon": "forgive"},
+        {"label": "Share a turn", "icon": "turn"}
+      ],
+      "drawing_prompt": "Draw yourself saving a seat for a friend",
+      "prayer": "Jesus, help me be kind and ready to forgive."
+    }
+  ]
+}

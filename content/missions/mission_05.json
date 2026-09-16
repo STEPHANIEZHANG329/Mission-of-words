@@ -1,0 +1,107 @@
+{
+  "book_id": "bright_hearts_fall_01",
+  "id": "mission_05",
+  "title": "Share the Harvest",
+  "scripture_reference": "Hebrews 13:16",
+  "canon_id": "hebrews_13_16",
+  "sequence": 5,
+  "global_page_start": 21,
+  "pages": [
+    {
+      "page": 1,
+      "type": "coloring",
+      "title": "Do Good and Share",
+      "activity_mechanic": "integrated_coloring_porch_sharing",
+      "art_roles": ["coloring_hero"],
+      "child_instruction": "Color the children sharing extra bread and apples at a neighbor's porch.",
+      "bible_connection": "Sharing food is one way to do good, which Hebrews 13:16 says pleases God.",
+      "visual_prompt": "Integrated black line-art coloring scene: two children on a neighbor porch handing over a basket of apples and a loaf, an older neighbor at the door, extra jars on the step. Not the Mission 1 church festival. No letters in the artwork.",
+      "required_objects": [
+        "sharing_children",
+        "neighbor_porch",
+        "apple_basket",
+        "shared_loaf",
+        "neighbor_at_door",
+        "jars_on_step"
+      ]
+    },
+    {
+      "page": 2,
+      "type": "search_find",
+      "title": "Find What We Can Share",
+      "activity_mechanic": "search_find_things_to_share",
+      "art_roles": ["search_background", "search_target"],
+      "instruction": "Find and circle all 8 items.",
+      "child_instruction": "Find and circle all 8 things we can share. Sharing is a way to do good.",
+      "bible_connection": "Each item is a picture of doing good and sharing, which God is pleased with.",
+      "visual_prompt": "Controlled porch-and-yard background without the eight targets. Independently placed extra apple, loaf, soup pot, empty bowl, pair of gloves, jar of jam, note card, and wagon.",
+      "required_objects": [
+        "search_background",
+        "extra_apple",
+        "shared_loaf",
+        "soup_pot",
+        "empty_bowl",
+        "pair_of_gloves",
+        "jam_jar",
+        "note_card",
+        "wagon"
+      ],
+      "targets": [
+        {"name": "extra_apple", "x": 0.16, "y": 0.30, "scale": 0.09},
+        {"name": "shared_loaf", "x": 0.68, "y": 0.76, "scale": 0.12},
+        {"name": "soup_pot", "x": 0.44, "y": 0.70, "scale": 0.11},
+        {"name": "empty_bowl", "x": 0.08, "y": 0.74, "scale": 0.10},
+        {"name": "pair_of_gloves", "x": 0.82, "y": 0.58, "scale": 0.10},
+        {"name": "jam_jar", "x": 0.30, "y": 0.82, "scale": 0.09},
+        {"name": "note_card", "x": 0.56, "y": 0.28, "scale": 0.10},
+        {"name": "wagon", "x": 0.04, "y": 0.46, "scale": 0.12}
+      ]
+    },
+    {
+      "page": 3,
+      "type": "maze",
+      "title": "Take the Extra Basket",
+      "activity_mechanic": "maze_basket_to_neighbor_door",
+      "art_roles": ["maze_scene"],
+      "child_instruction": "Start at the extra basket. Follow the path to the neighbor's door.",
+      "bible_connection": "Taking the extra basket to a neighbor is a picture of doing good and sharing.",
+      "visual_prompt": "One village-lane scene: extra harvest basket at START, unique fence-and-path maze, neighbor door with a welcome mat at FINISH. Not a maze pasted on a blank page.",
+      "required_objects": [
+        "extra_basket",
+        "fence_maze",
+        "neighbor_door",
+        "start_label",
+        "finish_label"
+      ],
+      "start_label": "START",
+      "finish_label": "FINISH",
+      "difficulty": "medium_easy",
+      "seed": 20260920,
+      "grid": [8, 11]
+    },
+    {
+      "page": 4,
+      "type": "faith_interaction",
+      "title": "How Can You Share This Week?",
+      "activity_mechanic": "faith_share_choices",
+      "art_roles": ["faith_frame"],
+      "child_instruction": "Check how you can share. Then draw one thing you can give.",
+      "bible_connection": "These choices are child-sized ways to do good and share, as Hebrews 13:16 teaches.",
+      "visual_prompt": "One basket-framed page: four illustrated choices, a large open-basket drawing area, and a short prayer ribbon.",
+      "required_objects": [
+        "basket_frame",
+        "choice_cards",
+        "drawing_open_basket",
+        "prayer_ribbon"
+      ],
+      "choices": [
+        {"label": "Share food", "icon": "apple"},
+        {"label": "Share time", "icon": "clock"},
+        {"label": "Share a smile", "icon": "smile"},
+        {"label": "Share a coat or toy", "icon": "coat"}
+      ],
+      "drawing_prompt": "Draw one thing you can share this week",
+      "prayer": "God, help me remember to do good and to share."
+    }
+  ]
+}
