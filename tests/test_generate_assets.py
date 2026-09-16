@@ -12,7 +12,7 @@ from mission_of_words.paths import ROOT
 def test_committed_ledger_counts_lost_run_against_the_cap():
     ledger = load_ledger()
     assert ledger["paid_image_calls"] == 18
-    assert remaining_calls(ledger, cap=24) == 6
+    assert remaining_calls(ledger) == 0
     billed = billed_asset_ids(ledger)
     assert "cast_reference_sheet" in billed
     assert "cover_front" in billed
@@ -66,7 +66,7 @@ def test_generate_skips_billed_assets_without_files_and_does_not_call_network(mo
     assert summary["generated"] == []
     assert summary["new_paid_calls"] == 0
     assert summary["paid_image_calls"] == 18
-    assert summary["remaining_calls"] == 6
+    assert summary["remaining_calls"] == 0
     assert len(summary["skipped"]) == 18
     assert len(summary["missing_after_paid_call"]) == 18
     assert "Do not regenerate" in summary["blocker"]

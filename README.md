@@ -6,7 +6,7 @@ Current authorized work: **Phase C** of Issue #6 — GPT2 production rebuild on 
 
 - Consumer-facing title: `Little Lampkeepers: Shine Your Light This Fall`. Pages, cover, and listing copy must not display Bright Hearts.
 - Models draw; code decides. Final page text is rendered by code.
-- Paid spend is recorded in `ops/asset_ledger.json`. 18 calls from run 35146572312 are billed and lost. `remaining_calls` is 6 and cannot replace 18 files. Do not regenerate without a raised cap.
+- Paid spend is recorded in `ops/asset_ledger.json`. 18 calls from run 35146572312 are billed and lost. `remaining_calls` is **0**. Do not regenerate. Rebuild page architecture at zero cost before asking the Owner about paid art.
 
 ```bash
 pip install -r requirements.txt

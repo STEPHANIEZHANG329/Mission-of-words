@@ -52,7 +52,7 @@ def test_hero_header_uses_larger_instruction_type():
     )
     assert plan.state.ok(), plan.state.as_fields()
     art_h = plan.art_box[3] - plan.art_box[1]
-    assert art_h > 400
+    assert art_h > 480
 
 
 def test_odd_even_headers_stay_inside_safety():

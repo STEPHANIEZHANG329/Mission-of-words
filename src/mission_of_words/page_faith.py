@@ -100,7 +100,7 @@ def draw_faith_page(
     choices = page["choices"]
     gap = 12
     card_w = (inner_width - gap) / 2
-    card_h = 70
+    card_h = 88
     checkbox = MIN_CHECKBOX_INCHES * inch
     cards_bottom = y - 2 * (card_h + gap) + gap
     for index, choice in enumerate(choices):

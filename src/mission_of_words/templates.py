@@ -35,14 +35,14 @@ from mission_of_words.layout import (
 )
 from mission_of_words.text import ink_text
 
-BADGE_PT = 10
-BADGE_LEADING = 12
+BADGE_PT = 9
+BADGE_LEADING = 11
 ACTIVITY_TITLE_PT = 16
-REFERENCE_PT = 12
+REFERENCE_PT = 11
 HERO_INSTRUCTION_PT = 14
 HERO_INSTRUCTION_LEADING = 18
-HEADER_GAP = 8
-ART_GAP = 12
+HEADER_GAP = 6
+ART_GAP = 10
 FOOTER_PT = 10
 MIN_TITLE_PT = 20
 INK = Color(0.07, 0.07, 0.07)
@@ -68,22 +68,22 @@ def draw_badge(
     y_top: float,
     number: int,
     draw: bool,
+    activity_label: str = "",
 ) -> BBox:
+    """Compact mission identifier. A small kicker line, not a competing chip."""
     label = f"MISSION {int(number)}"
+    if activity_label:
+        label = f"{label}  ·  {activity_label.upper()}"
     font, size = "Helvetica-Bold", BADGE_PT
     text_w = c.stringWidth(label, font, size)
-    pad_x, pad_y = 9, 5
-    width = text_w + 2 * pad_x
-    height = size + 2 * pad_y
-    box = BBox("mission_badge", x, y_top - height, x + width, y_top, kind="badge")
+    height = size + 4
+    box = BBox("mission_badge", x, y_top - height, x + text_w, y_top, kind="badge")
     state.add(box)
     if draw:
-        art.ink(c, 1.8)
-        c.roundRect(box.x0, box.y0, box.width(), box.height(), 8, fill=1, stroke=1)
         ink_text(c)
         c.setFillColor(INK)
         c.setFont(font, size)
-        c.drawString(box.x0 + pad_x, box.y0 + pad_y + 1, label)
+        c.drawString(x, y_top - size, label)
     return box
 
 
@@ -134,16 +134,22 @@ def plan_activity_header(
     box: tuple[float, float, float, float] | None = None,
     draw: bool = True,
 ) -> HeaderPlan:
-    """Badge + wrapping titles + reference + instruction, collision-checked."""
+    """Compact kicker + wrapping title + verse. Child prompt sits under the scene."""
     left, bottom, right, top = _content(page_number, box)
     width = right - left
     state = new_state(page_number, (left, bottom, right, top))
-    title_pt = USED_TITLE_PT if not hero else max(USED_TITLE_PT, 24)
-    title_lead = title_pt + 6
+    title_pt = USED_TITLE_PT if not hero else max(USED_TITLE_PT, 22)
+    title_lead = title_pt + 4
     instr_pt = HERO_INSTRUCTION_PT if hero else USED_INSTRUCTION_PT
     instr_lead = HERO_INSTRUCTION_LEADING if hero else USED_INSTRUCTION_LEADING
 
     footer_h = FOOTER_PT + 6
+    prompt_width = width - 42
+    prompt_lines, prompt_overflow = wrap_lines(c, instruction, "Helvetica", instr_pt, prompt_width) if instruction else ([], [])
+    state.overflow.extend(prompt_overflow)
+    prompt_h = max(len(prompt_lines), 1) * instr_lead + 8 if instruction else 0
+    art_bottom = bottom + footer_h + prompt_h + 4
+
     footer = BBox("page_number", right - 36, bottom, right, bottom + footer_h, kind="folio")
     state.add(footer)
     if draw:
@@ -152,11 +158,30 @@ def plan_activity_header(
         c.setFont("Helvetica", FOOTER_PT)
         c.drawRightString(right, bottom + 2, str(page_number))
 
+    if instruction:
+        y_prompt = bottom + footer_h + (len(prompt_lines) - 1) * instr_lead + 4
+        for index, line in enumerate(prompt_lines):
+            baseline = y_prompt - index * instr_lead
+            box_line = line_bbox(f"instruction:{index}", left, baseline, line, "Helvetica", instr_pt, c)
+            state.add(box_line)
+            if draw:
+                ink_text(c)
+                c.setFillColor(INK)
+                c.setFont("Helvetica", instr_pt)
+                c.drawString(left, baseline, line)
+
     y = top - 2
-    # Stack badge, then wrapping title with a gap larger than the title em-box.
     if mission_number is not None:
-        badge = draw_badge(c, state, x=left, y_top=y, number=mission_number, draw=draw)
-        y = badge.y0 - title_pt * 0.88 - HEADER_GAP
+        badge = draw_badge(
+            c,
+            state,
+            x=left,
+            y_top=y,
+            number=mission_number,
+            draw=draw,
+            activity_label=activity_label,
+        )
+        y = badge.y0 - HEADER_GAP - title_pt * 0.78
     else:
         y = top - title_pt * 0.88 - 4
     display_title = mission_title or activity_title
@@ -174,61 +199,24 @@ def plan_activity_header(
             leading=title_lead,
             draw=draw,
         )
-
-    kicker_parts = [part for part in (reference, activity_label) if part]
-    if kicker_parts:
-        y -= 6
+    if reference:
+        y -= 4
         y = _draw_wrapped(
             c,
             state,
             name="kicker",
-            text="  ·  ".join(kicker_parts),
+            text=reference,
             x=left,
             y=y,
             max_width=width,
-            font="Helvetica",
+            font="Helvetica-Oblique",
             size=REFERENCE_PT,
-            leading=REFERENCE_PT + 4,
-            draw=draw,
-        )
-
-    shown_mission = (mission_title or "").strip()
-    shown_activity = (activity_title or "").strip()
-    if shown_activity and shown_activity != shown_mission:
-        y -= 6
-        y = _draw_wrapped(
-            c,
-            state,
-            name="activity_title",
-            text=shown_activity,
-            x=left,
-            y=y,
-            max_width=width,
-            font="Helvetica-Bold",
-            size=ACTIVITY_TITLE_PT,
-            leading=ACTIVITY_TITLE_PT + 5,
-            draw=draw,
-        )
-
-    if instruction:
-        y -= 8
-        y = _draw_wrapped(
-            c,
-            state,
-            name="instruction",
-            text=instruction,
-            x=left,
-            y=y,
-            max_width=width,
-            font="Helvetica",
-            size=instr_pt,
-            leading=instr_lead,
+            leading=REFERENCE_PT + 3,
             draw=draw,
         )
 
     y_below = y - ART_GAP
-    art_bottom = bottom + footer_h + 6
-    if y_below - art_bottom < 120:
+    if y_below - art_bottom < 160:
         state.overflow.append("header consumed the art area")
     art_box = (left, art_bottom, right, y_below)
     return HeaderPlan(state=state, art_box=art_box, footer_box=footer, y_below=y_below)
@@ -349,7 +337,7 @@ def draw_maze_grid(
 def maze_window_box(art_box: tuple[float, float, float, float]) -> tuple[float, float, float, float]:
     left, bottom, right, top = art_box
     width, height = right - left, top - bottom
-    pad_x, pad_y = width * 0.10, height * 0.12
+    pad_x, pad_y = width * 0.06, height * 0.08
     return left + pad_x, bottom + pad_y, right - pad_x, top - pad_y
 
 

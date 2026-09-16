@@ -31,7 +31,7 @@ REQUIRED_TARGETS = (
     "Bible",
 )
 
-LEGEND_H = 118
+LEGEND_H = 96
 ICON_DRAWERS = {
     "lantern": lambda c, x, y: art.draw_lantern(c, x, y, 22),
     "pumpkin": lambda c, x, y: art.draw_pumpkin(c, x, y, 22),

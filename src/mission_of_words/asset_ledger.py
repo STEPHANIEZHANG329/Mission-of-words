@@ -90,8 +90,19 @@ def append_asset(row: dict[str, Any], *, path: Path | None = None) -> dict[str, 
     return ledger
 
 
-def remaining_calls(ledger: dict[str, Any] | None = None, cap: int = 24) -> int:
-    return max(0, cap - paid_image_calls(ledger))
+def remaining_calls(ledger: dict[str, Any] | None = None, cap: int | None = None) -> int:
+    """Cumulative remaining spend. Owner-stop and the gate file win over any cap argument."""
+    gate_path = OPS_DIR / "phase_c_paid_gate.json"
+    gate: dict[str, Any] = {}
+    if gate_path.is_file():
+        gate = json.loads(gate_path.read_text(encoding="utf-8"))
+    if gate.get("owner_stop"):
+        return 0
+    if "remaining_calls" in gate:
+        return max(0, int(gate.get("remaining_calls") or 0))
+    if cap is None:
+        cap = int(gate.get("max_paid_calls") or 24)
+    return max(0, int(cap) - paid_image_calls(ledger))
 
 
 def asset_by_id(asset_id: str, ledger: dict[str, Any] | None = None) -> dict[str, Any] | None:

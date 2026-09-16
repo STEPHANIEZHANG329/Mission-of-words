@@ -60,7 +60,7 @@ def draw_answer_key_page(
 
     list_w = min(150, width * 0.28)
     scene_w = width - list_w - 10
-    scene_h = (top - bottom) * 0.56
+    scene_h = (top - bottom) * 0.62
     scene_top = heading_y - 14
     scene_bottom = scene_top - scene_h
     c.drawImage(
