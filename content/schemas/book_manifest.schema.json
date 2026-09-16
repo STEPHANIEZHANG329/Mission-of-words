@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "book_manifest.schema.json",
+  "title": "48-page Bright Hearts book manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "book_id",
+    "working_title",
+    "subtitle",
+    "audience",
+    "phase",
+    "target_page_count",
+    "trim_inches",
+    "dpi",
+    "interior",
+    "bleed",
+    "safe_margin_inches",
+    "inner_safety_inches",
+    "outer_safety_inches",
+    "min_instruction_pt",
+    "min_puzzle_letter_pt",
+    "min_answer_key_pt",
+    "kdp_list_price_usd",
+    "cover_status",
+    "paid_image_calls_authorized",
+    "mission_ids",
+    "canon_ids",
+    "sections",
+    "pages"
+  ],
+  "properties": {
+    "book_id": { "type": "string", "minLength": 1 },
+    "working_title": { "type": "string", "minLength": 1 },
+    "subtitle": { "type": "string", "minLength": 1 },
+    "audience": { "type": "string", "minLength": 1 },
+    "phase": { "type": "string", "enum": ["A", "B", "C", "D", "E"] },
+    "target_page_count": { "type": "integer", "const": 48 },
+    "trim_inches": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "number" }
+    },
+    "dpi": { "type": "integer", "const": 300 },
+    "interior": { "type": "string", "enum": ["black_and_white"] },
+    "bleed": { "type": "boolean", "const": false },
+    "safe_margin_inches": { "type": "number", "minimum": 0.5 },
+    "inner_safety_inches": { "type": "number", "minimum": 0.5 },
+    "outer_safety_inches": { "type": "number", "minimum": 0.5 },
+    "min_instruction_pt": { "type": "number", "minimum": 12 },
+    "min_puzzle_letter_pt": { "type": "number", "minimum": 12 },
+    "min_answer_key_pt": { "type": "number", "minimum": 9 },
+    "kdp_list_price_usd": { "type": "number" },
+    "cover_status": { "type": "string", "minLength": 1 },
+    "paid_image_calls_authorized": { "type": "integer", "const": 0 },
+    "mission_ids": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "items": { "type": "string" }
+    },
+    "canon_ids": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "items": { "type": "string" }
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "first_page", "last_page"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "enum": ["front_matter", "missions", "back_matter"]
+          },
+          "first_page": { "type": "integer", "minimum": 1, "maximum": 48 },
+          "last_page": { "type": "integer", "minimum": 1, "maximum": 48 }
+        }
+      }
+    },
+    "pages": {
+      "type": "array",
+      "minItems": 48,
+      "maxItems": 48,
+      "items": { "$ref": "book_page.schema.json" }
+    }
+  }
+}

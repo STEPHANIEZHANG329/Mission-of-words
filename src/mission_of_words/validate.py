@@ -12,10 +12,14 @@ from jsonschema.exceptions import ValidationError
 from referencing import Registry, Resource
 
 from mission_of_words.paths import (
+    BACK_MATTER,
+    BOOK_MANIFEST,
     BOOK_RECORD,
     BUDGET_PATH,
     CANON_DIR,
+    FRONT_MATTER,
     MISSION_SPEC,
+    MISSIONS_DIR,
     SCHEMA_DIR,
     TASK_PACKET_SCHEMA,
 )
@@ -74,6 +78,22 @@ def validate_file(path: Path, schema_path: Path, *, label: str) -> list[str]:
     return validate_instance(instance, schema_path, label=label)
 
 
+def _validate_page_list_file(path: Path, *, label: str) -> list[str]:
+    if not path.is_file():
+        return [f"{label}: missing file {path}"]
+    try:
+        payload = _load_json(path)
+    except json.JSONDecodeError as exc:
+        return [f"{label}: invalid JSON in {path}: {exc}"]
+    if not isinstance(payload, dict) or not isinstance(payload.get("pages"), list):
+        return [f"{label}: must be an object with a pages array"]
+    errors: list[str] = []
+    schema_path = SCHEMA_DIR / "book_page.schema.json"
+    for index, page in enumerate(payload["pages"]):
+        errors.extend(validate_instance(page, schema_path, label=f"{label}[{index}]"))
+    return errors
+
+
 def validate_task_packet(packet: dict[str, Any]) -> list[str]:
     errors = validate_instance(packet, TASK_PACKET_SCHEMA, label="task-packet")
     if packet.get("paid_calls_allowed") is True:
@@ -89,11 +109,31 @@ def validate_repo() -> list[str]:
     errors: list[str] = []
     errors.extend(validate_file(MISSION_SPEC, SCHEMA_DIR / "mission.schema.json", label="mission"))
     errors.extend(validate_file(BOOK_RECORD, SCHEMA_DIR / "book.schema.json", label="book"))
+    canon_files = sorted(CANON_DIR.glob("*.json"))
+    if not canon_files:
+        errors.append("canon: no canon records found")
+    for path in canon_files:
+        errors.extend(
+            validate_file(path, SCHEMA_DIR / "canon.schema.json", label=f"canon:{path.stem}")
+        )
+    mission_files = sorted(MISSIONS_DIR.glob("mission_*.json"))
+    if len(mission_files) != 8:
+        errors.append(f"missions: expected 8 records, found {len(mission_files)}")
+    for path in mission_files:
+        errors.extend(
+            validate_file(
+                path,
+                SCHEMA_DIR / "mission_record.schema.json",
+                label=f"mission_record:{path.stem}",
+            )
+        )
+    errors.extend(_validate_page_list_file(FRONT_MATTER, label="front_matter"))
+    errors.extend(_validate_page_list_file(BACK_MATTER, label="back_matter"))
     errors.extend(
         validate_file(
-            CANON_DIR / "matthew_5_16.json",
-            SCHEMA_DIR / "canon.schema.json",
-            label="canon",
+            BOOK_MANIFEST,
+            SCHEMA_DIR / "book_manifest.schema.json",
+            label="book_manifest",
         )
     )
     errors.extend(validate_file(BUDGET_PATH, SCHEMA_DIR / "budget.schema.json", label="budget"))

@@ -20,9 +20,20 @@
     "role": {
       "type": "string",
       "enum": [
-        "search_target",
-        "search_background",
+        "title_lockup",
+        "welcome_spot",
+        "missions_map",
+        "parent_letter",
+        "coloring_hero",
         "coloring_background",
+        "search_background",
+        "search_target",
+        "maze_scene",
+        "faith_frame",
+        "answer_key_spot",
+        "bonus_activity",
+        "certificate_frame",
+        "closing_lockup",
         "other"
       ]
     },

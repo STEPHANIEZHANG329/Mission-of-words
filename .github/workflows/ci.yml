@@ -1,4 +1,4 @@
-name: Zero-defect 4-page prototype
+name: Bright Hearts Phase A + 4-page floor
 
 on:
   pull_request:
@@ -44,12 +44,50 @@ jobs:
           PYTHONPATH: src
         run: pytest -q
 
-      - name: Build 4-page prototype
+      - name: Evaluate 48-page Phase A blueprint
+        env:
+          PYTHONPATH: src
+        run: python -m mission_of_words.evaluate_full_book
+
+      - name: Verify full-book QA stays fail-closed
+        env:
+          PYTHONPATH: src
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('output/full_book_qa.json').read_text())
+          print(json.dumps(report, indent=2))
+          manifest = json.loads(Path('output/book_manifest.json').read_text())
+          page_map = json.loads(Path('output/page_map.json').read_text())
+          assert report['paid_image_calls'] == 0, report
+          assert report['estimated_spend_usd'] == 0, report
+          assert report['page_count'] == 48, report
+          assert report['canon_bound_count'] == 8, report
+          assert report['all_canons_bound'] is True, report
+          assert report['facing_page_parity_ok'] is True, report
+          assert report['font_floors_ok'] is True, report
+          assert report['answer_key_linkage_ok'] is True, report
+          assert report['unique_content_ok'] is True, report
+          assert report['unfilled_art_slots'] == 48, report
+          assert report['placeholder_assets_present'] is True, report
+          assert report['blueprint_pass'] is True, report['failures']
+          assert report['technical_pass'] is False, report
+          assert report['production_pass'] is False, report
+          assert report['pass'] is False, report
+          assert report['blockers'], report
+          assert manifest['target_page_count'] == 48
+          assert manifest['paid_image_calls_authorized'] == 0
+          assert len(manifest['pages']) == 48
+          assert len(page_map) == 48
+          PY
+
+      - name: Build 4-page prototype floor
         env:
           PYTHONPATH: src
         run: python -m mission_of_words.build_sample
 
-      - name: Verify QA gate
+      - name: Verify 4-page prototype factory gate
         env:
           PYTHONPATH: src
         run: |
@@ -74,6 +112,8 @@ jobs:
           assert report['artwork_status'] != 'placeholder_only', report
           assert report['visual_qa_pass'] is True, report
           assert report['preview_count'] == 4, report
+          assert report['technical_pass'] is True, report
+          assert report['production_pass'] is False, report
           assert report['pass'] is True, report['failures']
           for name in (
               'BrightHearts_ShineYourLight_Interior.pdf',
@@ -85,6 +125,9 @@ jobs:
               'previews/page_02.png',
               'previews/page_03.png',
               'previews/page_04.png',
+              'full_book_qa.json',
+              'book_manifest.json',
+              'page_map.json',
           ):
               path = Path('output') / name
               assert path.is_file(), path
@@ -96,8 +139,12 @@ jobs:
       - name: Upload QA evidence
         uses: actions/upload-artifact@v4
         with:
-          name: bright-hearts-zero-defect-prototype
+          name: bright-hearts-phase-a-blueprint
           path: |
+            output/full_book_qa.json
+            output/book_manifest.json
+            output/page_map.json
+            content/books/bright_hearts_fall_01/book_manifest.json
             output/BrightHearts_ShineYourLight_Interior.pdf
             output/BrightHearts_ShineYourLight_AnswerKey.pdf
             output/qa_report.json

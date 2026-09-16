@@ -1,0 +1,96 @@
+{
+  "pages": [
+    {
+      "page": 1,
+      "section": "front_matter",
+      "type": "title",
+      "title": "Bright Hearts: Shine Your Light This Fall",
+      "mission_id": null,
+      "mission_sequence": null,
+      "mission_slot": null,
+      "canon_id": null,
+      "activity_mechanic": "title_ownership",
+      "art_roles": [
+        "title_lockup"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": null,
+      "child_instruction_required": false,
+      "notes": "Title and ownership page. Code renders all final type. No baked title lettering in artwork.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 2,
+      "section": "front_matter",
+      "type": "welcome",
+      "title": "Welcome, Bright Hearts",
+      "mission_id": null,
+      "mission_sequence": null,
+      "mission_slot": null,
+      "canon_id": null,
+      "activity_mechanic": "how_to_use",
+      "art_roles": [
+        "welcome_spot"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": null,
+      "child_instruction_required": true,
+      "notes": "How to use the book for ages 5-8. Child-facing instructions at >=12 pt.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 3,
+      "section": "front_matter",
+      "type": "contents",
+      "title": "Fall Faith Missions Map",
+      "mission_id": null,
+      "mission_sequence": null,
+      "mission_slot": null,
+      "canon_id": null,
+      "activity_mechanic": "missions_map_contents",
+      "art_roles": [
+        "missions_map"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": null,
+      "child_instruction_required": true,
+      "notes": "Eight unique missions, not a duplicated contents list. Map must name each locked verse.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 4,
+      "section": "front_matter",
+      "type": "parent_note",
+      "title": "A Note for Parents and Caregivers",
+      "mission_id": null,
+      "mission_sequence": null,
+      "mission_slot": null,
+      "canon_id": null,
+      "activity_mechanic": "parent_bible_source_note",
+      "art_roles": [
+        "parent_letter"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": null,
+      "child_instruction_required": false,
+      "notes": "Parent/caregiver note plus Bible-source note: KJV 1769 public-domain short quotations; child paraphrase is never mixed into source_text.",
+      "facing": "verso",
+      "parity": "even"
+    }
+  ]
+}

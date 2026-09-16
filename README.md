@@ -2,16 +2,19 @@
 
 Bright Hearts publishing production lab.
 
-Current scope: rebuild and validate a **4-page** Shine Your Light prototype to the Issue #4 zero-defect gates. Paid image generation, merge, expansion past 4 pages, and KDP publishing stay closed.
+Current authorized work: **Phase A** of Issue #6 — 48-page full-book blueprint, source-locked canon, schemas, and fail-closed QA. Paid image generation, merge, KDP publishing, and `production_pass` stay closed.
 
-- Models draw; code decides. This pass uses unpaid procedural line art so the layout/QA factory can be proven with `paid_image_calls == 0`.
-- Canon lock: `canon/matthew_5_16.json` (KJV 1769, public domain) is the only scripture source. Child paraphrase is a separate field.
-- Search & Find targets are independent assets. The answer key is generated from the compositor manifest.
-- Maze path is a perfect maze (unique route), drawn as one garden scene.
-- Visual preflight (`output/visual_qa.md`) is independent from technical `qa_report.json`.
+The approved 4-page Shine Your Light prototype remains the quality floor. It is not the 48-page book.
+
+- Models draw; code decides. Final page text is rendered by code.
+- Eight missions are source-locked to public-domain 1769 KJV short quotations. Child paraphrase is a separate field.
+- Search & Find answer keys must be generated from the compositor manifest. Maze keys must come from the unique path.
+- `technical_pass` and `production_pass` are separate. Phase A can earn `blueprint_pass` only.
+- `paid_image_calls` must remain 0.
 
 ```bash
 pip install -r requirements.txt
 PYTHONPATH=src pytest -q
+PYTHONPATH=src python -m mission_of_words.evaluate_full_book
 PYTHONPATH=src python -m mission_of_words.build_sample
 ```

@@ -1,0 +1,107 @@
+{
+  "book_id": "bright_hearts_fall_01",
+  "id": "mission_03",
+  "title": "A Harvest of Thankfulness",
+  "scripture_reference": "Psalm 107:1",
+  "canon_id": "psalm_107_1",
+  "sequence": 3,
+  "global_page_start": 13,
+  "pages": [
+    {
+      "page": 1,
+      "type": "coloring",
+      "title": "Give Thanks for the Harvest",
+      "activity_mechanic": "integrated_coloring_harvest_wagon",
+      "art_roles": ["coloring_hero"],
+      "child_instruction": "Color the family bringing a harvest wagon to say thank You to God.",
+      "bible_connection": "The harvest picture helps us practice giving thanks because the Lord is good.",
+      "visual_prompt": "Integrated black line-art coloring scene: family with a harvest wagon of wheat and corn, a barn, a thankful child with a small hymn book, pumpkins nearby but not copied from Mission 1's church festival. No letters in the artwork.",
+      "required_objects": [
+        "harvest_wagon",
+        "wheat_sheaves",
+        "corn_stalks",
+        "barn",
+        "thankful_family",
+        "hymn_book"
+      ]
+    },
+    {
+      "page": 2,
+      "type": "search_find",
+      "title": "Find the Thank-You Harvest",
+      "activity_mechanic": "search_find_thank_you_harvest",
+      "art_roles": ["search_background", "search_target"],
+      "instruction": "Find and circle all 8 items.",
+      "child_instruction": "Find and circle all 8 thank-you harvest items. Each one can help you remember that God is good.",
+      "bible_connection": "Looking for each gift is practice for giving thanks, as Psalm 107:1 teaches.",
+      "visual_prompt": "Controlled barn-yard background without the eight targets. Independently placed wheat sheaf, corn cob, loaf, pitcher, pie, hymn book, heart, and thank-you card.",
+      "required_objects": [
+        "search_background",
+        "wheat_sheaf",
+        "corn_cob",
+        "loaf",
+        "pitcher",
+        "pie",
+        "hymn_book",
+        "heart",
+        "thank_you_card"
+      ],
+      "targets": [
+        {"name": "wheat_sheaf", "x": 0.06, "y": 0.58, "scale": 0.12},
+        {"name": "corn_cob", "x": 0.80, "y": 0.64, "scale": 0.10},
+        {"name": "loaf", "x": 0.42, "y": 0.78, "scale": 0.11},
+        {"name": "pitcher", "x": 0.22, "y": 0.76, "scale": 0.10},
+        {"name": "pie", "x": 0.58, "y": 0.80, "scale": 0.10},
+        {"name": "hymn_book", "x": 0.70, "y": 0.40, "scale": 0.11},
+        {"name": "heart", "x": 0.12, "y": 0.28, "scale": 0.09},
+        {"name": "thank_you_card", "x": 0.86, "y": 0.28, "scale": 0.10}
+      ]
+    },
+    {
+      "page": 3,
+      "type": "maze",
+      "title": "Carry the Thank-You Basket",
+      "activity_mechanic": "maze_basket_to_barn_table",
+      "art_roles": ["maze_scene"],
+      "child_instruction": "Start at the child with the basket. Follow the path to the barn table.",
+      "bible_connection": "Carrying the basket to the table is a picture of bringing our thanks to God.",
+      "visual_prompt": "One farmyard scene: child with a thank-you basket at START, unique corn-row maze, barn table with a simple meal at FINISH. Not a maze pasted on a blank page.",
+      "required_objects": [
+        "child_with_basket",
+        "corn_row_maze",
+        "barn_table",
+        "start_label",
+        "finish_label"
+      ],
+      "start_label": "START",
+      "finish_label": "FINISH",
+      "difficulty": "medium_easy",
+      "seed": 20260918,
+      "grid": [9, 10]
+    },
+    {
+      "page": 4,
+      "type": "faith_interaction",
+      "title": "What Can You Thank God For?",
+      "activity_mechanic": "faith_three_thanks",
+      "art_roles": ["faith_frame"],
+      "child_instruction": "Check three ways you can give thanks. Then draw one thing you are thankful for.",
+      "bible_connection": "Giving thanks because God is good is what Psalm 107:1 teaches.",
+      "visual_prompt": "One wheat-framed page: four illustrated choices, a large basket drawing area, and a short prayer ribbon.",
+      "required_objects": [
+        "wheat_frame",
+        "choice_cards",
+        "drawing_basket",
+        "prayer_ribbon"
+      ],
+      "choices": [
+        {"label": "Thank God for food", "icon": "bread"},
+        {"label": "Thank God for family", "icon": "family"},
+        {"label": "Thank God for help", "icon": "hands"},
+        {"label": "Sing a thank-you song", "icon": "song"}
+      ],
+      "drawing_prompt": "Draw one thing you thank God for today",
+      "prayer": "Lord, You are good. Thank You for Your never-ending kindness."
+    }
+  ]
+}

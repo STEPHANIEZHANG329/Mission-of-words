@@ -1,4 +1,9 @@
-"""Fail-closed QA for the 4-page prototype. `pass` is computed, never hand-edited."""
+"""Fail-closed QA for the 4-page prototype factory.
+
+`pass` / `technical_pass` are the prototype factory gate.
+`production_pass` stays false until accepted production artwork exists.
+`pass` is computed, never hand-edited.
+"""
 
 from __future__ import annotations
 
@@ -257,6 +262,12 @@ def evaluate_build(
     if visual_qa_pass is False:
         failures.append("visual_qa: independent visual preflight reported FAIL")
 
+    artwork_status = "procedural_lineart"
+    technical_pass = not failures
+    # Procedural line art proves the 4-page factory. It is not accepted
+    # production artwork for the 48-page book.
+    production_pass = False
+
     report = {
         "book_id": book.get("book_id", "bright_hearts_fall_01"),
         "mission_id": (spec.get("mission") or {}).get("id"),
@@ -286,20 +297,24 @@ def evaluate_build(
         "faith_drawing_area_sqin": faith_area,
         "faith_drawing_area_ok": faith_ok or not compositions,
         "placeholder_copy_absent": placeholder_absent,
-        "artwork_status": "procedural_lineart",
+        "artwork_status": artwork_status,
         "image_client_mode": client["mode"],
         "paid_generation_gate_implemented": PAID_GENERATION_GATE_IMPLEMENTED,
         "visual_qa_pass": True if visual_qa_pass is None else visual_qa_pass,
         "preview_count": preview_count,
         "asset_count": len(asset_records),
         "failures": failures,
-        "pass": not failures,
+        "technical_pass": technical_pass,
+        "production_pass": production_pass,
+        "pass": technical_pass,
     }
     schema_path = SCHEMA_DIR / "qa.schema.json"
     if schema_path.is_file():
         report_errors = validate_instance(report, schema_path, label="qa_report")
         if report_errors:
             report["failures"] = failures + report_errors
+            report["technical_pass"] = False
+            report["production_pass"] = False
             report["pass"] = False
     return report
 

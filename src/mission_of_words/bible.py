@@ -71,14 +71,47 @@ def bind_mission_canon(spec: dict[str, Any], *, canon_dir: Path | None = None) -
     mission = spec.get("mission") if isinstance(spec, dict) else None
     if not isinstance(mission, dict):
         raise CanonError("mission spec is missing")
-    canon_id = mission.get("canon_id")
+    return bind_canon_id(
+        mission.get("canon_id"),
+        scripture_reference=mission.get("scripture_reference"),
+        canon_dir=canon_dir,
+    )
+
+
+def bind_canon_id(
+    canon_id: Any,
+    *,
+    scripture_reference: Any = None,
+    canon_dir: Path | None = None,
+) -> dict[str, Any]:
     if not canon_id:
         raise CanonError("mission is missing canon_id")
     record = load_canon(str(canon_id), canon_dir=canon_dir)
-    scripture_reference = mission.get("scripture_reference")
     if scripture_reference and scripture_reference != record["reference"]:
         raise CanonError(
             "mission scripture_reference does not match canon reference: "
             f"{scripture_reference!r} != {record['reference']!r}"
         )
     return record
+
+
+def bind_mission_record(mission: dict[str, Any], *, canon_dir: Path | None = None) -> dict[str, Any]:
+    if not isinstance(mission, dict):
+        raise CanonError("mission record is missing")
+    return bind_canon_id(
+        mission.get("canon_id"),
+        scripture_reference=mission.get("scripture_reference"),
+        canon_dir=canon_dir,
+    )
+
+
+def list_canon_ids(canon_dir: Path | None = None) -> list[str]:
+    directory = canon_dir or CANON_DIR
+    return sorted(path.stem for path in directory.glob("*.json"))
+
+
+def load_all_canons(*, canon_dir: Path | None = None) -> dict[str, dict[str, Any]]:
+    records: dict[str, dict[str, Any]] = {}
+    for canon_id in list_canon_ids(canon_dir):
+        records[canon_id] = load_canon(canon_id, canon_dir=canon_dir)
+    return records

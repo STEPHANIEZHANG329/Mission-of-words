@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "page.schema.json",
-  "title": "Bright Hearts page record",
+  "title": "Bright Hearts mission activity page record",
   "type": "object",
   "required": ["page", "type", "title"],
   "properties": {
@@ -11,6 +11,11 @@
       "enum": ["coloring", "search_find", "maze", "faith_interaction"]
     },
     "title": { "type": "string", "minLength": 1 },
+    "activity_mechanic": { "type": "string", "minLength": 1 },
+    "art_roles": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
     "artwork_status": { "type": "string" },
     "artwork_asset_id": { "type": ["string", "null"] },
     "background_asset_id": { "type": ["string", "null"] },

@@ -1,0 +1,21 @@
+{
+  "canon_id": "1_thessalonians_5_18",
+  "translation": "KJV",
+  "source_edition": "1769 Oxford KJV (public domain)",
+  "reference": "1 Thessalonians 5:18",
+  "source_text": "In every thing give thanks: for this is the will of God in Christ Jesus concerning you.",
+  "child_paraphrase": "Give thanks in every part of your day. This is what God wants for you in Jesus.",
+  "license": "public_domain",
+  "license_note": "Short quotation of the 1769 Oxford King James Version. That edition is public domain in the United States. No bulk copyrighted Bible text is used.",
+  "lock_note": "Issue #6 Mission 8 lock: The Thankful Table.",
+  "allowed_visual_motifs": [
+    "give thanks in everything",
+    "God's will",
+    "in Christ Jesus"
+  ],
+  "forbidden_claims": [
+    "Do not invent extra narrative as scripture",
+    "Do not treat dinner tables, candles, or other meal props as facts from this verse",
+    "Do not add verses, names, or events that are not in 1 Thessalonians 5:18"
+  ]
+}

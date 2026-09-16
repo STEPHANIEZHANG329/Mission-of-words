@@ -25,6 +25,8 @@ def test_good_build_inputs_pass():
     report = evaluate_build(spec=_spec(), maze=_good_maze(), paid_image_calls=0)
     assert report["failures"] == []
     assert report["pass"] is True
+    assert report["technical_pass"] is True
+    assert report["production_pass"] is False
     assert report["canon_bound"] is True
     assert report["paid_image_calls"] == 0
     assert report["search_find_all_targets_present"] is True

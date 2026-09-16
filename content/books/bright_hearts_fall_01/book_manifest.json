@@ -1,0 +1,1287 @@
+{
+  "book_id": "bright_hearts_fall_01",
+  "working_title": "Bright Hearts: Shine Your Light This Fall",
+  "subtitle": "A Christian Fall Activity Book for Kids Ages 5-8 \u2014 Bible Mazes, Search & Find, Coloring, Puzzles, Gratitude & Harvest Fun",
+  "audience": "Ages 5-8",
+  "phase": "A",
+  "target_page_count": 48,
+  "trim_inches": [
+    8.5,
+    11.0
+  ],
+  "dpi": 300,
+  "interior": "black_and_white",
+  "bleed": false,
+  "safe_margin_inches": 0.5,
+  "inner_safety_inches": 0.625,
+  "outer_safety_inches": 0.5,
+  "min_instruction_pt": 12.0,
+  "min_puzzle_letter_pt": 12.0,
+  "min_answer_key_pt": 9.0,
+  "kdp_list_price_usd": 9.99,
+  "cover_status": "deferred_until_interior_lock",
+  "paid_image_calls_authorized": 0,
+  "mission_ids": [
+    "mission_01",
+    "mission_02",
+    "mission_03",
+    "mission_04",
+    "mission_05",
+    "mission_06",
+    "mission_07",
+    "mission_08"
+  ],
+  "canon_ids": [
+    "matthew_5_16",
+    "genesis_1_14",
+    "psalm_107_1",
+    "isaiah_41_10",
+    "hebrews_13_16",
+    "ephesians_4_32",
+    "genesis_1_31",
+    "1_thessalonians_5_18"
+  ],
+  "sections": [
+    {
+      "name": "front_matter",
+      "first_page": 1,
+      "last_page": 4
+    },
+    {
+      "name": "missions",
+      "first_page": 5,
+      "last_page": 36
+    },
+    {
+      "name": "back_matter",
+      "first_page": 37,
+      "last_page": 48
+    }
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "section": "front_matter",
+      "type": "title",
+      "title": "Bright Hearts: Shine Your Light This Fall",
+      "mission_id": null,
+      "mission_sequence": null,
+      "mission_slot": null,
+      "canon_id": null,
+      "activity_mechanic": "title_ownership",
+      "art_roles": [
+        "title_lockup"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": null,
+      "child_instruction_required": false,
+      "notes": "Title and ownership page. Code renders all final type. No baked title lettering in artwork.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 2,
+      "section": "front_matter",
+      "type": "welcome",
+      "title": "Welcome, Bright Hearts",
+      "mission_id": null,
+      "mission_sequence": null,
+      "mission_slot": null,
+      "canon_id": null,
+      "activity_mechanic": "how_to_use",
+      "art_roles": [
+        "welcome_spot"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": null,
+      "child_instruction_required": true,
+      "notes": "How to use the book for ages 5-8. Child-facing instructions at >=12 pt.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 3,
+      "section": "front_matter",
+      "type": "contents",
+      "title": "Fall Faith Missions Map",
+      "mission_id": null,
+      "mission_sequence": null,
+      "mission_slot": null,
+      "canon_id": null,
+      "activity_mechanic": "missions_map_contents",
+      "art_roles": [
+        "missions_map"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": null,
+      "child_instruction_required": true,
+      "notes": "Eight unique missions, not a duplicated contents list. Map must name each locked verse.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 4,
+      "section": "front_matter",
+      "type": "parent_note",
+      "title": "A Note for Parents and Caregivers",
+      "mission_id": null,
+      "mission_sequence": null,
+      "mission_slot": null,
+      "canon_id": null,
+      "activity_mechanic": "parent_bible_source_note",
+      "art_roles": [
+        "parent_letter"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": null,
+      "child_instruction_required": false,
+      "notes": "Parent/caregiver note plus Bible-source note: KJV 1769 public-domain short quotations; child paraphrase is never mixed into source_text.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 5,
+      "section": "missions",
+      "type": "coloring",
+      "title": "Shine Your Light",
+      "mission_id": "mission_01",
+      "mission_sequence": 1,
+      "mission_slot": "A",
+      "canon_id": "matthew_5_16",
+      "activity_mechanic": "integrated_coloring_festival_lanterns",
+      "art_roles": [
+        "coloring_hero"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 1,
+      "child_instruction_required": true,
+      "notes": "Mission 1 slot A. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 6,
+      "section": "missions",
+      "type": "search_find",
+      "title": "Find the Festival Gifts",
+      "mission_id": "mission_01",
+      "mission_sequence": 1,
+      "mission_slot": "B",
+      "canon_id": "matthew_5_16",
+      "activity_mechanic": "search_find_festival_gifts",
+      "art_roles": [
+        "search_background",
+        "search_target"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": 37,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 2,
+      "child_instruction_required": true,
+      "notes": "Mission 1 slot B. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 7,
+      "section": "missions",
+      "type": "maze",
+      "title": "Bring Your Lantern",
+      "mission_id": "mission_01",
+      "mission_sequence": 1,
+      "mission_slot": "C",
+      "canon_id": "matthew_5_16",
+      "activity_mechanic": "maze_lantern_to_welcome_table",
+      "art_roles": [
+        "maze_scene"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": 37,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 3,
+      "child_instruction_required": true,
+      "notes": "Mission 1 slot C. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 8,
+      "section": "missions",
+      "type": "faith_interaction",
+      "title": "How Can You Shine This Week?",
+      "mission_id": "mission_01",
+      "mission_sequence": 1,
+      "mission_slot": "D",
+      "canon_id": "matthew_5_16",
+      "activity_mechanic": "faith_lantern_good_works",
+      "art_roles": [
+        "faith_frame"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 4,
+      "child_instruction_required": true,
+      "notes": "Mission 1 slot D. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 9,
+      "section": "missions",
+      "type": "coloring",
+      "title": "Lights for the Seasons",
+      "mission_id": "mission_02",
+      "mission_sequence": 2,
+      "mission_slot": "A",
+      "canon_id": "genesis_1_14",
+      "activity_mechanic": "integrated_coloring_sky_lights_orchard",
+      "art_roles": [
+        "coloring_hero"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 1,
+      "child_instruction_required": true,
+      "notes": "Mission 2 slot A. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 10,
+      "section": "missions",
+      "type": "search_find",
+      "title": "Find the Sky Signs",
+      "mission_id": "mission_02",
+      "mission_sequence": 2,
+      "mission_slot": "B",
+      "canon_id": "genesis_1_14",
+      "activity_mechanic": "search_find_sky_signs",
+      "art_roles": [
+        "search_background",
+        "search_target"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": 38,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 2,
+      "child_instruction_required": true,
+      "notes": "Mission 2 slot B. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 11,
+      "section": "missions",
+      "type": "maze",
+      "title": "Follow the Day to Night",
+      "mission_id": "mission_02",
+      "mission_sequence": 2,
+      "mission_slot": "C",
+      "canon_id": "genesis_1_14",
+      "activity_mechanic": "maze_sunrise_to_harvest_moon",
+      "art_roles": [
+        "maze_scene"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": 38,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 3,
+      "child_instruction_required": true,
+      "notes": "Mission 2 slot C. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 12,
+      "section": "missions",
+      "type": "faith_interaction",
+      "title": "Thank God for the Seasons",
+      "mission_id": "mission_02",
+      "mission_sequence": 2,
+      "mission_slot": "D",
+      "canon_id": "genesis_1_14",
+      "activity_mechanic": "faith_season_noticing",
+      "art_roles": [
+        "faith_frame"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 4,
+      "child_instruction_required": true,
+      "notes": "Mission 2 slot D. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 13,
+      "section": "missions",
+      "type": "coloring",
+      "title": "Give Thanks for the Harvest",
+      "mission_id": "mission_03",
+      "mission_sequence": 3,
+      "mission_slot": "A",
+      "canon_id": "psalm_107_1",
+      "activity_mechanic": "integrated_coloring_harvest_wagon",
+      "art_roles": [
+        "coloring_hero"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 1,
+      "child_instruction_required": true,
+      "notes": "Mission 3 slot A. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 14,
+      "section": "missions",
+      "type": "search_find",
+      "title": "Find the Thank-You Harvest",
+      "mission_id": "mission_03",
+      "mission_sequence": 3,
+      "mission_slot": "B",
+      "canon_id": "psalm_107_1",
+      "activity_mechanic": "search_find_thank_you_harvest",
+      "art_roles": [
+        "search_background",
+        "search_target"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": 39,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 2,
+      "child_instruction_required": true,
+      "notes": "Mission 3 slot B. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 15,
+      "section": "missions",
+      "type": "maze",
+      "title": "Carry the Thank-You Basket",
+      "mission_id": "mission_03",
+      "mission_sequence": 3,
+      "mission_slot": "C",
+      "canon_id": "psalm_107_1",
+      "activity_mechanic": "maze_basket_to_barn_table",
+      "art_roles": [
+        "maze_scene"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": 39,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 3,
+      "child_instruction_required": true,
+      "notes": "Mission 3 slot C. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 16,
+      "section": "missions",
+      "type": "faith_interaction",
+      "title": "What Can You Thank God For?",
+      "mission_id": "mission_03",
+      "mission_sequence": 3,
+      "mission_slot": "D",
+      "canon_id": "psalm_107_1",
+      "activity_mechanic": "faith_three_thanks",
+      "art_roles": [
+        "faith_frame"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 4,
+      "child_instruction_required": true,
+      "notes": "Mission 3 slot D. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 17,
+      "section": "missions",
+      "type": "coloring",
+      "title": "God Is With You",
+      "mission_id": "mission_04",
+      "mission_sequence": 4,
+      "mission_slot": "A",
+      "canon_id": "isaiah_41_10",
+      "activity_mechanic": "integrated_coloring_courage_path",
+      "art_roles": [
+        "coloring_hero"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 1,
+      "child_instruction_required": true,
+      "notes": "Mission 4 slot A. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 18,
+      "section": "missions",
+      "type": "search_find",
+      "title": "Find the Courage Helpers",
+      "mission_id": "mission_04",
+      "mission_sequence": 4,
+      "mission_slot": "B",
+      "canon_id": "isaiah_41_10",
+      "activity_mechanic": "search_find_courage_helpers",
+      "art_roles": [
+        "search_background",
+        "search_target"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": 40,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 2,
+      "child_instruction_required": true,
+      "notes": "Mission 4 slot B. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 19,
+      "section": "missions",
+      "type": "maze",
+      "title": "Walk to the Lit Porch",
+      "mission_id": "mission_04",
+      "mission_sequence": 4,
+      "mission_slot": "C",
+      "canon_id": "isaiah_41_10",
+      "activity_mechanic": "maze_woods_to_lit_porch",
+      "art_roles": [
+        "maze_scene"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": 40,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 3,
+      "child_instruction_required": true,
+      "notes": "Mission 4 slot C. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 20,
+      "section": "missions",
+      "type": "faith_interaction",
+      "title": "When I Feel Afraid",
+      "mission_id": "mission_04",
+      "mission_sequence": 4,
+      "mission_slot": "D",
+      "canon_id": "isaiah_41_10",
+      "activity_mechanic": "faith_courage_choices",
+      "art_roles": [
+        "faith_frame"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 4,
+      "child_instruction_required": true,
+      "notes": "Mission 4 slot D. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 21,
+      "section": "missions",
+      "type": "coloring",
+      "title": "Do Good and Share",
+      "mission_id": "mission_05",
+      "mission_sequence": 5,
+      "mission_slot": "A",
+      "canon_id": "hebrews_13_16",
+      "activity_mechanic": "integrated_coloring_porch_sharing",
+      "art_roles": [
+        "coloring_hero"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 1,
+      "child_instruction_required": true,
+      "notes": "Mission 5 slot A. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 22,
+      "section": "missions",
+      "type": "search_find",
+      "title": "Find What We Can Share",
+      "mission_id": "mission_05",
+      "mission_sequence": 5,
+      "mission_slot": "B",
+      "canon_id": "hebrews_13_16",
+      "activity_mechanic": "search_find_things_to_share",
+      "art_roles": [
+        "search_background",
+        "search_target"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": 41,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 2,
+      "child_instruction_required": true,
+      "notes": "Mission 5 slot B. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 23,
+      "section": "missions",
+      "type": "maze",
+      "title": "Take the Extra Basket",
+      "mission_id": "mission_05",
+      "mission_sequence": 5,
+      "mission_slot": "C",
+      "canon_id": "hebrews_13_16",
+      "activity_mechanic": "maze_basket_to_neighbor_door",
+      "art_roles": [
+        "maze_scene"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": 41,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 3,
+      "child_instruction_required": true,
+      "notes": "Mission 5 slot C. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 24,
+      "section": "missions",
+      "type": "faith_interaction",
+      "title": "How Can You Share This Week?",
+      "mission_id": "mission_05",
+      "mission_sequence": 5,
+      "mission_slot": "D",
+      "canon_id": "hebrews_13_16",
+      "activity_mechanic": "faith_share_choices",
+      "art_roles": [
+        "faith_frame"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 4,
+      "child_instruction_required": true,
+      "notes": "Mission 5 slot D. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 25,
+      "section": "missions",
+      "type": "coloring",
+      "title": "Be Kind One to Another",
+      "mission_id": "mission_06",
+      "mission_sequence": 6,
+      "mission_slot": "A",
+      "canon_id": "ephesians_4_32",
+      "activity_mechanic": "integrated_coloring_include_a_friend",
+      "art_roles": [
+        "coloring_hero"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 1,
+      "child_instruction_required": true,
+      "notes": "Mission 6 slot A. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 26,
+      "section": "missions",
+      "type": "search_find",
+      "title": "Find the Kindness Gifts",
+      "mission_id": "mission_06",
+      "mission_sequence": 6,
+      "mission_slot": "B",
+      "canon_id": "ephesians_4_32",
+      "activity_mechanic": "search_find_kindness_gifts",
+      "art_roles": [
+        "search_background",
+        "search_target"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": 42,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 2,
+      "child_instruction_required": true,
+      "notes": "Mission 6 slot B. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 27,
+      "section": "missions",
+      "type": "maze",
+      "title": "Bring a Friend to the Game",
+      "mission_id": "mission_06",
+      "mission_sequence": 6,
+      "mission_slot": "C",
+      "canon_id": "ephesians_4_32",
+      "activity_mechanic": "maze_lonely_child_to_game_table",
+      "art_roles": [
+        "maze_scene"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": 42,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 3,
+      "child_instruction_required": true,
+      "notes": "Mission 6 slot C. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 28,
+      "section": "missions",
+      "type": "faith_interaction",
+      "title": "How Can You Be Kind?",
+      "mission_id": "mission_06",
+      "mission_sequence": 6,
+      "mission_slot": "D",
+      "canon_id": "ephesians_4_32",
+      "activity_mechanic": "faith_kindness_choices",
+      "art_roles": [
+        "faith_frame"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 4,
+      "child_instruction_required": true,
+      "notes": "Mission 6 slot D. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 29,
+      "section": "missions",
+      "type": "coloring",
+      "title": "It Was Very Good",
+      "mission_id": "mission_07",
+      "mission_sequence": 7,
+      "mission_slot": "A",
+      "canon_id": "genesis_1_31",
+      "activity_mechanic": "integrated_coloring_creation_hillside",
+      "art_roles": [
+        "coloring_hero"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 1,
+      "child_instruction_required": true,
+      "notes": "Mission 7 slot A. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 30,
+      "section": "missions",
+      "type": "search_find",
+      "title": "Find What God Made",
+      "mission_id": "mission_07",
+      "mission_sequence": 7,
+      "mission_slot": "B",
+      "canon_id": "genesis_1_31",
+      "activity_mechanic": "search_find_creation_wonders",
+      "art_roles": [
+        "search_background",
+        "search_target"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": 43,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 2,
+      "child_instruction_required": true,
+      "notes": "Mission 7 slot B. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 31,
+      "section": "missions",
+      "type": "maze",
+      "title": "Follow the Creek to the Lookout",
+      "mission_id": "mission_07",
+      "mission_sequence": 7,
+      "mission_slot": "C",
+      "canon_id": "genesis_1_31",
+      "activity_mechanic": "maze_creek_to_lookout_hill",
+      "art_roles": [
+        "maze_scene"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": 43,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 3,
+      "child_instruction_required": true,
+      "notes": "Mission 7 slot C. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 32,
+      "section": "missions",
+      "type": "faith_interaction",
+      "title": "Care for What God Made",
+      "mission_id": "mission_07",
+      "mission_sequence": 7,
+      "mission_slot": "D",
+      "canon_id": "genesis_1_31",
+      "activity_mechanic": "faith_creation_care",
+      "art_roles": [
+        "faith_frame"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 4,
+      "child_instruction_required": true,
+      "notes": "Mission 7 slot D. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 33,
+      "section": "missions",
+      "type": "coloring",
+      "title": "Give Thanks at the Table",
+      "mission_id": "mission_08",
+      "mission_sequence": 8,
+      "mission_slot": "A",
+      "canon_id": "1_thessalonians_5_18",
+      "activity_mechanic": "integrated_coloring_thankful_table",
+      "art_roles": [
+        "coloring_hero"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 1,
+      "child_instruction_required": true,
+      "notes": "Mission 8 slot A. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 34,
+      "section": "missions",
+      "type": "search_find",
+      "title": "Find the Table Gifts",
+      "mission_id": "mission_08",
+      "mission_sequence": 8,
+      "mission_slot": "B",
+      "canon_id": "1_thessalonians_5_18",
+      "activity_mechanic": "search_find_table_gifts",
+      "art_roles": [
+        "search_background",
+        "search_target"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": 44,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 2,
+      "child_instruction_required": true,
+      "notes": "Mission 8 slot B. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 35,
+      "section": "missions",
+      "type": "maze",
+      "title": "Set the Thankful Table",
+      "mission_id": "mission_08",
+      "mission_sequence": 8,
+      "mission_slot": "C",
+      "canon_id": "1_thessalonians_5_18",
+      "activity_mechanic": "maze_kitchen_to_thank_you_chair",
+      "art_roles": [
+        "maze_scene"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": 44,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 3,
+      "child_instruction_required": true,
+      "notes": "Mission 8 slot C. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 36,
+      "section": "missions",
+      "type": "faith_interaction",
+      "title": "Give Thanks in Everything",
+      "mission_id": "mission_08",
+      "mission_sequence": 8,
+      "mission_slot": "D",
+      "canon_id": "1_thessalonians_5_18",
+      "activity_mechanic": "faith_table_thanks",
+      "art_roles": [
+        "faith_frame"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": 4,
+      "child_instruction_required": true,
+      "notes": "Mission 8 slot D. Final page text is rendered by code. Artwork slot is unfilled in Phase A.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 37,
+      "section": "back_matter",
+      "type": "answer_key",
+      "title": "Answer Key: Shine Your Light",
+      "mission_id": "mission_01",
+      "mission_sequence": 1,
+      "mission_slot": null,
+      "canon_id": "matthew_5_16",
+      "activity_mechanic": "answer_key_mission_01",
+      "art_roles": [
+        "answer_key_spot"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [
+        6,
+        7
+      ],
+      "answer_sources": [
+        {
+          "activity_page": 6,
+          "mechanic": "search_find",
+          "source": "compositor_manifest"
+        },
+        {
+          "activity_page": 7,
+          "mechanic": "maze",
+          "source": "unique_maze_path"
+        }
+      ],
+      "source_mission_page": null,
+      "child_instruction_required": false,
+      "notes": "Compact solutions for Mission 1 Search & Find and maze. Answer key type >=9 pt.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 38,
+      "section": "back_matter",
+      "type": "answer_key",
+      "title": "Answer Key: God Made the Seasons",
+      "mission_id": "mission_02",
+      "mission_sequence": 2,
+      "mission_slot": null,
+      "canon_id": "genesis_1_14",
+      "activity_mechanic": "answer_key_mission_02",
+      "art_roles": [
+        "answer_key_spot"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [
+        10,
+        11
+      ],
+      "answer_sources": [
+        {
+          "activity_page": 10,
+          "mechanic": "search_find",
+          "source": "compositor_manifest"
+        },
+        {
+          "activity_page": 11,
+          "mechanic": "maze",
+          "source": "unique_maze_path"
+        }
+      ],
+      "source_mission_page": null,
+      "child_instruction_required": false,
+      "notes": "Compact solutions for Mission 2 Search & Find and maze.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 39,
+      "section": "back_matter",
+      "type": "answer_key",
+      "title": "Answer Key: A Harvest of Thankfulness",
+      "mission_id": "mission_03",
+      "mission_sequence": 3,
+      "mission_slot": null,
+      "canon_id": "psalm_107_1",
+      "activity_mechanic": "answer_key_mission_03",
+      "art_roles": [
+        "answer_key_spot"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [
+        14,
+        15
+      ],
+      "answer_sources": [
+        {
+          "activity_page": 14,
+          "mechanic": "search_find",
+          "source": "compositor_manifest"
+        },
+        {
+          "activity_page": 15,
+          "mechanic": "maze",
+          "source": "unique_maze_path"
+        }
+      ],
+      "source_mission_page": null,
+      "child_instruction_required": false,
+      "notes": "Compact solutions for Mission 3 Search & Find and maze.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 40,
+      "section": "back_matter",
+      "type": "answer_key",
+      "title": "Answer Key: Courage Over Fear",
+      "mission_id": "mission_04",
+      "mission_sequence": 4,
+      "mission_slot": null,
+      "canon_id": "isaiah_41_10",
+      "activity_mechanic": "answer_key_mission_04",
+      "art_roles": [
+        "answer_key_spot"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [
+        18,
+        19
+      ],
+      "answer_sources": [
+        {
+          "activity_page": 18,
+          "mechanic": "search_find",
+          "source": "compositor_manifest"
+        },
+        {
+          "activity_page": 19,
+          "mechanic": "maze",
+          "source": "unique_maze_path"
+        }
+      ],
+      "source_mission_page": null,
+      "child_instruction_required": false,
+      "notes": "Compact solutions for Mission 4 Search & Find and maze.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 41,
+      "section": "back_matter",
+      "type": "answer_key",
+      "title": "Answer Key: Share the Harvest",
+      "mission_id": "mission_05",
+      "mission_sequence": 5,
+      "mission_slot": null,
+      "canon_id": "hebrews_13_16",
+      "activity_mechanic": "answer_key_mission_05",
+      "art_roles": [
+        "answer_key_spot"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [
+        22,
+        23
+      ],
+      "answer_sources": [
+        {
+          "activity_page": 22,
+          "mechanic": "search_find",
+          "source": "compositor_manifest"
+        },
+        {
+          "activity_page": 23,
+          "mechanic": "maze",
+          "source": "unique_maze_path"
+        }
+      ],
+      "source_mission_page": null,
+      "child_instruction_required": false,
+      "notes": "Compact solutions for Mission 5 Search & Find and maze.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 42,
+      "section": "back_matter",
+      "type": "answer_key",
+      "title": "Answer Key: Kindness at the Fall Festival",
+      "mission_id": "mission_06",
+      "mission_sequence": 6,
+      "mission_slot": null,
+      "canon_id": "ephesians_4_32",
+      "activity_mechanic": "answer_key_mission_06",
+      "art_roles": [
+        "answer_key_spot"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [
+        26,
+        27
+      ],
+      "answer_sources": [
+        {
+          "activity_page": 26,
+          "mechanic": "search_find",
+          "source": "compositor_manifest"
+        },
+        {
+          "activity_page": 27,
+          "mechanic": "maze",
+          "source": "unique_maze_path"
+        }
+      ],
+      "source_mission_page": null,
+      "child_instruction_required": false,
+      "notes": "Compact solutions for Mission 6 Search & Find and maze.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 43,
+      "section": "back_matter",
+      "type": "answer_key",
+      "title": "Answer Key: God's Beautiful Creation",
+      "mission_id": "mission_07",
+      "mission_sequence": 7,
+      "mission_slot": null,
+      "canon_id": "genesis_1_31",
+      "activity_mechanic": "answer_key_mission_07",
+      "art_roles": [
+        "answer_key_spot"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [
+        30,
+        31
+      ],
+      "answer_sources": [
+        {
+          "activity_page": 30,
+          "mechanic": "search_find",
+          "source": "compositor_manifest"
+        },
+        {
+          "activity_page": 31,
+          "mechanic": "maze",
+          "source": "unique_maze_path"
+        }
+      ],
+      "source_mission_page": null,
+      "child_instruction_required": false,
+      "notes": "Compact solutions for Mission 7 Search & Find and maze.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 44,
+      "section": "back_matter",
+      "type": "answer_key",
+      "title": "Answer Key: The Thankful Table",
+      "mission_id": "mission_08",
+      "mission_sequence": 8,
+      "mission_slot": null,
+      "canon_id": "1_thessalonians_5_18",
+      "activity_mechanic": "answer_key_mission_08",
+      "art_roles": [
+        "answer_key_spot"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [
+        34,
+        35
+      ],
+      "answer_sources": [
+        {
+          "activity_page": 34,
+          "mechanic": "search_find",
+          "source": "compositor_manifest"
+        },
+        {
+          "activity_page": 35,
+          "mechanic": "maze",
+          "source": "unique_maze_path"
+        }
+      ],
+      "source_mission_page": null,
+      "child_instruction_required": false,
+      "notes": "Compact solutions for Mission 8 Search & Find and maze.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 45,
+      "section": "back_matter",
+      "type": "bonus_activity",
+      "title": "Gratitude Journal",
+      "mission_id": null,
+      "mission_sequence": null,
+      "mission_slot": null,
+      "canon_id": "psalm_107_1",
+      "activity_mechanic": "bonus_gratitude_journal",
+      "art_roles": [
+        "bonus_activity"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": null,
+      "child_instruction_required": true,
+      "notes": "Parent-child gratitude bonus. Unique mechanic: draw-and-write three thanks. Not a copied mission page.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 46,
+      "section": "back_matter",
+      "type": "bonus_activity",
+      "title": "A Prayer Walk Together",
+      "mission_id": null,
+      "mission_sequence": null,
+      "mission_slot": null,
+      "canon_id": "1_thessalonians_5_18",
+      "activity_mechanic": "bonus_parent_child_prayer_walk",
+      "art_roles": [
+        "bonus_activity"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": null,
+      "child_instruction_required": true,
+      "notes": "Parent-child prayer/walk bonus. Unique mechanic: outdoor noticing plus short prayer prompts. Not a copied mission page.",
+      "facing": "verso",
+      "parity": "even"
+    },
+    {
+      "page": 47,
+      "section": "back_matter",
+      "type": "certificate",
+      "title": "Bright Hearts Completion Certificate",
+      "mission_id": null,
+      "mission_sequence": null,
+      "mission_slot": null,
+      "canon_id": null,
+      "activity_mechanic": "completion_certificate",
+      "art_roles": [
+        "certificate_frame"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": null,
+      "child_instruction_required": true,
+      "notes": "Child name and date lines. Code renders all certificate type.",
+      "facing": "recto",
+      "parity": "odd"
+    },
+    {
+      "page": 48,
+      "section": "back_matter",
+      "type": "closing",
+      "title": "Keep Shining, Bright Hearts",
+      "mission_id": null,
+      "mission_sequence": null,
+      "mission_slot": null,
+      "canon_id": "matthew_5_16",
+      "activity_mechanic": "bright_hearts_closing",
+      "art_roles": [
+        "closing_lockup"
+      ],
+      "artwork_status": "unfilled_slot",
+      "answer_key_page": null,
+      "answers_activity_pages": [],
+      "answer_sources": [],
+      "source_mission_page": null,
+      "child_instruction_required": true,
+      "notes": "Final Bright Hearts closing page. Not a duplicate of the title page.",
+      "facing": "verso",
+      "parity": "even"
+    }
+  ]
+}

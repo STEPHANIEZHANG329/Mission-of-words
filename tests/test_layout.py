@@ -15,3 +15,10 @@ def test_facing_page_parity_puts_gutter_on_the_inside():
     assert even["left"] == OUTER_SAFETY_INCHES
     assert INNER_SAFETY_INCHES > OUTER_SAFETY_INCHES
     assert min(INNER_SAFETY_INCHES, OUTER_SAFETY_INCHES) >= SAFE_MARGIN_INCHES
+
+
+def test_parity_holds_across_the_48_page_book():
+    last_odd = page_margins_inches(47)
+    last_even = page_margins_inches(48)
+    assert last_odd["left"] == INNER_SAFETY_INCHES
+    assert last_even["right"] == INNER_SAFETY_INCHES

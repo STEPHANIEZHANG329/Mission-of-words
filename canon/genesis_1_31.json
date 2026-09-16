@@ -1,0 +1,21 @@
+{
+  "canon_id": "genesis_1_31",
+  "translation": "KJV",
+  "source_edition": "1769 Oxford KJV (public domain)",
+  "reference": "Genesis 1:31",
+  "source_text": "And God saw every thing that he had made, and, behold, it was very good. And the evening and the morning were the sixth day.",
+  "child_paraphrase": "God looked at everything He had made, and it was very good.",
+  "license": "public_domain",
+  "license_note": "Short quotation of the 1769 Oxford King James Version. That edition is public domain in the United States. No bulk copyrighted Bible text is used.",
+  "lock_note": "Issue #6 Mission 7 required an exact source from the Genesis 1 / Psalm 19 theme. Genesis 1:31 is locked because the mission is God's Beautiful Creation and this verse states that everything God made was very good. Psalm 19:1 was not used; its heavens/firmament theme overlaps Mission 2 (Genesis 1:14).",
+  "allowed_visual_motifs": [
+    "everything God made",
+    "it was very good",
+    "the sixth day"
+  ],
+  "forbidden_claims": [
+    "Do not invent extra narrative as scripture",
+    "Do not treat deer, creeks, or other nature props as named facts from this verse",
+    "Do not add the rest of the creation week, names, or events that are not in Genesis 1:31"
+  ]
+}
