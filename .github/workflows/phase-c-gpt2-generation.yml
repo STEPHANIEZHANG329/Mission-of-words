@@ -19,6 +19,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Enforce commercial layout approval before paid generation
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          layout = json.loads(Path('ops/layout_gate.json').read_text())
+          paid = json.loads(Path('ops/phase_c_paid_gate.json').read_text())
+
+          if layout.get('status') != 'PASS' or layout.get('approved_for_paid_generation') is not True:
+              raise SystemExit('COMMERCIAL_LAYOUT_GATE_BLOCKED')
+          if paid.get('owner_stop') is True or paid.get('paid_calls_enabled') is not True or paid.get('allow_paid_image_calls') is not True:
+              raise SystemExit('OWNER_PAID_GATE_BLOCKED')
+          print('COMMERCIAL_LAYOUT_GATE_PASS')
+          print('OWNER_PAID_GATE_PASS')
+          PY
+
       - name: Confirm GPT2 secret exists without printing it
         run: |
           set -euo pipefail
