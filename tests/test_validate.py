@@ -5,16 +5,16 @@ def test_control_plane_records_validate():
     assert validate_repo() == []
 
 
-def test_task_packet_schema_still_forbids_paid_calls_in_full_book_phase_a():
+def test_task_packet_schema_still_forbids_paid_calls_in_full_book_phase_b():
     packet = {
-        "request_id": "req_full_book_phase_a",
-        "goal": "Phase A 48-page blueprint with paid generation disabled",
+        "request_id": "req_full_book_phase_b",
+        "goal": "Phase B 48-page technical proof with paid generation disabled",
         "book_id": "bright_hearts_fall_01",
         "mission_id": "mission_01",
         "paid_calls_allowed": False,
         "max_paid_calls": 0,
-        "acceptance_checks": ["blueprint_pass", "production_pass==false", "paid_image_calls==0"],
-        "out_of_scope": ["paid image generation", "merge to main", "KDP upload", "Phase B render"],
+        "acceptance_checks": ["technical_pass", "production_pass==false", "paid_image_calls==0"],
+        "out_of_scope": ["paid image generation", "merge to main", "KDP upload", "Phase C paid art"],
     }
     assert validate_task_packet(packet) == []
 

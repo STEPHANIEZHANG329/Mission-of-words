@@ -56,9 +56,10 @@ def page_header(
     instruction: str,
     *,
     kicker: str | None = None,
+    box: tuple[float, float, float, float] | None = None,
 ) -> tuple[tuple[float, float, float, float], float]:
     """Draw title + child instruction. Returns (content_box, y_below_header)."""
-    left, bottom, right, top = content_box(page_number)
+    left, bottom, right, top = box or content_box(page_number)
     width = right - left
     y = top - 8
     ink_text(c)

@@ -1,4 +1,4 @@
-name: Bright Hearts Phase A + 4-page floor
+name: Bright Hearts Phase B technical proof
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ permissions:
 jobs:
   validate-and-build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -44,50 +44,17 @@ jobs:
           PYTHONPATH: src
         run: pytest -q
 
-      - name: Evaluate 48-page Phase A blueprint
+      - name: Evaluate 48-page blueprint (no PDF required)
         env:
           PYTHONPATH: src
         run: python -m mission_of_words.evaluate_full_book
 
-      - name: Verify full-book QA stays fail-closed
+      - name: Build 48-page Phase B technical proof
         env:
           PYTHONPATH: src
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          report = json.loads(Path('output/full_book_qa.json').read_text())
-          print(json.dumps(report, indent=2))
-          manifest = json.loads(Path('output/book_manifest.json').read_text())
-          page_map = json.loads(Path('output/page_map.json').read_text())
-          assert report['paid_image_calls'] == 0, report
-          assert report['estimated_spend_usd'] == 0, report
-          assert report['page_count'] == 48, report
-          assert report['canon_bound_count'] == 8, report
-          assert report['all_canons_bound'] is True, report
-          assert report['facing_page_parity_ok'] is True, report
-          assert report['font_floors_ok'] is True, report
-          assert report['answer_key_linkage_ok'] is True, report
-          assert report['unique_content_ok'] is True, report
-          assert report['unfilled_art_slots'] == 48, report
-          assert report['placeholder_assets_present'] is True, report
-          assert report['blueprint_pass'] is True, report['failures']
-          assert report['technical_pass'] is False, report
-          assert report['production_pass'] is False, report
-          assert report['pass'] is False, report
-          assert report['blockers'], report
-          assert manifest['target_page_count'] == 48
-          assert manifest['paid_image_calls_authorized'] == 0
-          assert len(manifest['pages']) == 48
-          assert len(page_map) == 48
-          PY
+        run: python -m mission_of_words.build_book
 
-      - name: Build 4-page prototype floor
-        env:
-          PYTHONPATH: src
-        run: python -m mission_of_words.build_sample
-
-      - name: Verify 4-page prototype factory gate
+      - name: Verify Phase B technical proof stays unpublished
         env:
           PYTHONPATH: src
         run: |
@@ -95,59 +62,62 @@ jobs:
           import json
           from pathlib import Path
           report = json.loads(Path('output/qa_report.json').read_text())
-          print(json.dumps(report, indent=2))
+          print(json.dumps({k: report[k] for k in report if k != 'pages'}, indent=2))
           visual = Path('output/visual_qa.md').read_text()
-          print(visual)
+          print(visual[:2000])
           assert report['paid_image_calls'] == 0, report
           assert report['estimated_spend_usd'] == 0, report
-          assert report['sample_pages'] == 4, report
-          assert report['canon_bound'] is True, report
-          assert report['search_find_all_targets_present'] is True, report
-          assert report['search_find_answer_key_from_manifest'] is True, report
-          assert report['maze_solvable'] is True, report
-          assert report['maze_perfect_unique_path'] is True, report
-          assert report['layout_ok'] is True, report
+          assert report['page_count'] == 48, report
+          assert report['rendered_page_count'] == 48, report
+          assert report['canon_bound_count'] == 8, report
+          assert report['all_canons_bound'] is True, report
           assert report['facing_page_parity_ok'] is True, report
-          assert report['placeholder_copy_absent'] is True, report
-          assert report['artwork_status'] != 'placeholder_only', report
-          assert report['visual_qa_pass'] is True, report
-          assert report['preview_count'] == 4, report
-          assert report['technical_pass'] is True, report
+          assert report['font_floors_ok'] is True, report
+          assert report['answer_key_linkage_ok'] is True, report
+          assert report['unique_content_ok'] is True, report
+          assert report['maze_all_solvable'] is True, report
+          assert report['maze_all_unique'] is True, report
+          assert report['search_answer_keys_from_manifest'] is True, report
+          assert report['raster_dpi_ok'] is True, report
+          assert report['non_production_mark_present'] is True, report
+          assert report['placeholder_assets_present'] is True, report
+          assert report['blueprint_pass'] is True, report['failures']
+          assert report['technical_pass'] is True, report['failures']
           assert report['production_pass'] is False, report
-          assert report['pass'] is True, report['failures']
+          assert report['pass'] is False, report
+          assert report['visual_readiness'] in {'FAIL', 'MISSING'}, report
+          assert report['blockers'], report
           for name in (
-              'BrightHearts_ShineYourLight_Interior.pdf',
-              'BrightHearts_ShineYourLight_AnswerKey.pdf',
+              'BrightHearts_Fall_Interior_TechnicalProof.pdf',
+              'BrightHearts_Fall_AnswerKey_TechnicalProof.pdf',
               'qa_report.json',
-              'visual_qa.md',
-              'asset_register.json',
-              'previews/page_01.png',
-              'previews/page_02.png',
-              'previews/page_03.png',
-              'previews/page_04.png',
               'full_book_qa.json',
+              'visual_qa.md',
               'book_manifest.json',
               'page_map.json',
+              'asset_register.json',
+              'previews/page_01.png',
+              'previews/page_48.png',
+              'previews/contact_sheet.png',
           ):
               path = Path('output') / name
               assert path.is_file(), path
           assert 'Asset Integration' in visual
-          assert 'Child Usability' in visual
-          assert 'Prompt-to-Art' in visual
+          assert 'FAIL' in visual
           PY
 
       - name: Upload QA evidence
         uses: actions/upload-artifact@v4
         with:
-          name: bright-hearts-phase-a-blueprint
+          name: bright-hearts-phase-b-technical-proof
           path: |
             output/full_book_qa.json
+            output/qa_report.json
             output/book_manifest.json
             output/page_map.json
             content/books/bright_hearts_fall_01/book_manifest.json
-            output/BrightHearts_ShineYourLight_Interior.pdf
-            output/BrightHearts_ShineYourLight_AnswerKey.pdf
-            output/qa_report.json
+            output/BrightHearts_Fall_Interior_TechnicalProof.pdf
+            output/BrightHearts_Fall_AnswerKey_TechnicalProof.pdf
             output/visual_qa.md
             output/visual_qa.json
             output/asset_register.json

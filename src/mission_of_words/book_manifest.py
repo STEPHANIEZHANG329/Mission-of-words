@@ -124,7 +124,7 @@ def mission_pages_to_book_pages(mission: dict[str, Any]) -> list[dict[str, Any]]
             "canon_id": mission["canon_id"],
             "activity_mechanic": page.get("activity_mechanic") or f"{mission['id']}_{expected_type}",
             "art_roles": list(page.get("art_roles") or _default_art_roles(expected_type)),
-            "artwork_status": "unfilled_slot",
+            "artwork_status": "placeholder_only",
             "answer_key_page": answer_page,
             "answers_activity_pages": [],
             "answer_sources": [],
@@ -132,7 +132,8 @@ def mission_pages_to_book_pages(mission: dict[str, Any]) -> list[dict[str, Any]]
             "child_instruction_required": True,
             "notes": (
                 f"Mission {sequence} slot {MISSION_SLOTS[index - 1]}. "
-                "Final page text is rendered by code. Artwork slot is unfilled in Phase A."
+                "Final page text is rendered by code. Artwork is a marked "
+                "NON-PRODUCTION placeholder in Phase B."
             ),
         }
         book_pages.append(apply_facing(record))
@@ -171,7 +172,7 @@ def build_manifest(
         "working_title": book["working_title"],
         "subtitle": book["subtitle"],
         "audience": book["audience"],
-        "phase": book.get("phase", "A"),
+        "phase": book.get("phase", "B"),
         "target_page_count": TARGET_PAGE_COUNT,
         "trim_inches": list(book.get("trim_inches") or TRIM_INCHES),
         "dpi": int(book.get("dpi") or 300),

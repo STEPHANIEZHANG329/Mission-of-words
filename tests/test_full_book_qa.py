@@ -16,7 +16,7 @@ from mission_of_words.layout import (
 )
 
 
-def test_phase_a_blueprint_passes_and_production_stays_closed():
+def test_blueprint_passes_and_production_stays_closed_without_proof():
     report = evaluate_full_book()
     assert report["failures"] == []
     assert report["blueprint_pass"] is True

@@ -32,6 +32,8 @@ def _objects_ok(record: dict[str, Any]) -> tuple[bool, str]:
 
 def _child_ok(record: dict[str, Any]) -> tuple[bool, str]:
     instruction = str(record.get("child_instruction") or "").strip()
+    if record.get("child_instruction_required") is False:
+        return True, "No child instruction required on this page."
     if len(instruction) < 12:
         return False, "Child instruction is missing or too short for ages 5-8."
     if USED_INSTRUCTION_PT < 12:
@@ -44,8 +46,10 @@ def _child_ok(record: dict[str, Any]) -> tuple[bool, str]:
             return False, "Faith page needs four usable choices."
     if record.get("type") == "maze":
         drawn = set(record.get("drawn_objects") or [])
-        if "child_with_lantern" not in drawn or "welcome_table" not in drawn:
-            return False, "Maze start/finish pictures are missing."
+        required = set(record.get("required_objects") or [])
+        missing_start_finish = [name for name in required if name not in drawn]
+        if missing_start_finish:
+            return False, f"Maze start/finish pictures are missing: {missing_start_finish}."
     return True, "A 5-8 year old can see what to do from the instruction plus the picture."
 
 
@@ -57,8 +61,6 @@ def _integration_ok(record: dict[str, Any]) -> tuple[bool, str]:
             return False, "Search page is missing an independent background asset."
         if len([name for name in drawn if name != "search_background"]) != 8:
             return False, "Search page did not integrate eight independent targets."
-    if record.get("type") == "coloring" and "church" not in (record.get("drawn_objects") or []):
-        return False, "Coloring page does not integrate the church scene."
     if record.get("text_in_artwork"):
         return False, "Artwork contains letters; coloring art must not."
     if not note:
@@ -72,14 +74,15 @@ def evaluate_visual(
     preview_paths: list[Path],
     interior_pdf: Path,
     human_findings: list[dict[str, Any]],
+    expected_pages: int = 4,
 ) -> dict[str, Any]:
     pages: list[dict[str, Any]] = []
     failures: list[str] = []
 
-    if len(compositions) != 4:
-        failures.append(f"visual: expected 4 composition records, got {len(compositions)}")
-    if len(preview_paths) < 4:
-        failures.append(f"visual: expected 4 page previews, got {len(preview_paths)}")
+    if len(compositions) != expected_pages:
+        failures.append(f"visual: expected {expected_pages} composition records, got {len(compositions)}")
+    if len(preview_paths) < expected_pages:
+        failures.append(f"visual: expected {expected_pages} page previews, got {len(preview_paths)}")
     if not interior_pdf.is_file():
         failures.append("visual: interior PDF missing")
 
@@ -96,8 +99,18 @@ def evaluate_visual(
         if not human:
             human_pass = False
             human_notes = "FAIL: visual review was not recorded for this page."
-
-        page_fail_reasons = []
+        page_fail_reasons: list[str] = []
+        visual_readiness = "PASS"
+        if record.get("placeholder") or record.get("artwork_status") in {
+            "unfilled_slot",
+            "placeholder_only",
+        }:
+            visual_readiness = "FAIL"
+            page_fail_reasons.append(
+                "MISSING/FAIL: placeholder or unfilled art cannot satisfy production visual readiness."
+            )
+        if not human_pass:
+            visual_readiness = "MISSING" if visual_readiness == "PASS" else visual_readiness
         if not integration_ok:
             page_fail_reasons.append(integration_note)
         if not child_ok:
@@ -115,6 +128,7 @@ def evaluate_visual(
                 "page": page_no,
                 "type": record.get("type"),
                 "status": status,
+                "visual_readiness": visual_readiness,
                 "asset_integration": {"pass": integration_ok, "notes": integration_note},
                 "child_usability": {"pass": child_ok, "notes": child_note},
                 "prompt_to_art": {"pass": prompt_ok, "notes": prompt_note},
@@ -125,25 +139,58 @@ def evaluate_visual(
     return {
         "kind": "visual_preflight",
         "separate_from_technical_qa": True,
+        "expected_pages": expected_pages,
         "pages": pages,
         "failures": failures,
+        "visual_readiness": "FAIL" if any(page.get("visual_readiness") != "PASS" for page in pages) or failures else "PASS",
         "pass": not failures,
     }
 
 
-def write_visual_qa_markdown(report: dict[str, Any], path: Path) -> Path:
+def evaluate_full_book_visual(
+    *,
+    compositions: list[dict[str, Any]],
+    preview_paths: list[Path],
+    interior_pdf: Path,
+    human_findings: list[dict[str, Any]],
+) -> dict[str, Any]:
+    report = evaluate_visual(
+        compositions=compositions,
+        preview_paths=preview_paths,
+        interior_pdf=interior_pdf,
+        human_findings=human_findings,
+        expected_pages=48,
+    )
+    report["kind"] = "full_book_visual_preflight"
+    if report.get("visual_readiness") == "PASS":
+        report["visual_readiness"] = "FAIL"
+        report["failures"] = list(report["failures"]) + [
+            "visual: 48-page technical proof cannot be production-ready while placeholder art remains"
+        ]
+        report["pass"] = False
+    return report
+
+
+def write_visual_qa_markdown(
+    report: dict[str, Any],
+    path: Path,
+    *,
+    title: str = "Visual QA — Shine Your Light prototype",
+) -> Path:
     lines = [
-        "# Visual QA — Shine Your Light prototype",
+        f"# {title}",
         "",
         "This file is the **visual** preflight. It is not `qa_report.json`.",
-        "A page cannot PASS if Asset Integration, Child Usability, Prompt-to-Art,",
-        "or human visual review is FAIL.",
+        "A page cannot PASS production visual readiness if Asset Integration,",
+        "Child Usability, Prompt-to-Art, human visual review, or placeholder status is FAIL/MISSING.",
         "",
         f"**Overall:** {'PASS' if report['pass'] else 'FAIL'}",
+        f"**Visual readiness:** {report.get('visual_readiness', 'FAIL' if not report['pass'] else 'PASS')}",
         "",
     ]
     for page in report["pages"]:
-        lines.append(f"## Page {page['page']} — {page['type']} — {page['status']}")
+        readiness = page.get("visual_readiness") or page["status"]
+        lines.append(f"## Page {page['page']} — {page['type']} — {page['status']} (visual readiness: {readiness})")
         lines.append("")
         for key, label in (
             ("asset_integration", "Asset Integration"),

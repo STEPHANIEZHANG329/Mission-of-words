@@ -19,7 +19,7 @@ def test_committed_manifest_has_exactly_48_contiguous_pages():
     numbers = [page["page"] for page in manifest["pages"]]
     assert numbers == list(range(1, TARGET_PAGE_COUNT + 1))
     assert manifest["target_page_count"] == 48
-    assert manifest["phase"] == "A"
+    assert manifest["phase"] == "B"
     assert manifest["paid_image_calls_authorized"] == 0
     assert manifest["bleed"] is False
     assert BOOK_MANIFEST.is_file()
@@ -62,7 +62,7 @@ def test_each_mission_uses_the_required_four_slot_pattern():
             assert page["mission_slot"] == slot
             assert page["type"] == page_type
             assert page["canon_id"] == mission["canon_id"]
-            assert page["artwork_status"] == "unfilled_slot"
+            assert page["artwork_status"] == "placeholder_only"
 
 
 def test_facing_parity_for_all_48_pages():

@@ -7,5 +7,5 @@
   "spent_calls": 0,
   "currency": "USD",
   "owner_only_changes": true,
-    "notes": "Phase A full-book blueprint: paid image generation is disabled. Owner must later enable a protected paid-image gate before any spend. spent_calls and spent_usd must remain 0."
+    "notes": "Phase B technical proof: paid image generation is disabled. Owner must later enable a protected paid-image gate before any spend. spent_calls and spent_usd must remain 0."
 }

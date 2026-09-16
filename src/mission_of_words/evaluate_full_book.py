@@ -1,4 +1,8 @@
-"""Phase A full-book blueprint evaluation. Zero paid image calls."""
+"""Phase B full-book evaluation helper. Zero paid image calls.
+
+Use `python -m mission_of_words.build_book` to render the 48-page technical proof.
+This module still writes blueprint evidence without claiming production_pass.
+"""
 
 from __future__ import annotations
 
@@ -23,12 +27,10 @@ def evaluate() -> dict:
 
 def main() -> int:
     report = evaluate()
-    print(json.dumps(report, indent=2))
+    print(json.dumps({k: report[k] for k in report if k != "pages"}, indent=2))
     if report["paid_image_calls"] != 0:
         return 1
     if report["production_pass"] is True or report["pass"] is True:
-        return 1
-    if report["technical_pass"] is True:
         return 1
     if report["blueprint_pass"] is not True:
         return 1

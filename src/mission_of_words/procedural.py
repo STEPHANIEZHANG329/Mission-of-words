@@ -13,6 +13,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 from mission_of_words.layout import DPI
+from mission_of_words.targets import SEARCH_TARGET_DRAWERS
 
 TARGET_CANVAS = 512
 STROKE = 14
@@ -233,6 +234,7 @@ TARGET_DRAWERS = {
     "scarf": draw_scarf,
     "basket": draw_basket,
     "Bible": draw_bible,
+    **SEARCH_TARGET_DRAWERS,
 }
 
 TARGET_PROMPTS = {
@@ -247,7 +249,7 @@ TARGET_PROMPTS = {
 }
 
 
-def render_target(name: str, path: Path, size: int = TARGET_CANVAS) -> dict:
+def render_target(name: str, path: Path, size: int = TARGET_CANVAS, *, status: str = "procedural_lineart") -> dict:
     if name not in TARGET_DRAWERS:
         raise ValueError(f"unknown target: {name}")
     image, draw = _new(size)
@@ -255,13 +257,16 @@ def render_target(name: str, path: Path, size: int = TARGET_CANVAS) -> dict:
     TARGET_DRAWERS[name](draw, (inset, inset, size - inset, size - inset))
     path.parent.mkdir(parents=True, exist_ok=True)
     image.save(path)
+    prompt = TARGET_PROMPTS.get(name) or (
+        f"Black-and-white coloring-book {name.replace('_', ' ')}, closed shapes, no letters."
+    )
     return {
         "asset_id": f"proc_{name.lower()}",
         "role": "search_target",
-        "status": "accepted",
+        "status": status,
         "request_id": f"procedural-{name}",
         "model": "procedural-lineart",
-        "prompt": TARGET_PROMPTS[name],
+        "prompt": prompt,
         "file": str(path),
         "sha256": _sha256(path),
         "cost_usd": 0.0,
@@ -271,130 +276,30 @@ def render_target(name: str, path: Path, size: int = TARGET_CANVAS) -> dict:
     }
 
 
-def render_search_background(path: Path, width: int, height: int) -> dict:
-    """Festival grounds without the eight search targets."""
+def render_search_background(
+    path: Path,
+    width: int,
+    height: int,
+    *,
+    theme: str = "mission_01",
+    status: str = "procedural_lineart",
+    excluded_targets: list[str] | None = None,
+) -> dict:
+    """Mission-themed grounds without that mission's eight search targets."""
+    from mission_of_words.backgrounds import render_theme
+
     image = Image.new("RGB", (width, height), (255, 255, 255))
-    draw = ImageDraw.Draw(image)
-    w, h = width, height
-    stroke = max(8, round(min(w, h) / 180))
-
-    def line_ink(xy, width_=stroke):
-        draw.line(xy, fill=(0, 0, 0), width=width_)
-
-    # ground
-    ground_y = int(h * 0.72)
-    draw.polygon(
-        [(0, ground_y), (w, int(h * 0.70)), (w, h), (0, h)],
-        fill=(255, 255, 255),
-        outline=(0, 0, 0),
-        width=stroke,
-    )
-    # church sits on the ground — path meets the door instead of cutting the building
-    bx0, by0 = int(w * 0.18), int(h * 0.38)
-    bx1, by1 = int(w * 0.48), ground_y
-    draw.polygon(
-        [
-            (int(w * 0.40), h),
-            (int(w * 0.60), h),
-            (int(w * 0.52), by1),
-            (int(w * 0.44), by1),
-        ],
-        outline=(0, 0, 0),
-        width=stroke,
-    )
-    draw.rectangle([bx0, by0, bx1, by1], outline=(0, 0, 0), width=stroke)
-    draw.polygon(
-        [(bx0 - 10, by0), ((bx0 + bx1) // 2, int(h * 0.26)), (bx1 + 10, by0)],
-        outline=(0, 0, 0),
-        width=stroke,
-    )
-    tower_x = (bx0 + bx1) // 2
-    draw.rectangle(
-        [tower_x - int(w * 0.03), int(h * 0.22), tower_x + int(w * 0.03), by0],
-        outline=(0, 0, 0),
-        width=stroke,
-    )
-    draw.polygon(
-        [
-            (tower_x - int(w * 0.045), int(h * 0.22)),
-            (tower_x, int(h * 0.12)),
-            (tower_x + int(w * 0.045), int(h * 0.22)),
-        ],
-        outline=(0, 0, 0),
-        width=stroke,
-    )
-    # intact cross
-    cx, cy = tower_x, int(h * 0.09)
-    line_ink([(cx, cy - int(h * 0.04)), (cx, cy + int(h * 0.05))], stroke + 2)
-    line_ink([(cx - int(w * 0.025), cy), (cx + int(w * 0.025), cy)], stroke + 2)
-    # door + windows
-    draw.rounded_rectangle(
-        [tower_x - int(w * 0.03), int(h * 0.54), tower_x + int(w * 0.03), by1],
-        radius=18,
-        outline=(0, 0, 0),
-        width=stroke,
-    )
-    for wx in (int(w * 0.24), int(w * 0.38)):
-        draw.rounded_rectangle(
-            [wx, int(h * 0.48), wx + int(w * 0.04), int(h * 0.62)],
-            radius=12,
-            outline=(0, 0, 0),
-            width=max(4, stroke - 2),
-        )
-    # tree (massed canopy, not individual leaves)
-    tx, ty = int(w * 0.78), int(h * 0.72)
-    draw.rectangle(
-        [tx - int(w * 0.02), int(h * 0.48), tx + int(w * 0.02), ty],
-        outline=(0, 0, 0),
-        width=stroke,
-    )
-    draw.ellipse(
-        [tx - int(w * 0.12), int(h * 0.22), tx + int(w * 0.12), int(h * 0.52)],
-        outline=(0, 0, 0),
-        width=stroke,
-    )
-    # welcome table (empty — no basket/apple/bible)
-    draw.rectangle(
-        [int(w * 0.58), int(h * 0.62), int(w * 0.78), int(h * 0.68)],
-        outline=(0, 0, 0),
-        width=stroke,
-    )
-    draw.rectangle(
-        [int(w * 0.60), int(h * 0.68), int(w * 0.63), int(h * 0.78)],
-        outline=(0, 0, 0),
-        width=max(4, stroke - 2),
-    )
-    draw.rectangle(
-        [int(w * 0.73), int(h * 0.68), int(w * 0.76), int(h * 0.78)],
-        outline=(0, 0, 0),
-        width=max(4, stroke - 2),
-    )
-    # string lights from church to tree
-    y_wire = int(h * 0.24)
-    line_ink([(bx1, int(h * 0.30)), (tx - int(w * 0.08), y_wire)], max(4, stroke - 2))
-    for i in range(6):
-        t = (i + 0.5) / 6
-        bx = int(bx1 * (1 - t) + (tx - w * 0.08) * t)
-        by = int(h * 0.30 * (1 - t) + y_wire * t) + int(18 * (1 - abs(2 * t - 1)))
-        draw.ellipse([bx - 7, by, bx + 7, by + 16], outline=(0, 0, 0), width=max(4, stroke - 3))
-    # clouds
-    draw.ellipse([int(w * 0.55), int(h * 0.06), int(w * 0.72), int(h * 0.16)], outline=(0, 0, 0), width=max(4, stroke - 2))
-    draw.ellipse([int(w * 0.08), int(h * 0.08), int(w * 0.22), int(h * 0.16)], outline=(0, 0, 0), width=max(4, stroke - 2))
-
+    prompt = render_theme(image, theme)
     path.parent.mkdir(parents=True, exist_ok=True)
     image.save(path, "PNG")
+    names = excluded_targets if excluded_targets is not None else list(TARGET_DRAWERS)
     return {
-        "asset_id": "proc_search_background",
+        "asset_id": f"proc_search_background_{theme}",
         "role": "search_background",
-        "status": "accepted",
-        "request_id": "procedural-search-background",
+        "status": status,
+        "request_id": f"procedural-search-background-{theme}",
         "model": "procedural-lineart",
-        "prompt": (
-            "Black-and-white church fall festival grounds for a search-and-find "
-            "background: church with intact cross, path, tree canopy, empty welcome "
-            "table, string lights, clouds. Do not include lantern, pumpkin, apple, "
-            "leaf, acorn, scarf, basket, or Bible. No letters."
-        ),
+        "prompt": prompt,
         "file": str(path),
         "sha256": _sha256(path),
         "cost_usd": 0.0,
@@ -403,7 +308,8 @@ def render_search_background(path: Path, width: int, height: int) -> dict:
         "dpi": DPI,
         "width": width,
         "height": height,
-        "excluded_targets": sorted(TARGET_DRAWERS),
+        "theme": theme,
+        "excluded_targets": sorted(names),
     }
 
 

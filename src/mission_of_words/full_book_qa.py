@@ -1,9 +1,8 @@
 """Fail-closed QA for the 48-page Bright Hearts book.
 
 `pass` is production readiness only and is computed, never hand-edited.
-Phase A can earn `blueprint_pass`. It cannot earn `technical_pass` or
-`production_pass`: there is no 48-page composed proof yet, and every art
-slot is unfilled.
+Phase B can earn `technical_pass` for a marked NON-PRODUCTION proof.
+It cannot earn `production_pass` while placeholder art remains.
 """
 
 from __future__ import annotations
@@ -37,17 +36,15 @@ from mission_of_words.layout import (
     USED_PUZZLE_LETTER_PT,
     page_margins_inches,
 )
+from mission_of_words.maze import Maze
 from mission_of_words.paths import BOOK_RECORD, OUTPUT_DIR, SCHEMA_DIR
+from mission_of_words.proof import NON_PRODUCTION_MARK, NON_PRODUCTION_LINE
 from mission_of_words.validate import validate_instance, validate_repo
 
-PHASE_B_BLOCKERS = [
-    "Phase B: generalize build_sample into a 48-page deterministic build",
-    "Phase B: front-matter and back-matter templates are not rendered yet",
-    "Phase B: maze/search-find generators are not yet run for missions 2-8",
-    "Phase B: no 48-page technical proof PDF exists",
-    "Phase B: contact sheets of all 48 pages are not generated",
-    "Phase C: paid artwork is not authorized; prompt packets exist only as visual_prompt fields",
-    "Phase D: production_pass cannot become true while art slots are unfilled",
+PHASE_C_BLOCKERS = [
+    "Phase C: paid artwork is not authorized; keep paid_image_calls == 0",
+    "Phase D: production_pass cannot become true while placeholder art remains",
+    "Phase D: independent visual QA is FAIL/MISSING for placeholder-dependent pages",
     "Phase E: cover is deferred until interior page count is locked and Owner-approved",
     "Do not merge, publish, or upload to KDP without Owner approval",
 ]
@@ -236,12 +233,45 @@ def search_target_failures(missions: list[dict[str, Any]]) -> list[str]:
     return failures
 
 
+def _pdf_page_count(path: Path) -> int:
+    import pypdfium2 as pdfium
+
+    document = pdfium.PdfDocument(str(path))
+    return len(document)
+
+
+def _pdf_text(path: Path) -> str:
+    import pypdfium2 as pdfium
+
+    document = pdfium.PdfDocument(str(path))
+    chunks: list[str] = []
+    for page in document:
+        textpage = page.get_textpage()
+        chunks.append(textpage.get_text_bounded() or "")
+    return "\n".join(chunks)
+
+
+def _maze_fingerprint(maze: Maze) -> tuple:
+    edges = []
+    for cell, nbrs in maze.passages.items():
+        for nxt in nbrs:
+            edges.append(tuple(sorted((cell, nxt))))
+    return tuple(sorted(set(edges)))
+
+
 def evaluate_full_book(
     *,
     manifest: dict[str, Any] | None = None,
     missions: list[dict[str, Any]] | None = None,
     paid_image_calls: int | None = None,
     interior_pdf: Path | None = None,
+    compositions: list[dict[str, Any]] | None = None,
+    mazes: dict[str, Maze] | None = None,
+    search_manifests: dict[str, list[dict[str, Any]]] | None = None,
+    visual_readiness: str | None = None,
+    preview_count: int = 0,
+    asset_records: list[dict[str, Any]] | None = None,
+    answer_pdf: Path | None = None,
 ) -> dict[str, Any]:
     failures: list[str] = []
     missions = missions if missions is not None else load_mission_records()
@@ -369,18 +399,30 @@ def evaluate_full_book(
         for page in pages
         if page.get("artwork_status") in {"unfilled_slot", "placeholder_only"}
     ]
-    placeholder_assets_present = bool(unfilled)
-    if unfilled and len(unfilled) != TARGET_PAGE_COUNT:
-        # Partial fill is allowed later; Phase A expects every slot unfilled.
-        pass
+    compositions = compositions or []
+    mazes = mazes or {}
+    search_manifests = search_manifests or {}
+    asset_records = asset_records or []
+    placeholder_from_compositions = any(
+        record.get("placeholder") or record.get("artwork_status") in {"unfilled_slot", "placeholder_only"}
+        for record in compositions
+    )
+    placeholder_assets_present = bool(unfilled) or placeholder_from_compositions or bool(asset_records)
     if any(page.get("artwork_status") == "accepted" for page in pages):
-        failures.append("artwork: Phase A cannot contain accepted production artwork")
+        failures.append("artwork: this pass cannot contain accepted production artwork")
+    for record in asset_records:
+        if record.get("paid_call") is True:
+            failures.append(f"asset {record.get('asset_id')} was marked paid_call")
+        if float(record.get("cost_usd") or 0) != 0:
+            failures.append(f"asset {record.get('asset_id')} has non-zero cost")
+        if record.get("status") == "accepted":
+            failures.append(f"asset {record.get('asset_id')} is marked accepted; Phase B assets must stay placeholders")
 
     paid_image_calls = paid_call_count() if paid_image_calls is None else int(paid_image_calls)
     if paid_image_calls != 0:
         failures.append(f"paid_image_calls must be 0, got {paid_image_calls}")
     if int(manifest.get("paid_image_calls_authorized") or 0) != 0:
-        failures.append("manifest authorizes paid image calls; Phase A must keep the gate closed")
+        failures.append("manifest authorizes paid image calls; this pass must keep the gate closed")
 
     client = dry_run_info()
     if client["paid_image_calls"] != 0 or client["network_allowed"] or not client["dry_run"]:
@@ -398,29 +440,181 @@ def evaluate_full_book(
         failures.append(f"budget: {exc}")
 
     interior_present = bool(interior_pdf and Path(interior_pdf).is_file())
-    if interior_present:
-        failures.append(
-            "technical: a 48-page interior PDF is present in Phase A; that work belongs to Phase B"
-        )
+    rendered_page_count = 0
+    non_production_mark_present = False
+    maze_all_solvable = True
+    maze_all_unique = True
+    search_keys_from_manifest = True
+    raster_dpi_ok = True
+    page_order_ok = True
+    technical_failures: list[str] = []
 
-    blueprint_pass = not failures
-    technical_pass = False
-    if not interior_present:
-        # No composed 48-page proof, so the technical factory gate stays closed.
-        technical_pass = False
+    if interior_present:
+        try:
+            rendered_page_count = _pdf_page_count(Path(interior_pdf))
+        except Exception as exc:  # pragma: no cover - pdfium errors
+            technical_failures.append(f"technical: cannot read interior PDF: {exc}")
+            rendered_page_count = 0
+        if rendered_page_count != TARGET_PAGE_COUNT:
+            technical_failures.append(
+                f"technical: interior PDF must have {TARGET_PAGE_COUNT} pages, got {rendered_page_count}"
+            )
+        try:
+            pdf_text = _pdf_text(Path(interior_pdf))
+        except Exception as exc:  # pragma: no cover
+            pdf_text = ""
+            technical_failures.append(f"technical: cannot extract PDF text: {exc}")
+        non_production_mark_present = NON_PRODUCTION_MARK in pdf_text or NON_PRODUCTION_LINE in pdf_text
+        if not non_production_mark_present:
+            technical_failures.append("technical: interior PDF is missing the NON-PRODUCTION TECHNICAL PROOF mark")
+        if answer_pdf and Path(answer_pdf).is_file():
+            try:
+                if _pdf_page_count(Path(answer_pdf)) != 8:
+                    technical_failures.append("technical: answer-key proof must have 8 pages")
+            except Exception as exc:  # pragma: no cover
+                technical_failures.append(f"technical: cannot read answer-key PDF: {exc}")
+
+    if compositions:
+        numbers = [int(item.get("page") or 0) for item in compositions]
+        if numbers != list(range(1, TARGET_PAGE_COUNT + 1)):
+            page_order_ok = False
+            technical_failures.append(f"technical: composition page order is {numbers[:8]}...")
+        if len(compositions) != TARGET_PAGE_COUNT:
+            page_order_ok = False
+            technical_failures.append(
+                f"technical: expected {TARGET_PAGE_COUNT} compositions, got {len(compositions)}"
+            )
+        for record in compositions:
+            if record.get("type") != "search_find":
+                continue
+            dpi = float(record.get("effective_dpi") or 0)
+            if dpi + 1e-6 < DPI:
+                raster_dpi_ok = False
+                technical_failures.append(
+                    f"technical: search page {record.get('page')} effective DPI {dpi:.1f} is below {DPI}"
+                )
+
+    fingerprints: list[tuple] = []
+    if mazes:
+        if len(mazes) != 8:
+            maze_all_solvable = False
+            technical_failures.append(f"technical: expected 8 mazes, got {len(mazes)}")
+        for mission_id, maze in mazes.items():
+            try:
+                path = maze.solve()
+                if len(path) <= 1 or not maze.is_perfect():
+                    maze_all_solvable = False
+                    technical_failures.append(f"technical: maze {mission_id} is not a unique perfect path")
+                fingerprints.append(_maze_fingerprint(maze))
+            except ValueError as exc:
+                maze_all_solvable = False
+                technical_failures.append(f"technical: maze {mission_id}: {exc}")
+        if len(fingerprints) != len(set(fingerprints)):
+            maze_all_unique = False
+            technical_failures.append("technical: two missions share the same maze graph")
+    elif interior_present:
+        maze_all_solvable = False
+        technical_failures.append("technical: mazes were not supplied for the 48-page proof")
+
+    if search_manifests:
+        if len(search_manifests) != 8:
+            search_keys_from_manifest = False
+            technical_failures.append(f"technical: expected 8 search manifests, got {len(search_manifests)}")
+        by_id = {mission["id"]: mission for mission in missions}
+        for mission_id, manifest_rows in search_manifests.items():
+            mission = by_id.get(mission_id)
+            if not mission:
+                search_keys_from_manifest = False
+                technical_failures.append(f"technical: search manifest {mission_id} has no mission record")
+                continue
+            expected = [target["name"] for target in mission["pages"][1]["targets"]]
+            got = [row.get("name") for row in manifest_rows]
+            if got != expected:
+                search_keys_from_manifest = False
+                technical_failures.append(
+                    f"technical: search manifest for {mission_id} does not match the activity target list"
+                )
+            for record in compositions:
+                if record.get("mission_id") == mission_id and record.get("type") == "answer_key":
+                    keyed = [row.get("name") for row in record.get("search_manifest") or []]
+                    if keyed and keyed != got:
+                        search_keys_from_manifest = False
+                        technical_failures.append(
+                            f"technical: answer key for {mission_id} does not reuse the compositor manifest"
+                        )
+                    maze_path = record.get("maze_path") or []
+                    maze = mazes.get(mission_id)
+                    if maze is not None and maze_path != [list(cell) for cell in maze.solve()]:
+                        search_keys_from_manifest = False
+                        technical_failures.append(
+                            f"technical: answer key maze path for {mission_id} does not match the generator"
+                        )
+    elif interior_present:
+        search_keys_from_manifest = False
+        technical_failures.append("technical: search manifests were not supplied for the 48-page proof")
+
+    if interior_present and preview_count not in {0, TARGET_PAGE_COUNT}:
+        technical_failures.append(f"technical: expected {TARGET_PAGE_COUNT} previews, got {preview_count}")
+
+    failures.extend(technical_failures)
+    blueprint_gates_ok = not [
+        item
+        for item in failures
+        if not item.startswith("technical:")
+    ]
+    blueprint_pass = blueprint_gates_ok
+    technical_pass = (
+        interior_present
+        and rendered_page_count == TARGET_PAGE_COUNT
+        and non_production_mark_present
+        and maze_all_solvable
+        and maze_all_unique
+        and search_keys_from_manifest
+        and raster_dpi_ok
+        and page_order_ok
+        and font_ok
+        and facing_ok
+        and answer_ok
+        and unique_ok
+        and all_canons_bound
+        and paid_image_calls == 0
+        and not technical_failures
+        and blueprint_gates_ok
+    )
     production_pass = False
-    if placeholder_assets_present or not interior_present:
+    visual_ready = (visual_readiness or "FAIL").upper()
+    if placeholder_assets_present or visual_ready != "PASS" or not interior_present:
         production_pass = False
     if production_pass:
         failures.append("production_pass claimed while placeholders or missing proof remain")
         blueprint_pass = False
+        technical_pass = False
         production_pass = False
+
+    page_reports = []
+    composition_by_page = {int(item.get("page") or 0): item for item in compositions}
+    for page in pages:
+        number = int(page.get("page") or 0)
+        composition = composition_by_page.get(number, {})
+        visual_status = "FAIL" if placeholder_assets_present else "MISSING"
+        if composition.get("placeholder") or page.get("artwork_status") in {"unfilled_slot", "placeholder_only"}:
+            visual_status = "FAIL"
+        page_reports.append(
+            {
+                "page": number,
+                "type": page.get("type"),
+                "technical_ok": technical_pass if interior_present else False,
+                "visual_status": visual_status,
+                "artwork_status": page.get("artwork_status") or composition.get("artwork_status"),
+            }
+        )
 
     report = {
         "book_id": manifest.get("book_id") or json.loads(BOOK_RECORD.read_text()).get("book_id"),
-        "phase": manifest.get("phase", "A"),
+        "phase": "B" if interior_present else manifest.get("phase", "A"),
         "target_page_count": TARGET_PAGE_COUNT,
         "page_count": page_count,
+        "rendered_page_count": rendered_page_count,
         "paid_image_calls": paid_image_calls,
         "estimated_spend_usd": 0.0,
         "canon_bound_count": canon_bound_count,
@@ -429,18 +623,26 @@ def evaluate_full_book(
         "font_floors_ok": font_ok,
         "answer_key_linkage_ok": answer_ok,
         "unique_content_ok": unique_ok,
+        "maze_all_solvable": maze_all_solvable if mazes or not interior_present else False,
+        "maze_all_unique": maze_all_unique if mazes or not interior_present else False,
+        "search_answer_keys_from_manifest": search_keys_from_manifest if search_manifests or not interior_present else False,
+        "raster_dpi_ok": raster_dpi_ok,
+        "non_production_mark_present": non_production_mark_present,
+        "visual_readiness": visual_ready if interior_present else "MISSING",
         "unfilled_art_slots": len(unfilled),
         "placeholder_assets_present": placeholder_assets_present,
         "interior_pdf_present": interior_present,
-        "artwork_status_summary": "unfilled_slot" if placeholder_assets_present else "mixed",
+        "preview_count": preview_count,
+        "artwork_status_summary": "placeholder_only" if placeholder_assets_present else "mixed",
         "image_client_mode": client["mode"],
         "paid_generation_gate_implemented": PAID_GENERATION_GATE_IMPLEMENTED,
         "blueprint_pass": blueprint_pass,
         "technical_pass": technical_pass,
         "production_pass": production_pass,
         "pass": production_pass,
+        "pages": page_reports,
         "failures": failures,
-        "blockers": list(PHASE_B_BLOCKERS),
+        "blockers": list(PHASE_C_BLOCKERS),
     }
     schema_path = SCHEMA_DIR / "full_book_qa.schema.json"
     if schema_path.is_file():

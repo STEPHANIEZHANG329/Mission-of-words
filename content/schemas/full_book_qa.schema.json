@@ -32,6 +32,7 @@
     "phase": { "type": "string" },
     "target_page_count": { "type": "integer" },
     "page_count": { "type": "integer" },
+    "rendered_page_count": { "type": "integer", "minimum": 0 },
     "paid_image_calls": { "type": "integer", "minimum": 0 },
     "estimated_spend_usd": { "type": "number" },
     "canon_bound_count": { "type": "integer" },
@@ -40,9 +41,16 @@
     "font_floors_ok": { "type": "boolean" },
     "answer_key_linkage_ok": { "type": "boolean" },
     "unique_content_ok": { "type": "boolean" },
+    "maze_all_solvable": { "type": "boolean" },
+    "maze_all_unique": { "type": "boolean" },
+    "search_answer_keys_from_manifest": { "type": "boolean" },
+    "raster_dpi_ok": { "type": "boolean" },
+    "non_production_mark_present": { "type": "boolean" },
+    "visual_readiness": { "type": "string" },
     "unfilled_art_slots": { "type": "integer", "minimum": 0 },
     "placeholder_assets_present": { "type": "boolean" },
     "interior_pdf_present": { "type": "boolean" },
+    "preview_count": { "type": "integer", "minimum": 0 },
     "artwork_status_summary": { "type": "string" },
     "image_client_mode": { "type": "string" },
     "paid_generation_gate_implemented": { "type": "boolean" },
@@ -50,6 +58,20 @@
     "technical_pass": { "type": "boolean" },
     "production_pass": { "type": "boolean" },
     "pass": { "type": "boolean" },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "page": { "type": "integer" },
+          "type": { "type": "string" },
+          "technical_ok": { "type": "boolean" },
+          "visual_status": { "type": "string" },
+          "artwork_status": { "type": ["string", "null"] }
+        }
+      }
+    },
     "failures": {
       "type": "array",
       "items": { "type": "string" }

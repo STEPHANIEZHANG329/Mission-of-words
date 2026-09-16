@@ -21,7 +21,7 @@ def test_build_sample_writes_passing_qa_and_pdfs():
         assert (OUTPUT_DIR / "previews" / f"page_{index:02d}.png").is_file()
 
 
-def test_full_book_phase_a_writes_blueprint_evidence_without_production_pass():
+def test_full_book_blueprint_writes_evidence_without_production_pass():
     report = evaluate_full_book()
     assert report["blueprint_pass"] is True
     assert report["technical_pass"] is False
@@ -40,6 +40,7 @@ def test_pr_ci_workflow_never_receives_image_secrets():
     assert "openai.com" not in workflow.lower()
     assert "images/generations" not in workflow
     assert "evaluate_full_book" in workflow
+    assert "build_book" in workflow
     assert "production_pass" in workflow
     planning = ROOT / ".github" / "workflows" / "cursor-agent-architecture-plan.yml"
     assert not planning.exists()

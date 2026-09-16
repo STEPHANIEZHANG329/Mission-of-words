@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import math
+
 from reportlab.lib.colors import black, white
 from reportlab.pdfgen import canvas
 
@@ -395,3 +397,144 @@ def draw_heart(c: canvas.Canvas, cx: float, cy: float, s: float) -> None:
 def draw_lantern_post(c: canvas.Canvas, x: float, y: float, h: float) -> None:
     rect(c, x - 3, y, 6, h * 0.72, 1.5)
     draw_lantern(c, x - h * 0.10, y + h * 0.62, h * 0.38)
+
+
+def draw_sun(c: canvas.Canvas, cx: float, cy: float, r: float) -> None:
+    circle(c, cx, cy, r, 1.8)
+    ink(c, 1.4)
+    for i in range(8):
+        ang = i * 45
+        rad = math.radians(ang)
+        c.line(
+            cx + r * 1.15 * math.cos(rad),
+            cy + r * 1.15 * math.sin(rad),
+            cx + r * 1.45 * math.cos(rad),
+            cy + r * 1.45 * math.sin(rad),
+        )
+
+
+def draw_moon(c: canvas.Canvas, cx: float, cy: float, r: float) -> None:
+    circle(c, cx, cy, r, 1.7)
+    ink(c, 1.7)
+    c.setFillColor(white)
+    c.circle(cx + r * 0.35, cy + r * 0.1, r * 0.78, fill=1, stroke=0)
+    c.setStrokeColor(black)
+    c.circle(cx, cy, r, fill=0, stroke=1)
+
+
+def draw_star(c: canvas.Canvas, cx: float, cy: float, r: float) -> None:
+    pts = []
+    for i in range(10):
+        ang = math.radians(-90 + i * 36)
+        rad = r if i % 2 == 0 else r * 0.42
+        pts.append((cx + rad * math.cos(ang), cy + rad * math.sin(ang)))
+    _path(c, pts, 1.5)
+
+
+def draw_barn(c: canvas.Canvas, x: float, y: float, w: float, h: float) -> None:
+    rect(c, x + w * 0.06, y, w * 0.88, h * 0.62, 2.0)
+    _path(
+        c,
+        [
+            (x, y + h * 0.62),
+            (x + w * 0.5, y + h * 0.98),
+            (x + w, y + h * 0.62),
+        ],
+        2.0,
+    )
+    ink(c, 1.6)
+    c.roundRect(x + w * 0.38, y, w * 0.24, h * 0.38, 6, fill=1, stroke=1)
+    c.line(x + w * 0.5, y, x + w * 0.5, y + h * 0.38)
+    for wx in (x + w * 0.16, x + w * 0.70):
+        c.roundRect(wx, y + h * 0.28, w * 0.12, h * 0.18, 4, fill=1, stroke=1)
+
+
+def draw_wagon(c: canvas.Canvas, x: float, y: float, w: float, h: float) -> None:
+    rect(c, x + w * 0.08, y + h * 0.32, w * 0.84, h * 0.38, 1.8)
+    circle(c, x + w * 0.26, y + h * 0.22, h * 0.20, 1.7)
+    circle(c, x + w * 0.74, y + h * 0.22, h * 0.20, 1.7)
+    rect(c, x + w * 0.78, y + h * 0.48, w * 0.18, h * 0.08, 1.4)
+
+
+def draw_porch(c: canvas.Canvas, x: float, y: float, w: float, h: float, *, lit: bool = True) -> None:
+    rect(c, x + w * 0.12, y + h * 0.18, w * 0.76, h * 0.70, 2.0)
+    _path(
+        c,
+        [(x, y + h * 0.88), (x + w * 0.5, y + h), (x + w, y + h * 0.88)],
+        1.8,
+    )
+    rect(c, x + w * 0.02, y + h * 0.18, w * 0.08, h * 0.70, 1.5)
+    rect(c, x + w * 0.90, y + h * 0.18, w * 0.08, h * 0.70, 1.5)
+    ink(c, 1.6)
+    c.roundRect(x + w * 0.38, y + h * 0.18, w * 0.24, h * 0.42, 8, fill=1, stroke=1)
+    if lit:
+        oval(c, x + w * 0.22, y + h * 0.52, x + w * 0.34, y + h * 0.70, 1.4)
+        oval(c, x + w * 0.66, y + h * 0.52, x + w * 0.78, y + h * 0.70, 1.4)
+
+
+def draw_deer(c: canvas.Canvas, x: float, y: float, w: float, h: float) -> None:
+    oval(c, x + w * 0.18, y + h * 0.28, x + w * 0.78, y + h * 0.62, 1.7)
+    circle(c, x + w * 0.78, y + h * 0.70, w * 0.12, 1.6)
+    rect(c, x + w * 0.26, y, w * 0.08, h * 0.32, 1.4)
+    rect(c, x + w * 0.42, y, w * 0.08, h * 0.30, 1.4)
+    rect(c, x + w * 0.56, y, w * 0.08, h * 0.32, 1.4)
+    rect(c, x + w * 0.68, y, w * 0.08, h * 0.30, 1.4)
+    ink(c, 1.5)
+    c.line(x + w * 0.78, y + h * 0.80, x + w * 0.70, y + h * 0.98)
+    c.line(x + w * 0.82, y + h * 0.80, x + w * 0.88, y + h * 0.96)
+    c.line(x + w * 0.70, y + h * 0.98, x + w * 0.66, y + h * 0.88)
+    c.line(x + w * 0.88, y + h * 0.96, x + w * 0.92, y + h * 0.86)
+
+
+def draw_chair(c: canvas.Canvas, x: float, y: float, w: float, h: float) -> None:
+    rect(c, x + w * 0.12, y + h * 0.38, w * 0.76, h * 0.12, 1.6)
+    rect(c, x + w * 0.16, y, w * 0.10, h * 0.38, 1.5)
+    rect(c, x + w * 0.74, y, w * 0.10, h * 0.38, 1.5)
+    rect(c, x + w * 0.18, y + h * 0.48, w * 0.64, h * 0.46, 1.6)
+
+
+def draw_booth(c: canvas.Canvas, x: float, y: float, w: float, h: float) -> None:
+    rect(c, x + w * 0.08, y, w * 0.84, h * 0.42, 1.8)
+    _path(
+        c,
+        [(x, y + h * 0.42), (x + w * 0.5, y + h * 0.78), (x + w, y + h * 0.42)],
+        1.8,
+    )
+    rect(c, x + w * 0.18, y + h * 0.08, w * 0.28, h * 0.18, 1.4)
+    circle(c, x + w * 0.68, y + h * 0.22, w * 0.08, 1.4)
+
+
+def draw_creek(c: canvas.Canvas, x: float, y: float, w: float, h: float) -> None:
+    ink(c, 1.6)
+    p = c.beginPath()
+    p.moveTo(x, y + h * 0.35)
+    p.curveTo(x + w * 0.25, y + h * 0.05, x + w * 0.55, y + h * 0.70, x + w, y + h * 0.40)
+    c.drawPath(p, fill=0, stroke=1)
+    p2 = c.beginPath()
+    p2.moveTo(x, y + h * 0.62)
+    p2.curveTo(x + w * 0.30, y + h * 0.40, x + w * 0.60, y + h * 0.90, x + w, y + h * 0.70)
+    c.drawPath(p2, fill=0, stroke=1)
+
+
+def draw_loaf(c: canvas.Canvas, x: float, y: float, w: float) -> None:
+    oval(c, x, y, x + w, y + w * 0.55, 1.6)
+    ink(c, 1.2)
+    c.arc(x + w * 0.18, y + w * 0.18, x + w * 0.42, y + w * 0.48, 200, 140)
+    c.arc(x + w * 0.42, y + w * 0.18, x + w * 0.66, y + w * 0.48, 200, 140)
+
+
+def draw_wheat(c: canvas.Canvas, x: float, y: float, h: float) -> None:
+    ink(c, 1.5)
+    c.line(x, y, x, y + h)
+    for i in range(5):
+        yy = y + h * (0.45 + i * 0.10)
+        c.line(x, yy, x - h * 0.12, yy + h * 0.04)
+        c.line(x, yy, x + h * 0.12, yy + h * 0.04)
+    oval(c, x - h * 0.06, y + h * 0.82, x + h * 0.06, y + h, 1.3)
+
+
+def draw_window(c: canvas.Canvas, x: float, y: float, w: float, h: float) -> None:
+    rect(c, x, y, w, h, 1.7)
+    ink(c, 1.3)
+    c.line(x + w / 2, y, x + w / 2, y + h)
+    c.line(x, y + h / 2, x + w, y + h / 2)
