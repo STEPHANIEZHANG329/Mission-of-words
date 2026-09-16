@@ -1,0 +1,8 @@
+{
+  "asset_id": "cover_front",
+  "model": "gpt-image-2",
+  "size": "1024x1536",
+  "bytes": 3160043,
+  "prompt_chars": 744,
+  "created_unix": 1789599008
+}
