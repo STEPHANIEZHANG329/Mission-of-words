@@ -31,23 +31,32 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          HTTP_CODE=$(curl --silent --show-error \
-            --output /tmp/cursor-response.json \
+          KEY="${CURSOR#Bearer }"
+          KEY="${KEY#bearer }"
+
+          BASIC_CODE=$(curl --silent --show-error \
+            --output /tmp/cursor-basic.json \
             --write-out '%{http_code}' \
-            --user "${CURSOR}:" \
+            --user "${KEY}:" \
             --header 'Accept: application/json' \
             'https://api.cursor.com/v1/agents?limit=1')
 
-          if [ "$HTTP_CODE" != "200" ]; then
-            echo "CURSOR_API_AUTH_FAILED_HTTP_${HTTP_CODE}"
-            exit 1
+          if [ "$BASIC_CODE" = "200" ]; then
+            echo "CURSOR_API_AUTH_OK_BASIC"
+            exit 0
           fi
 
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-          payload = json.loads(Path('/tmp/cursor-response.json').read_text())
-          items = payload.get('items', []) if isinstance(payload, dict) else []
-          print('CURSOR_API_AUTH_OK')
-          print(f'CURSOR_API_REACHABLE agents_returned={len(items)}')
-          PY
+          BEARER_CODE=$(curl --silent --show-error \
+            --output /tmp/cursor-bearer.json \
+            --write-out '%{http_code}' \
+            --header "Authorization: Bearer ${KEY}" \
+            --header 'Accept: application/json' \
+            'https://api.cursor.com/v1/agents?limit=1')
+
+          if [ "$BEARER_CODE" = "200" ]; then
+            echo "CURSOR_API_AUTH_OK_BEARER"
+            exit 0
+          fi
+
+          echo "CURSOR_API_AUTH_FAILED basic_http=${BASIC_CODE} bearer_http=${BEARER_CODE}"
+          exit 1
