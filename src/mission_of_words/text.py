@@ -5,6 +5,7 @@ from __future__ import annotations
 from reportlab.lib.colors import black
 from reportlab.pdfgen import canvas
 
+from mission_of_words.fonts import FONT_BODY
 from mission_of_words.layout import (
     USED_INSTRUCTION_LEADING,
     USED_INSTRUCTION_PT,
@@ -26,7 +27,7 @@ def wrapped_text(
     y: float,
     max_width: float,
     *,
-    font: str = "Helvetica",
+    font: str = FONT_BODY,
     size: int = USED_INSTRUCTION_PT,
     leading: float = USED_INSTRUCTION_LEADING,
 ) -> float:

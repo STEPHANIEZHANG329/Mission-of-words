@@ -23,6 +23,7 @@ from mission_of_words.geometry import (
     new_state,
     wrap_lines,
 )
+from mission_of_words.fonts import FONT_BODY, FONT_BODY_BOLD, FONT_ITALIC, FONT_TITLE, FONT_TITLE_BOLD
 from mission_of_words.layout import (
     DPI,
     PAGE_H,
@@ -74,7 +75,7 @@ def draw_badge(
     label = f"MISSION {int(number)}"
     if activity_label:
         label = f"{label}  ·  {activity_label.upper()}"
-    font, size = "Helvetica-Bold", BADGE_PT
+    font, size = FONT_TITLE_BOLD, BADGE_PT
     text_w = c.stringWidth(label, font, size)
     height = size + 4
     box = BBox("mission_badge", x, y_top - height, x + text_w, y_top, kind="badge")
@@ -145,7 +146,7 @@ def plan_activity_header(
 
     footer_h = FOOTER_PT + 6
     prompt_width = width - 42
-    prompt_lines, prompt_overflow = wrap_lines(c, instruction, "Helvetica", instr_pt, prompt_width) if instruction else ([], [])
+    prompt_lines, prompt_overflow = wrap_lines(c, instruction, FONT_BODY, instr_pt, prompt_width) if instruction else ([], [])
     state.overflow.extend(prompt_overflow)
     prompt_h = max(len(prompt_lines), 1) * instr_lead + 8 if instruction else 0
     art_bottom = bottom + footer_h + prompt_h + 4
@@ -155,19 +156,19 @@ def plan_activity_header(
     if draw:
         ink_text(c)
         c.setFillColor(INK)
-        c.setFont("Helvetica", FOOTER_PT)
+        c.setFont(FONT_BODY, FOOTER_PT)
         c.drawRightString(right, bottom + 2, str(page_number))
 
     if instruction:
         y_prompt = bottom + footer_h + (len(prompt_lines) - 1) * instr_lead + 4
         for index, line in enumerate(prompt_lines):
             baseline = y_prompt - index * instr_lead
-            box_line = line_bbox(f"instruction:{index}", left, baseline, line, "Helvetica", instr_pt, c)
+            box_line = line_bbox(f"instruction:{index}", left, baseline, line, FONT_BODY, instr_pt, c)
             state.add(box_line)
             if draw:
                 ink_text(c)
                 c.setFillColor(INK)
-                c.setFont("Helvetica", instr_pt)
+                c.setFont(FONT_BODY, instr_pt)
                 c.drawString(left, baseline, line)
 
     y = top - 2
@@ -194,7 +195,7 @@ def plan_activity_header(
             x=left,
             y=y,
             max_width=width,
-            font="Helvetica-Bold",
+            font=FONT_TITLE_BOLD,
             size=title_pt,
             leading=title_lead,
             draw=draw,
@@ -209,7 +210,7 @@ def plan_activity_header(
             x=left,
             y=y,
             max_width=width,
-            font="Helvetica-Oblique",
+            font=FONT_ITALIC,
             size=REFERENCE_PT,
             leading=REFERENCE_PT + 3,
             draw=draw,
@@ -351,7 +352,7 @@ def draw_start_finish_badges(
     finish_label: str,
     cell: float,
 ) -> None:
-    font, size = "Helvetica-Bold", USED_PUZZLE_LETTER_PT
+    font, size = FONT_TITLE_BOLD, USED_PUZZLE_LETTER_PT
     for name, label, (x, y) in (
         ("start_label", start_label, start_xy),
         ("finish_label", finish_label, finish_xy),
@@ -395,7 +396,7 @@ def draw_answer_number(
     c.setFillColor(white)
     c.circle(cx, cy, radius, fill=0, stroke=1)
     label = str(number)
-    font, size = "Helvetica-Bold", max(USED_ANSWER_KEY_PT, 11)
+    font, size = FONT_BODY_BOLD, max(USED_ANSWER_KEY_PT, 11)
     text_w = c.stringWidth(label, font, size)
     lx = cx - text_w / 2
     ly = cy + radius + 3

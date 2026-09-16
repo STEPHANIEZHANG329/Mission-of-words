@@ -10,6 +10,7 @@ from reportlab.lib.utils import ImageReader
 from reportlab.pdfgen import canvas
 
 from mission_of_words import art
+from mission_of_words.fonts import FONT_BODY, FONT_BODY_BOLD
 from mission_of_words import procedural
 from mission_of_words.compositor import AssetPlacement, compose_search_find
 from mission_of_words.geometry import BBox
@@ -185,7 +186,7 @@ def _draw_legend(
 ) -> None:
     col_w = width / 4
     ink_text(c)
-    c.setFont("Helvetica-Bold", USED_PUZZLE_LETTER_PT)
+    c.setFont(FONT_BODY_BOLD, USED_PUZZLE_LETTER_PT)
     heading = "Find and circle:"
     c.drawString(left, bottom + LEGEND_H - 16, heading)
     state.add(
@@ -193,7 +194,7 @@ def _draw_legend(
             "legend_heading",
             left,
             bottom + LEGEND_H - 20,
-            left + c.stringWidth(heading, "Helvetica-Bold", USED_PUZZLE_LETTER_PT),
+            left + c.stringWidth(heading, FONT_BODY_BOLD, USED_PUZZLE_LETTER_PT),
             bottom + LEGEND_H - 2,
             kind="text",
         )
@@ -224,7 +225,7 @@ def _draw_legend(
         else:
             art.draw_star(c, x + 10, icon_y + 10, 8)
         ink_text(c)
-        c.setFont("Helvetica", USED_PUZZLE_LETTER_PT)
+        c.setFont(FONT_BODY, USED_PUZZLE_LETTER_PT)
         label = f"{index + 1}. {display_name(name)}"
         c.drawString(x + 28, icon_y + 6, label)
 

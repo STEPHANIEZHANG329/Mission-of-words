@@ -7,6 +7,7 @@ from pathlib import Path
 from reportlab.pdfgen import canvas
 
 from mission_of_words import art
+from mission_of_words.fonts import FONT_BODY
 from mission_of_words.layout import USED_PUZZLE_LETTER_PT
 from mission_of_words.maze import Maze
 from mission_of_words.proof import live_box
@@ -177,7 +178,7 @@ def draw_maze_page(
         cell=max(cell, 22),
     )
     ink_text(c)
-    c.setFont("Helvetica", USED_PUZZLE_LETTER_PT)
+    c.setFont(FONT_BODY, USED_PUZZLE_LETTER_PT)
 
     return {
         "page": page_number,

@@ -6,6 +6,7 @@ from reportlab.pdfgen import canvas
 
 from mission_of_words import art
 from mission_of_words.brand import SERIES_LINE, WELCOME_HEADING
+from mission_of_words.fonts import FONT_BODY, FONT_ITALIC, FONT_TITLE_BOLD
 from mission_of_words.layout import USED_INSTRUCTION_PT, USED_SUBTITLE_PT
 from mission_of_words.proof import live_box
 from mission_of_words.templates import draw_activity_header
@@ -36,25 +37,25 @@ def draw_title_page(c: canvas.Canvas, book: dict, page_number: int = 1) -> dict:
     art.draw_lantern(c, cx - 28, top - 140, 90)
     ink_text(c)
     y = top - 170
-    c.setFont("Helvetica-Bold", 26)
-    for line in _wrap(c, book["working_title"], width, "Helvetica-Bold", 26):
+    c.setFont(FONT_TITLE_BOLD, 26)
+    for line in _wrap(c, book["working_title"], width, FONT_TITLE_BOLD, 26):
         c.drawCentredString(cx, y, line)
         y -= 30
     y -= 8
-    c.setFont("Helvetica", USED_SUBTITLE_PT)
+    c.setFont(FONT_BODY, USED_SUBTITLE_PT)
     y = wrapped_text(c, book["subtitle"], left + 12, y, width - 24, size=USED_SUBTITLE_PT, leading=16)
     y -= 18
-    c.setFont("Helvetica", USED_INSTRUCTION_PT)
+    c.setFont(FONT_BODY, USED_INSTRUCTION_PT)
     c.drawCentredString(cx, y, book.get("audience") or "Ages 5-8")
     y -= 22
     c.drawCentredString(cx, y, "Paperback interior  ·  8.5 × 11 in  ·  black and white")
     y -= 40
     art.draw_heart(c, cx, y, 16)
     y -= 36
-    c.setFont("Helvetica-Oblique", USED_INSTRUCTION_PT)
+    c.setFont(FONT_ITALIC, USED_INSTRUCTION_PT)
     c.drawCentredString(cx, y, SERIES_LINE)
     y -= 28
-    c.setFont("Helvetica", USED_INSTRUCTION_PT)
+    c.setFont(FONT_BODY, USED_INSTRUCTION_PT)
     c.drawCentredString(cx, bottom + 48, "Text rendered by code. Artwork slots are NON-PRODUCTION placeholders.")
     return _record(page_number, "title", book["working_title"], ["title_lockup"], child=False)
 
@@ -112,7 +113,7 @@ def draw_contents_page(c: canvas.Canvas, missions: list[dict], page_number: int 
     for mission in missions:
         start = int(mission["global_page_start"])
         line = f"Mission {mission['sequence']}  p.{start}  {mission['title']}  ·  {mission['scripture_reference']}"
-        y = wrapped_text(c, line, left, y, width, font="Helvetica-Bold", size=USED_INSTRUCTION_PT, leading=17)
+        y = wrapped_text(c, line, left, y, width, font=FONT_TITLE_BOLD, size=USED_INSTRUCTION_PT, leading=17)
         y -= 10
     return _record(
         page_number,
@@ -150,7 +151,7 @@ def draw_parent_note_page(c: canvas.Canvas, book: dict, page_number: int = 4) ->
         leading=17,
     )
     y -= 12
-    c.setFont("Helvetica", USED_INSTRUCTION_PT)
+    c.setFont(FONT_BODY, USED_INSTRUCTION_PT)
     c.drawString(left, y, f"Intended list price baseline: ${book.get('kdp_list_price_usd', 9.99):.2f}")
     return _record(
         page_number,

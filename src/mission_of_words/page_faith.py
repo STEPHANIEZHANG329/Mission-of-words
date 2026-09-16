@@ -7,6 +7,7 @@ from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 
 from mission_of_words import art
+from mission_of_words.fonts import FONT_BODY_BOLD, FONT_ITALIC
 from mission_of_words.geometry import BBox
 from mission_of_words.layout import (
     MIN_CHECKBOX_INCHES,
@@ -83,7 +84,7 @@ def draw_faith_page(
     para_h = 64
     draw_panel(c, (inner_left, y - para_h, inner_right, y), radius=10, width=1.4)
     ink_text(c)
-    c.setFont("Helvetica-Bold", 12)
+    c.setFont(FONT_BODY_BOLD, 12)
     c.drawString(inner_left + 10, y - 16, "For kids (not Bible wording):")
     plan.state.add(BBox("paraphrase_label", inner_left + 10, y - 20, inner_left + 240, y - 4, kind="text"))
     wrapped_text(
@@ -115,20 +116,20 @@ def draw_faith_page(
         c.rect(x + 12, cy + card_h - 28, checkbox, checkbox, fill=0, stroke=1)
         _choice_icon(c, choice["icon"], x, cy, card_w, card_h)
         ink_text(c)
-        c.setFont("Helvetica-Bold", USED_INSTRUCTION_PT)
+        c.setFont(FONT_BODY_BOLD, USED_INSTRUCTION_PT)
         c.drawString(x + 12 + checkbox + 8, cy + card_h - 26, choice["label"])
         plan.state.add(BBox(f"choice_{index}", x, cy, x + card_w, cy + card_h, kind="card"))
 
     y = cards_bottom - 20
     ink_text(c)
-    c.setFont("Helvetica-Bold", USED_INSTRUCTION_PT)
+    c.setFont(FONT_BODY_BOLD, USED_INSTRUCTION_PT)
     c.drawString(inner_left, y, page["drawing_prompt"])
     plan.state.add(
         BBox(
             "drawing_prompt",
             inner_left,
             y - 3,
-            inner_left + c.stringWidth(page["drawing_prompt"], "Helvetica-Bold", USED_INSTRUCTION_PT),
+            inner_left + c.stringWidth(page["drawing_prompt"], FONT_BODY_BOLD, USED_INSTRUCTION_PT),
             y + USED_INSTRUCTION_PT * 0.82,
             kind="text",
         )
@@ -143,13 +144,13 @@ def draw_faith_page(
     c.setFillColor(white)
     c.roundRect(body_x, draw_bottom, draw_w, draw_h, 16, fill=1, stroke=1)
     ink_text(c)
-    c.setFont("Helvetica-Oblique", 12)
+    c.setFont(FONT_ITALIC, 12)
     c.drawCentredString((inner_left + inner_right) / 2, draw_bottom + draw_h * 0.48, "Draw here")
     plan.state.add(BBox("drawing_area", body_x, draw_bottom, body_x + draw_w, draw_bottom + draw_h, kind="draw"))
 
     draw_panel(c, (inner_left, bottom, inner_right, bottom + prayer_h), radius=10, width=1.4)
     ink_text(c)
-    c.setFont("Helvetica-Bold", USED_INSTRUCTION_PT)
+    c.setFont(FONT_BODY_BOLD, USED_INSTRUCTION_PT)
     c.drawString(inner_left + 12, bottom + prayer_h - 16, "Prayer")
     wrapped_text(
         c,

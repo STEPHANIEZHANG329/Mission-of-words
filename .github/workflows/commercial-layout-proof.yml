@@ -1,4 +1,4 @@
-name: Commercial layout proof v2 (zero cost)
+name: Internal engineering geometry (zero cost, not a product)
 
 on:
   workflow_dispatch:
@@ -8,8 +8,6 @@ on:
     paths:
       - 'src/mission_of_words/commercial_layout_proof_v2.py'
       - '.github/workflows/commercial-layout-proof.yml'
-      - 'content/missions/**'
-      - 'canon/**'
 
 permissions:
   contents: read
@@ -31,7 +29,7 @@ jobs:
             echo "GPT2_MUST_NOT_BE_AVAILABLE_IN_LAYOUT_PROOF"
             exit 1
           fi
-          echo "ZERO_COST_LAYOUT_PROOF_V2"
+          echo "INTERNAL_ENGINEERING_GEOMETRY_ONLY"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -44,29 +42,29 @@ jobs:
       - name: Compile proof builder
         run: python -m py_compile src/mission_of_words/commercial_layout_proof_v2.py
 
-      - name: Build 48-page commercial layout proof
+      - name: Build internal engineering geometry PDF
         run: python -m mission_of_words.commercial_layout_proof_v2
 
-      - name: Verify proof outputs
+      - name: Verify engineering-only outputs
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          report = json.loads(Path('output/commercial_layout_v2/layout_report.json').read_text())
+          report = json.loads(Path('output/internal_engineering_geometry/layout_report.json').read_text())
           assert report['paid_image_calls'] == 0, report
           assert report['page_count'] == 48, report
-          assert report['status'] == 'PASS_LAYOUT_PROOF_CREATED', report
+          assert report['status'] == 'INTERNAL_ENGINEERING_ONLY', report
+          assert report['owner_facing_product'] is False, report
           assert Path(report['pdf']).is_file(), report
-          assert Path(report['contact_sheet']).is_file(), report
           print(json.dumps(report, indent=2))
           PY
 
-      - name: Upload proof
+      - name: Upload internal engineering geometry
         uses: actions/upload-artifact@v4
         with:
-          name: little-lampkeepers-commercial-layout-proof-v2
+          name: little-lampkeepers-internal-engineering-geometry
           path: |
-            output/commercial_layout_v2/LittleLampkeepers_48_Page_Commercial_Layout_Proof_V2.pdf
-            output/commercial_layout_v2/layout_report.json
-            output/commercial_layout_v2/previews/
+            output/internal_engineering_geometry/LittleLampkeepers_INTERNAL_ENGINEERING_GeometryOnly.pdf
+            output/internal_engineering_geometry/layout_report.json
+            output/internal_engineering_geometry/previews/
           if-no-files-found: error

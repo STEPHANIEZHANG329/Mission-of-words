@@ -10,6 +10,7 @@ from reportlab.lib.utils import ImageReader
 from reportlab.pdfgen import canvas
 
 from mission_of_words.brand import COVER_PDF_NAME, SERIES, SUBTITLE
+from mission_of_words.fonts import FONT_BODY, FONT_TITLE_BOLD
 from mission_of_words.layout import TRIM_INCHES
 from mission_of_words.paths import OUTPUT_DIR
 from mission_of_words.text import ink_text, wrapped_text
@@ -58,27 +59,27 @@ def draw_cover(c: canvas.Canvas, *, artwork: Path | None = None) -> dict:
     text_right = fr - (BLEED_IN + 0.5) * inch
     ink_text(c)
     c.setFillColor(white)
-    c.setFont("Helvetica-Bold", 28)
+    c.setFont(FONT_TITLE_BOLD, 28)
     c.drawString(text_left, ft - 1.1 * inch, SERIES)
-    c.setFont("Helvetica-Bold", 16)
-    wrapped_text(c, SUBTITLE, text_left, ft - 1.45 * inch, text_right - text_left, font="Helvetica-Bold", size=16, leading=20)
-    c.setFont("Helvetica", 12)
+    c.setFont(FONT_TITLE_BOLD, 16)
+    wrapped_text(c, SUBTITLE, text_left, ft - 1.45 * inch, text_right - text_left, font=FONT_TITLE_BOLD, size=16, leading=20)
+    c.setFont(FONT_BODY, 12)
     wrapped_text(c, TAG, text_left, ft - 2.05 * inch, text_right - text_left, size=12, leading=16)
     # back blurb
     back_left = BLEED_IN * inch + SAFE
     back_right = spine_left - SAFE
     c.setFillColor(white)
-    c.setFont("Helvetica-Bold", 16)
+    c.setFont(FONT_TITLE_BOLD, 16)
     c.drawString(back_left, ft - 1.3 * inch, SERIES)
     wrapped_text(c, BLURB, back_left, ft - 1.7 * inch, back_right - back_left, size=12, leading=16)
-    c.setFont("Helvetica", 10)
+    c.setFont(FONT_BODY, 10)
     c.drawString(back_left, fb + 0.7 * inch, "Ages 5–8  ·  Paperback  ·  8.5 × 11 in")
     # spine type
     c.saveState()
     c.translate(spine_left + spine_w / 2, h / 2)
     c.rotate(90)
     c.setFillColor(white)
-    c.setFont("Helvetica-Bold", 9)
+    c.setFont(FONT_TITLE_BOLD, 9)
     c.drawCentredString(0, -3, f"{SERIES}  ·  {SUBTITLE}")
     c.restoreState()
     return {

@@ -10,6 +10,7 @@ from reportlab.pdfgen import canvas
 
 from mission_of_words import art
 from mission_of_words.brand import CERTIFICATE_HEADING, CERTIFICATE_LINE, CLOSING_HEADING
+from mission_of_words.fonts import FONT_BODY, FONT_BODY_BOLD
 from mission_of_words.geometry import BBox
 from mission_of_words.layout import USED_ANSWER_KEY_PT, USED_INSTRUCTION_PT, USED_TITLE_PT
 from mission_of_words.maze import Maze
@@ -53,7 +54,7 @@ def draw_answer_key_page(
     left, bottom, right, top = plan.art_box
     width = right - left
     ink_text(c)
-    c.setFont("Helvetica-Bold", 12)
+    c.setFont(FONT_BODY_BOLD, 12)
     heading_y = top - 12
     c.drawString(left, heading_y, "Search & Find")
     plan.state.add(BBox("search_heading", left, heading_y - 3, left + 90, heading_y + 10, kind="text"))
@@ -88,10 +89,10 @@ def draw_answer_key_page(
     list_x = left + scene_w + 10
     ly = scene_top - 4
     ink_text(c)
-    c.setFont("Helvetica-Bold", ANSWER_LIST_PT)
+    c.setFont(FONT_BODY_BOLD, ANSWER_LIST_PT)
     c.drawString(list_x, ly, "Targets")
     ly -= 16
-    c.setFont("Helvetica", ANSWER_LIST_PT)
+    c.setFont(FONT_BODY, ANSWER_LIST_PT)
     for index, row in enumerate(search_manifest, start=1):
         label = f"{index}. {display_name(row['name'])}"
         c.drawString(list_x, ly, label)
@@ -100,7 +101,7 @@ def draw_answer_key_page(
                 f"ak_list_{row['name']}",
                 list_x,
                 ly - 2,
-                list_x + c.stringWidth(label, "Helvetica", ANSWER_LIST_PT),
+                list_x + c.stringWidth(label, FONT_BODY, ANSWER_LIST_PT),
                 ly + ANSWER_LIST_PT,
                 kind="text",
             )
@@ -109,7 +110,7 @@ def draw_answer_key_page(
 
     maze_top = scene_bottom - 14
     ink_text(c)
-    c.setFont("Helvetica-Bold", 12)
+    c.setFont(FONT_BODY_BOLD, 12)
     c.drawString(left, maze_top, "Maze path  ·  the dark line is the only way")
     maze_bottom = bottom + 6
     window = (left, maze_bottom, right, maze_top - 14)
@@ -174,7 +175,7 @@ def draw_gratitude_journal(c: canvas.Canvas, page_number: int = 45) -> dict:
         art.ink(c, 1.6)
         c.roundRect(left, top_box - box_h, width, box_h, 12, fill=1, stroke=1)
         ink_text(c)
-        c.setFont("Helvetica-Bold", USED_INSTRUCTION_PT)
+        c.setFont(FONT_BODY_BOLD, USED_INSTRUCTION_PT)
         c.drawString(left + 12, top_box - 18, f"{index}. {prompt}")
         plan.state.add(BBox(f"gratitude_{index}", left, top_box - box_h, left + width, top_box, kind="card"))
     return {
@@ -219,7 +220,7 @@ def draw_prayer_walk(c: canvas.Canvas, page_number: int = 46) -> dict:
         art.ink(c, 1.4)
         c.roundRect(left, y - row_h, width, row_h + 4, 8, fill=1, stroke=1)
         ink_text(c)
-        c.setFont("Helvetica", USED_INSTRUCTION_PT)
+        c.setFont(FONT_BODY, USED_INSTRUCTION_PT)
         c.drawString(left + 12, y - row_h + 12, prompt)
         plan.state.add(BBox(f"walk_{index}", left, y - row_h, left + width, y + 4, kind="card"))
         y -= row_h + 10

@@ -1,19 +1,22 @@
 {
   "gate": "commercial_layout_before_paid_generation",
-  "status": "FAIL_OWNER_REJECTED_V2",
+  "status": "FAIL_OWNER_PM_REJECTION",
   "approved_for_paid_generation": false,
-  "owner_reference_standard": "commercial Christian children's activity-book pages matching the Owner-approved three-page visual reference: polished child-friendly line art, integrated illustration + activity, strong page hierarchy, full-page visual composition, readable typography, no worksheet-like engineering layout",
+  "pm_review_url": "https://github.com/STEPHANIEZHANG329/Mission-of-words/pull/11#pullrequestreview-5228467603",
+  "owner_reference_standard": "commercial Christian children's activity-book pages: polished B/W coloring-book illustration, expressive consistent children, dense but colorable fall/church scenes, integrated activity mechanics, playful child-facing typography, authored by one children's-book art director",
   "rejected_artifacts": [
     "LittleLampkeepers_48_Page_Commercial_Layout_Proof.pdf",
-    "LittleLampkeepers_48_Page_Commercial_Layout_Proof_V2.pdf"
+    "LittleLampkeepers_48_Page_Commercial_Layout_Proof_V2.pdf",
+    "BrightHearts_Fall_Interior_TechnicalProof.pdf"
   ],
   "hard_rejections": [
-    "procedural stick-figure/vector scenes presented as commercial proof",
+    "procedural stick-figure/vector scenes presented as commercial proof or KDP candidate",
     "large unexplained blank boxes or empty decorative panels",
     "generic Helvetica-first visual identity used as final consumer design",
     "sparse pages that look like engineering wireframes or teacher worksheets",
     "calling a technically rendered PDF a commercial product without visual review against the Owner reference standard",
-    "showing the Owner another procedural/wireframe PDF as evidence of product quality"
+    "showing the Owner another procedural/wireframe PDF as evidence of product quality",
+    "CI green used as sufficient for production_pass"
   ],
   "required_before_pass": [
     "consumer-facing pages visually match the density and polish of the Owner-approved references",
@@ -27,7 +30,12 @@
     "PM visual review passes every page at print-size raster preview",
     "Owner explicitly approves paid artwork generation after design proof quality is demonstrated"
   ],
-  "delivery_contract": "Do not present another wireframe/procedural PDF to the Owner as product progress. The next Owner-facing product file must contain publication-quality artwork and consumer-ready page design, or it must be explicitly labeled INTERNAL ENGINEERING ONLY and withheld unless the Owner asks to see it.",
-  "reason": "Owner visually inspected V2 and rejected it as far below the approved commercial reference standard. Technical render success is not commercial quality.",
+  "delivery_contract": "Do not present another wireframe/procedural PDF to the Owner as product progress. Geometry PDFs are INTERNAL ENGINEERING ONLY. The next Owner-facing product file must contain publication-quality artwork and consumer-ready page design.",
+  "consumer_typefaces": {
+    "titles": "Fredoka (SIL OFL)",
+    "body": "Nunito (SIL OFL)",
+    "helvetica_allowed": "internal engineering overlays only"
+  },
+  "reason": "Owner/PM review 2026-09-16 rejected treating technical correctness as product quality. Paid generation stays closed.",
   "last_updated": "2026-09-16"
 }

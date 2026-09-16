@@ -2,6 +2,7 @@ from io import BytesIO
 
 from reportlab.pdfgen import canvas
 
+from mission_of_words.fonts import FONT_TITLE_BOLD
 from mission_of_words.geometry import measuring_canvas, wrap_lines
 from mission_of_words.layout import PAGE_H, PAGE_W, USED_TITLE_PT, content_box
 from mission_of_words.templates import draw_activity_header, measure_activity_header
@@ -12,11 +13,11 @@ def test_long_mission_title_wraps_instead_of_overflowing():
     c = measuring_canvas()
     left, _bottom, right, _top = content_box(25)
     width = right - left
-    lines, overflow = wrap_lines(c, title, "Helvetica-Bold", USED_TITLE_PT, width)
+    lines, overflow = wrap_lines(c, title, FONT_TITLE_BOLD, USED_TITLE_PT, width)
     assert overflow == []
     assert lines
     for line in lines:
-        assert c.stringWidth(line, "Helvetica-Bold", USED_TITLE_PT) <= width + 0.01
+        assert c.stringWidth(line, FONT_TITLE_BOLD, USED_TITLE_PT) <= width + 0.01
 
 
 def test_badge_and_title_do_not_collide_on_search_heading():

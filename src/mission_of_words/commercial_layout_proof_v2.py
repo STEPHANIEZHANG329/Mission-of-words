@@ -1,9 +1,7 @@
-"""Little Lampkeepers - zero-cost commercial layout proof v2.
+"""Internal engineering geometry PDF. NOT an Owner-facing product.
 
-No GPT2, no paid calls. This is a full 48-page visual architecture proof.
-Search & Find is now scene-first: a complete illustrated scene is drawn first,
-then eight deterministic target objects are integrated into that scene. The
-answer key reuses the exact same target coordinates.
+Procedural art and layout QA only. Every page is stamped
+INTERNAL ENGINEERING GEOMETRY — NOT A PRODUCT. Paid GPT2 stays closed.
 """
 
 from __future__ import annotations
@@ -23,8 +21,8 @@ from mission_of_words.render import contact_sheet_grid, render_pdf_pages
 from mission_of_words.scenes import draw_coloring_scene
 from mission_of_words.templates import draw_maze_grid
 
-OUT = Path("output/commercial_layout_v2")
-PDF = OUT / "LittleLampkeepers_48_Page_Commercial_Layout_Proof_V2.pdf"
+OUT = Path("output/internal_engineering_geometry")
+PDF = OUT / "LittleLampkeepers_INTERNAL_ENGINEERING_GeometryOnly.pdf"
 REPORT = OUT / "layout_report.json"
 PREVIEWS = OUT / "previews"
 
@@ -61,8 +59,10 @@ def draw_lines(c, lines, x, y, font="Helvetica", size=11, leading=14, centered=F
 
 
 def footer(c, page, left, bottom, right):
-    c.setFillColor(INK); c.setFont("Helvetica-Bold", 9)
-    c.drawRightString(right, bottom-18, str(page))
+    c.setFillColor(INK); c.setFont("Helvetica-Bold", 8)
+    c.drawString(left, bottom-16, "INTERNAL ENGINEERING GEOMETRY — NOT A PRODUCT")
+    c.setFont("Helvetica-Bold", 9)
+    c.drawRightString(right, bottom-16, str(page))
 
 
 def header(c, mission, page, activity, title=None):
@@ -315,7 +315,7 @@ def closing(c,page):
 def build():
     OUT.mkdir(parents=True,exist_ok=True); PREVIEWS.mkdir(parents=True,exist_ok=True)
     book=load_book_record(); missions=load_mission_records(); canons={m["id"]:bind_mission_record(m) for m in missions}; cache={}
-    c=canvas.Canvas(str(PDF),pagesize=(PAGE_W,PAGE_H)); c.setTitle("Little Lampkeepers - Commercial Layout Proof V2")
+    c=canvas.Canvas(str(PDF),pagesize=(PAGE_W,PAGE_H)); c.setTitle("INTERNAL ENGINEERING GEOMETRY — NOT A PRODUCT")
     title_page(c,book,1); c.showPage(); welcome_page(c,2); c.showPage(); contents_page(c,missions,3); c.showPage(); parent_page(c,4); c.showPage()
     for m in missions:
         start=int(m["global_page_start"]); canon=canons[m["id"]]
@@ -324,7 +324,7 @@ def build():
     journal(c,45); c.showPage(); prayers(c,46); c.showPage(); certificate(c,47); c.showPage(); closing(c,48); c.showPage(); c.save()
     previews=render_pdf_pages(PDF,PREVIEWS,dpi=130,prefix="page"); contact=PREVIEWS/"contact_sheet.png"; contact_sheet_grid(previews,contact,columns=6)
     contact_sheet_grid(previews[4:20],PREVIEWS/"missions_1_4.png",columns=4); contact_sheet_grid(previews[20:36],PREVIEWS/"missions_5_8.png",columns=4)
-    report={"status":"PASS_LAYOUT_PROOF_CREATED" if len(previews)==48 else "FAIL","paid_image_calls":0,"page_count":len(previews),"trim_inches":[8.5,11.0],"brand":"Little Lampkeepers","proof_only":True,"gpt2_allowed":False,"search_and_find":"scene-first vector composition with deterministic integrated targets","pdf":str(PDF),"contact_sheet":str(contact)}
+    report={"status":"INTERNAL_ENGINEERING_ONLY","paid_image_calls":0,"page_count":len(previews),"trim_inches":[8.5,11.0],"brand":"Little Lampkeepers","proof_only":True,"owner_facing_product":False,"gpt2_allowed":False,"label":"INTERNAL ENGINEERING GEOMETRY — NOT A PRODUCT","pdf":str(PDF),"contact_sheet":str(contact)}
     REPORT.write_text(json.dumps(report,indent=2)+"\n",encoding="utf-8"); print(json.dumps(report,indent=2)); return report
 
 
