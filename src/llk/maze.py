@@ -119,3 +119,42 @@ def neighbors_open(maze: Maze, c: int, r: int) -> list[tuple[int, int]]:
             continue
         out.append((c + dc, r + dr))
     return out
+
+
+def is_boundary_opening(maze: Maze, col: int, row: int, wall: int) -> bool:
+    """True when this outer wall is the physical START or FINISH gap."""
+    if (col, row) == maze.start and wall == N:
+        return True
+    if (col, row) == maze.end and wall == S:
+        return True
+    return False
+
+
+def wall_segments(maze: Maze) -> list[tuple[float, float, float, float]]:
+    """Axis-aligned wall segments in cell units, y growing downward, openings omitted.
+
+    A segment is (x1, y1, x2, y2) where (0,0) is the top-left corner of the start cell.
+    """
+    segs: list[tuple[float, float, float, float]] = []
+    for r in range(maze.rows):
+        for c in range(maze.cols):
+            bits = maze.walls[r][c]
+            if bits & N and not is_boundary_opening(maze, c, r, N):
+                segs.append((c, r, c + 1, r))
+            if bits & E and not is_boundary_opening(maze, c, r, E):
+                segs.append((c + 1, r, c + 1, r + 1))
+            if bits & S and not is_boundary_opening(maze, c, r, S):
+                segs.append((c, r + 1, c + 1, r + 1))
+            if bits & W and not is_boundary_opening(maze, c, r, W):
+                segs.append((c, r, c, r + 1))
+    return segs
+
+
+def opening_edges(maze: Maze) -> dict[str, tuple[float, float, float, float]]:
+    """The omitted outer edges, in the same cell-unit space as wall_segments."""
+    sc, sr = maze.start
+    ec, er = maze.end
+    return {
+        "start": (sc, sr, sc + 1, sr),  # north edge of start
+        "finish": (ec, er + 1, ec + 1, er + 1),  # south edge of finish
+    }

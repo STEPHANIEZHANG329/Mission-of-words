@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import io
 import sys
 from pathlib import Path
 
@@ -22,9 +21,11 @@ from llk.fonts import (
     register_fonts,
 )
 from llk.geometry import TRIM_H, TRIM_W, margins_for_page, pt
-from llk.images import crop_sheet_cell, find_art, open_lineart, prepare_for_pdf
-from llk.maze import Maze, generate_maze
+from llk.images import crop_sheet_cell, find_art, fit_rect, largest_white_rect, open_lineart, prepare_for_pdf
+from llk.layout import Box, assert_no_collisions
+from llk.maze import Maze, generate_maze, wall_segments
 from llk.paths import OUTPUT, ensure_dirs
+from llk.search_place import place_targets
 from llk.spec import BookSpec, Mission, load_spec, target_catalog
 
 INK = Color(0.07, 0.07, 0.08)
@@ -82,6 +83,7 @@ class Composer:
             cols, rows = maze_page.maze_grid
             self.mazes[mission.id] = generate_maze(cols, rows, maze_page.maze_seed)
         self._img_cache: dict[str, str] = {}
+        self._boxes: list[Box] = []
 
     def mission(self, page: dict) -> Mission:
         return self.missions[page["mission_id"]]
@@ -93,26 +95,14 @@ class Composer:
         prepare_for_pdf(img).save(path, "JPEG", quality=90, optimize=True)
         return str(path)
 
-    def draw_image(self, c: canvas.Canvas, asset_id: str, x: float, y: float, w: float, h: float) -> None:
+    def draw_image(self, c: canvas.Canvas, asset_id: str, x: float, y: float, w: float, h: float) -> Box:
         img = open_lineart(asset_id, color=asset_id == "cover_front")
-        iw, ih = img.size
-        box_aspect = w / h
-        img_aspect = iw / ih
-        if img_aspect > box_aspect:
-            nw = w
-            nh = w / img_aspect
-        else:
-            nh = h
-            nw = h * img_aspect
-        dx = x + (w - nw) / 2
-        dy = y + (h - nh) / 2
-        path = self._tmp_image(img, f"placed_{asset_id}_{int(x)}_{int(y)}")
+        dx, dy, nw, nh = fit_rect(img.size[0], img.size[1], x, y, w, h)
+        path = self._tmp_image(img, f"placed_{asset_id}_{int(dx)}_{int(dy)}_{int(nw)}")
         c.drawImage(path, dx, dy, nw, nh, preserveAspectRatio=True, mask="auto")
-
-    def draw_image_fill(self, c: canvas.Canvas, asset_id: str, x: float, y: float, w: float, h: float) -> None:
-        img = open_lineart(asset_id)
-        path = self._tmp_image(img, f"fill_{asset_id}_{int(w)}_{int(h)}")
-        c.drawImage(path, x, y, w, h, preserveAspectRatio=False, mask="auto")
+        box = Box(f"art:{asset_id}", dx, dy, nw, nh)
+        self._boxes.append(box)
+        return box
 
     def footer(self, c: canvas.Canvas, page_number: int) -> None:
         m = margins_for_page(page_number)
@@ -138,7 +128,8 @@ class Composer:
         m = margins_for_page(page["page"])
         x = pt(m.left)
         width = pt(m.content_width)
-        y = pt(TRIM_H - m.top) - 4
+        top = pt(TRIM_H - m.top) - 4
+        y = top
         c.setFillColor(ACCENT)
         c.setFont(FONT_SANS_SEMI, 10)
         c.drawString(x, y, kicker.upper())
@@ -157,10 +148,14 @@ class Composer:
         if paraphrase:
             y = _draw_wrapped(c, paraphrase, x, y, FONT_SERIF, 12, width, 16) - 4
         if instruction:
-            y = _draw_wrapped(c, instruction, x, y, FONT_SANS, 12, width, 16) - 6
+            y = _draw_wrapped(c, instruction, x, y, FONT_SANS, 12, width, 16)
+        y -= 10
         c.setStrokeColor(LIGHT)
         c.setLineWidth(1)
-        c.line(x, y + 6, x + width, y + 6)
+        c.line(x, y, x + width, y)
+        self._boxes.append(Box("rule:header", x, y - 1, width, 2))
+        self._boxes.append(Box("text:header", x, y + 8, width, top - (y + 8)))
+        y -= 14
         return y
 
     def page_title(self, c: canvas.Canvas, page: dict) -> None:
@@ -268,39 +263,45 @@ class Composer:
         for i, name in enumerate(names):
             col = i % 2
             row = i // 2
-            c.drawString(pt(m.left) + col * col_w, y - row * 15, f"☐  {name}")
-        y -= 15 * 4 + 10
+            c.drawString(pt(m.left) + col * col_w, y - row * 16, f"☐  {name}")
+        y -= 16 * 4 + 12
         bottom = pt(m.bottom) + 8
         box_x, box_y = pt(m.left), bottom
-        box_w, box_h = pt(m.content_width), y - 6 - bottom
+        box_w, box_h = pt(m.content_width), y - bottom
         self._draw_search_scene(c, mission, box_x, box_y, box_w, box_h)
+
+    def _fitted_search_rect(self, mission: Mission, x: float, y: float, w: float, h: float) -> Box:
+        bg = open_lineart(f"search_bg_{mission.id}")
+        dx, dy, nw, nh = fit_rect(bg.size[0], bg.size[1], x, y, w, h)
+        return Box(f"art:search_bg_{mission.id}", dx, dy, nw, nh)
 
     def _draw_search_scene(
         self, c: canvas.Canvas, mission: Mission, x: float, y: float, w: float, h: float
-    ) -> None:
+    ) -> list[Box]:
         bg_id = f"search_bg_{mission.id}"
-        self.draw_image_fill(c, bg_id, x, y, w, h)
+        art_box = self.draw_image(c, bg_id, x, y, w, h)
+        bg = open_lineart(bg_id)
         search = mission.pages[1]
+        placements = place_targets(bg, search.targets)
         sheet_cache: dict[str, Image.Image] = {}
-        for target in search.targets:
-            sheet_id, col, row = self.catalog[target.name]
+        drawn = []
+        for placed in placements:
+            sheet_id, col, row = self.catalog[placed.name]
             if sheet_id not in sheet_cache:
                 sheet_cache[sheet_id] = Image.open(find_art(sheet_id)).convert("RGB")
             cell = crop_sheet_cell(sheet_cache[sheet_id], col, row)
-            tw = w * target.scale
+            tw = art_box.w * placed.scale
             th = tw * (cell.size[1] / max(cell.size[0], 1))
-            tx = x + w * target.x
-            ty = y + h * (1 - target.y) - th
-            # Keep inside the art box.
-            tx = min(max(tx, x), x + w - tw)
-            ty = min(max(ty, y), y + h - th)
-            buf = io.BytesIO()
-            cell.save(buf, "PNG")
-            buf.seek(0)
-            tmp = OUTPUT / "_pages" / f"tgt_{mission.id}_{target.name}.png"
+            tx = art_box.x + art_box.w * placed.x
+            ty = art_box.y + art_box.h * (1 - placed.y) - th
+            tx = min(max(tx, art_box.x), art_box.x + art_box.w - tw)
+            ty = min(max(ty, art_box.y), art_box.y + art_box.h - th)
+            tmp = OUTPUT / "_pages" / f"tgt_{mission.id}_{placed.name}.png"
             tmp.parent.mkdir(parents=True, exist_ok=True)
             cell.save(tmp, "PNG")
             c.drawImage(str(tmp), tx, ty, tw, th, mask="auto")
+            drawn.append(Box(f"target:{placed.name}", tx, ty, tw, th))
+        return drawn
 
     def page_maze(self, c: canvas.Canvas, page: dict) -> None:
         mission = self.mission(page)
@@ -315,18 +316,15 @@ class Composer:
             instruction=maze_page.instruction,
             verse=canon.reference,
         )
-        banner_h = pt(1.85)
-        self.draw_image(c, page["art"], pt(m.left), y - banner_h - 4, pt(m.content_width), banner_h)
-        y = y - banner_h - 14
         maze = self.mazes[mission.id]
-        bottom = pt(m.bottom) + 28
+        bottom = pt(m.bottom) + 30
         self._draw_maze_vector(
             c,
             maze,
             pt(m.left),
             bottom,
             pt(m.content_width),
-            y - 8 - bottom,
+            y - 6 - bottom,
             start_label=maze_page.start_label,
             finish_label=maze_page.finish_label,
         )
@@ -343,29 +341,23 @@ class Composer:
         finish_label: str,
         solution: bool = False,
     ) -> None:
-        pad = 18
-        inner_w, inner_h = w - pad * 2, h - pad * 2 - 14
+        pad_x, pad_top, pad_bot = 10, 22, 22
+        inner_w, inner_h = w - pad_x * 2, h - pad_top - pad_bot
         cell_w = inner_w / maze.cols
         cell_h = inner_h / maze.rows
-        origin_x = x + pad
-        origin_y = y + pad + 10
+        origin_x = x + pad_x
+        origin_y = y + pad_bot
         c.setStrokeColor(INK)
-        c.setLineWidth(2.4)
-        c.setLineCap(1)
-        c.setLineJoin(1)
-        for r in range(maze.rows):
-            for col in range(maze.cols):
-                bits = maze.walls[r][col]
-                cx = origin_x + col * cell_w
-                cy = origin_y + (maze.rows - 1 - r) * cell_h
-                if bits & 1:  # N
-                    c.line(cx, cy + cell_h, cx + cell_w, cy + cell_h)
-                if bits & 2:  # E
-                    c.line(cx + cell_w, cy, cx + cell_w, cy + cell_h)
-                if bits & 4:  # S
-                    c.line(cx, cy, cx + cell_w, cy)
-                if bits & 8:  # W
-                    c.line(cx, cy, cx, cy + cell_h)
+        c.setLineWidth(2.6)
+        c.setLineCap(0)
+        c.setLineJoin(0)
+        for x1, y1, x2, y2 in wall_segments(maze):
+            # cell units, y downward from top of maze -> reportlab y upward from origin_y
+            ax = origin_x + x1 * cell_w
+            ay = origin_y + (maze.rows - y1) * cell_h
+            bx = origin_x + x2 * cell_w
+            by = origin_y + (maze.rows - y2) * cell_h
+            c.line(ax, ay, bx, by)
         if solution:
             c.setStrokeColor(Color(0.35, 0.35, 0.36))
             c.setLineWidth(2.0)
@@ -381,8 +373,8 @@ class Composer:
             c.drawPath(p, stroke=1, fill=0)
         c.setFillColor(INK)
         c.setFont(FONT_SANS_BOLD, 12)
-        c.drawString(origin_x, origin_y + maze.rows * cell_h + 4, start_label)
-        c.drawRightString(origin_x + maze.cols * cell_w, origin_y - 12, finish_label)
+        c.drawString(origin_x, origin_y + maze.rows * cell_h + 6, start_label)
+        c.drawRightString(origin_x + maze.cols * cell_w, origin_y - 14, finish_label)
 
     def page_faith(self, c: canvas.Canvas, page: dict) -> None:
         mission = self.mission(page)
@@ -456,28 +448,26 @@ class Composer:
         for i, name in enumerate(names):
             c.drawString(pt(m.left) + (i % 2) * col_w, y - (i // 2) * 14, name)
         y -= 14 * 4 + 8
-        # Mini map of target centers.
-        map_h = pt(2.35)
-        map_w = pt(m.content_width)
-        map_x = pt(m.left)
+        # Portrait preview box so contain-fit is large and never stretched.
+        map_w = pt(2.85)
+        map_h = pt(4.15)
+        map_x = pt(m.left) + (pt(m.content_width) - map_w) / 2
         map_y = y - map_h
         c.setStrokeColor(INK)
         c.setLineWidth(1)
         c.rect(map_x, map_y, map_w, map_h, stroke=1, fill=0)
-        try:
-            self.draw_image_fill(c, f"search_bg_{mission.id}", map_x, map_y, map_w, map_h)
-        except FileNotFoundError:
-            pass
-        c.setFillColor(white)
-        c.setStrokeColor(INK)
-        for i, t in enumerate(search.targets, start=1):
-            cx = map_x + t.x * map_w + (t.scale * map_w) / 2
-            cy = map_y + (1 - t.y) * map_h - (t.scale * map_w) / 2
+        bg_id = f"search_bg_{mission.id}"
+        art_box = self.draw_image(c, bg_id, map_x + 3, map_y + 3, map_w - 6, map_h - 6)
+        placements = place_targets(open_lineart(bg_id), search.targets)
+        for i, placed in enumerate(placements, start=1):
+            cx = art_box.x + placed.x * art_box.w + (placed.scale * art_box.w) / 2
+            cy = art_box.y + (1 - placed.y) * art_box.h - (placed.scale * art_box.w) / 2
+            c.setFillColor(white)
+            c.setStrokeColor(INK)
             c.circle(cx, cy, 8, stroke=1, fill=1)
             c.setFillColor(INK)
             c.setFont(FONT_SANS_BOLD, 9)
             c.drawCentredString(cx, cy - 3, str(i))
-            c.setFillColor(white)
         y = map_y - 18
         c.setFillColor(INK)
         c.setFont(FONT_SANS_BOLD, 12)
@@ -559,8 +549,7 @@ class Composer:
     def page_certificate(self, c: canvas.Canvas, page: dict) -> None:
         meta = self.spec.meta
         m = margins_for_page(page["page"])
-        # Full-frame art, then type in the open center.
-        self.draw_image(
+        art_box = self.draw_image(
             c,
             "certificate_frame",
             pt(m.left),
@@ -568,35 +557,47 @@ class Composer:
             pt(m.content_width),
             pt(m.content_height),
         )
-        y = pt(TRIM_H / 2) + 70
+        img = open_lineart("certificate_frame")
+        nx, ny, nw, nh = largest_white_rect(img)
+        # Image-space y is top-origin; reportlab y is bottom-origin.
+        field_x = art_box.x + nx * art_box.w + 6
+        field_w = max(120, nw * art_box.w - 12)
+        field_top = art_box.y + art_box.h - ny * art_box.h - 4
+        field_h = nh * art_box.h - 8
+        field_bottom = field_top - field_h
+        y = field_top - 2
         c.setFillColor(INK)
-        c.setFont(FONT_TITLE, 20)
-        c.drawCentredString(pt(TRIM_W) / 2, y, meta["certificate_title"])
-        y -= 28
-        c.setFont(FONT_SANS, 12)
-        c.drawCentredString(pt(TRIM_W) / 2, y, "This certifies that")
-        y -= 18
+        c.setFont(FONT_TITLE, 14)
+        for line in _wrap(c, meta["certificate_title"], FONT_TITLE, 14, field_w):
+            c.drawCentredString(field_x + field_w / 2, y, line)
+            y -= 16
+        c.setFont(FONT_SANS, 11)
+        c.drawCentredString(field_x + field_w / 2, y, "This certifies that")
+        y -= 16
         c.setStrokeColor(INK)
-        c.line(pt(2.3), y, pt(6.2), y)
-        c.setFont(FONT_SANS, 9)
-        c.drawCentredString(pt(TRIM_W) / 2, y - 12, "name")
-        y -= 36
+        c.line(field_x + 6, y, field_x + field_w - 6, y)
+        c.setFont(FONT_SANS, 8)
+        c.drawCentredString(field_x + field_w / 2, y - 10, "name")
+        y -= 22
         y = _draw_wrapped(
             c,
             meta["certificate_body"],
-            pt(m.left) + 24,
+            field_x,
             y,
             FONT_SANS,
-            12,
-            pt(m.content_width) - 48,
-            16,
+            11,
+            field_w,
+            13,
         )
-        y -= 28
-        c.line(pt(1.8), y, pt(4.0), y)
-        c.line(pt(4.6), y, pt(6.7), y)
-        c.setFont(FONT_SANS, 9)
-        c.drawCentredString(pt(2.9), y - 12, "grown-up signature")
-        c.drawCentredString(pt(5.65), y - 12, "date")
+        y -= 12
+        mid = field_x + field_w / 2
+        c.line(field_x + 2, y, mid - 8, y)
+        c.line(mid + 8, y, field_x + field_w - 2, y)
+        c.setFont(FONT_SANS, 8)
+        c.drawCentredString((field_x + 2 + mid - 8) / 2, y - 10, "grown-up signature")
+        c.drawCentredString((mid + 8 + field_x + field_w - 2) / 2, y - 10, "date")
+        if y - 10 < field_bottom + 2:
+            raise AssertionError("certificate type escaped the clear center field")
 
     def page_closing(self, c: canvas.Canvas, page: dict) -> None:
         meta = self.spec.meta
@@ -636,7 +637,9 @@ class Composer:
         c.setAuthor("Little Lampkeepers")
         c.setSubject("Christian fall activity book interior, 48 pages, 8.5x11")
         for page in self.spec.pages:
+            self._boxes = []
             self.draw_page(c, page)
+            assert_no_collisions(self._boxes)
             c.showPage()
         c.save()
         return dest

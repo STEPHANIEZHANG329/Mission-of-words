@@ -11,6 +11,7 @@ from llk.cover import CoverComposer
 from llk.paths import OUTPUT
 from llk.qa import run_qa
 from llk.spec import load_spec
+from llk.visual_qa import run_visual_checks
 
 
 def missing_assets() -> list[str]:
@@ -34,7 +35,8 @@ def main() -> int:
     cover = CoverComposer().write()
     sheet = build_contact_sheet(interior, OUTPUT / "contact_sheet_all_pages.jpg")
     report = run_qa()
-    print(json.dumps({"interior": str(interior), "cover": str(cover), "sheet": str(sheet), "qa": report}, indent=2))
+    visual = run_visual_checks(interior)
+    print(json.dumps({"interior": str(interior), "cover": str(cover), "sheet": str(sheet), "qa": report, "visual": visual}, indent=2))
     return 0
 
 

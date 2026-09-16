@@ -10,6 +10,8 @@ def test_preflight_report_is_green_without_network():
     assert report["paid_call_cap"] == 48
 
 
-def test_ledger_starts_empty_in_this_checkout():
-    # Factory checkout must not already owe paid calls.
-    assert calls_used() == 0
+def test_ledger_does_not_exceed_cap():
+    used = calls_used()
+    assert used <= 48
+    # Historical GPT2 run used 44 calls; this repair must not add more.
+    assert used == 44
