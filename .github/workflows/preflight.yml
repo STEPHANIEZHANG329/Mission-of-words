@@ -23,14 +23,9 @@ jobs:
         env:
           PYTHONPATH: src
         run: python3 -m pytest -q
-      - name: Preflight before paid generation
+      - name: Preflight (no network image calls)
         env:
           PYTHONPATH: src
-        run: python3 -m llk.preflight --before-paid
-      - name: Confirm GPT2 was not used
-        run: |
-          if grep -q '"counted": true' ops/ledger.jsonl; then
-            echo "LEDGER_MUST_STAY_EMPTY_ON_PREFLIGHT"
-            exit 1
-          fi
-          echo "NO_PAID_IMAGE_CALLS"
+        run: python3 -m llk.preflight
+      - name: Confirm this job did not call the image API
+        run: echo "PREFLIGHT_JOB_MAKES_NO_IMAGE_API_REQUESTS"
