@@ -1,0 +1,59 @@
+{
+  "book": {
+    "working_title": "Bright Hearts: Shine Your Light This Fall",
+    "audience": "Ages 5-8",
+    "trim_inches": [8.5, 11.0],
+    "interior": "black_and_white",
+    "safe_margin_inches": 0.5
+  },
+  "mission": {
+    "id": "mission_01",
+    "title": "Shine Your Light",
+    "scripture_reference": "Matthew 5:16",
+    "pages": [
+      {
+        "page": 1,
+        "type": "coloring",
+        "title": "Shine Your Light",
+        "artwork_status": "placeholder_only"
+      },
+      {
+        "page": 2,
+        "type": "search_find",
+        "title": "Find and Circle the Hidden Items",
+        "instruction": "Can you find all 8 items?",
+        "targets": [
+          {"name": "lantern", "x": 0.18, "y": 0.68, "scale": 0.09},
+          {"name": "pumpkin", "x": 0.73, "y": 0.72, "scale": 0.10},
+          {"name": "apple", "x": 0.44, "y": 0.61, "scale": 0.07},
+          {"name": "leaf", "x": 0.65, "y": 0.40, "scale": 0.07},
+          {"name": "acorn", "x": 0.29, "y": 0.35, "scale": 0.06},
+          {"name": "scarf", "x": 0.80, "y": 0.47, "scale": 0.11},
+          {"name": "basket", "x": 0.36, "y": 0.78, "scale": 0.11},
+          {"name": "Bible", "x": 0.57, "y": 0.30, "scale": 0.09}
+        ]
+      },
+      {
+        "page": 3,
+        "type": "maze",
+        "title": "Help the Child Bring the Lantern to the Welcome Table",
+        "difficulty": "medium_easy",
+        "seed": 20260916,
+        "grid": [13, 17]
+      },
+      {
+        "page": 4,
+        "type": "faith_interaction",
+        "title": "How Can You Shine Your Light This Week?",
+        "checkboxes": [
+          "Help someone",
+          "Share with a friend",
+          "Say something kind",
+          "Thank God today"
+        ],
+        "drawing_prompt": "Draw your lantern here",
+        "prayer": "Jesus, help me shine Your light."
+      }
+    ]
+  }
+}
