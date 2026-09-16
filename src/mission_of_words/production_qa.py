@@ -11,7 +11,12 @@ from mission_of_words.full_book_qa import (
     answer_key_linkage_failures,
     evaluate_full_book,
 )
-from mission_of_words.layout import DPI, USED_ANSWER_KEY_PT, USED_INSTRUCTION_PT, USED_PUZZLE_LETTER_PT
+from mission_of_words.layout import (
+    DPI,
+    USED_ANSWER_KEY_PT,
+    USED_INSTRUCTION_PT,
+    USED_PUZZLE_LETTER_PT,
+)
 from mission_of_words.maze import Maze
 from mission_of_words.paid_images import MAX_PAID_CALLS
 
@@ -43,6 +48,7 @@ def evaluate_production(
         asset_records=[],
         answer_pdf=None,
     )
+
     failures = [
         item
         for item in base["failures"]
@@ -55,20 +61,24 @@ def evaluate_production(
         and "authorizes paid" not in item
         and "Phase B assets must stay placeholders" not in item
     ]
+
     paid = int(ledger.get("paid_image_calls") or 0)
     if paid > MAX_PAID_CALLS:
         failures.append(f"paid_image_calls {paid} exceeds Owner cap {MAX_PAID_CALLS}")
 
     rendered = _pdf_page_count(interior_pdf) if interior_pdf.is_file() else 0
     if rendered != TARGET_PAGE_COUNT:
-        failures.append(f"production interior must have {TARGET_PAGE_COUNT} pages, got {rendered}")
+        failures.append(
+            f"production interior must have {TARGET_PAGE_COUNT} pages, got {rendered}"
+        )
     if answer_pdf and answer_pdf.is_file() and _pdf_page_count(answer_pdf) != 8:
         failures.append("production answer-key PDF must have 8 pages")
 
     placeholder_pages = [
         int(record["page"])
         for record in compositions
-        if record.get("placeholder") or record.get("artwork_status") in {"unfilled_slot", "placeholder_only"}
+        if record.get("placeholder")
+        or record.get("artwork_status") in {"unfilled_slot", "placeholder_only"}
     ]
     if placeholder_pages:
         failures.append(f"placeholder art remains on pages {placeholder_pages}")
@@ -79,16 +89,24 @@ def evaluate_production(
         if record.get("collisions") or record.get("overflow") or record.get("clipped")
     ]
     if layout_bad:
-        failures.append(f"layout collisions/overflow/clipping on pages {layout_bad}")
+        failures.append(
+            f"layout collisions/overflow/clipping on pages {layout_bad}"
+        )
 
-    if USED_INSTRUCTION_PT < 12 or USED_PUZZLE_LETTER_PT < 12 or USED_ANSWER_KEY_PT < 9:
+    if (
+        USED_INSTRUCTION_PT < 12
+        or USED_PUZZLE_LETTER_PT < 12
+        or USED_ANSWER_KEY_PT < 9
+    ):
         failures.append("font floors broken")
 
     for record in compositions:
         if record.get("type") == "search_find":
             names = [row.get("name") for row in record.get("manifest") or []]
             if len(names) != 8:
-                failures.append(f"search page {record.get('page')} does not have 8 targets")
+                failures.append(
+                    f"search page {record.get('page')} does not have 8 targets"
+                )
             dpi = float(record.get("effective_dpi") or 0)
             if dpi + 0.05 < DPI:
                 failures.append(
@@ -101,7 +119,9 @@ def evaluate_production(
         if not (page.get("human_visual_review") or {}).get("pass")
     ]
     if human_missing:
-        failures.append(f"Human/PM Visual Review missing or FAIL on pages {human_missing}")
+        failures.append(
+            f"Human/PM Visual Review missing or FAIL on pages {human_missing}"
+        )
 
     if visual.get("visual_readiness") != "PASS" or visual.get("pass") is not True:
         failures.append("independent visual QA is not PASS")
@@ -117,15 +137,22 @@ def evaluate_production(
         rendered == TARGET_PAGE_COUNT
         and not layout_bad
         and not placeholder_pages
-        and base.get("maze_all_solvable")
-        and base.get("maze_all_unique")
-        and base.get("search_answer_keys_from_manifest")
-        and base.get("facing_page_parity_ok")
-        and base.get("font_floors_ok")
-        and base.get("answer_key_linkage_ok")
-        and base.get("all_canons_bound")
+        and bool(base.get("maze_all_solvable"))
+        and bool(base.get("maze_all_unique"))
+        and bool(base.get("search_answer_keys_from_manifest"))
+        and bool(base.get("facing_page_parity_ok"))
+        and bool(base.get("font_floors_ok"))
+        and bool(base.get("answer_key_linkage_ok"))
+        and bool(base.get("all_canons_bound"))
     )
-    production_pass = technical_ok and not failures and visual.get("pass") is True and not placeholder_pages
+
+    production_pass = (
+        technical_ok
+        and not failures
+        and visual.get("pass") is True
+        and not placeholder_pages
+    )
+
     report = dict(base)
     report.update(
         {
