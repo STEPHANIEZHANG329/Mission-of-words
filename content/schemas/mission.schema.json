@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "mission.schema.json",
+  "title": "Bright Hearts mission spec (book + mission used by the prototype builder)",
+  "type": "object",
+  "required": ["book", "mission"],
+  "additionalProperties": false,
+  "properties": {
+    "book": {
+      "type": "object",
+      "required": [
+        "book_id",
+        "working_title",
+        "audience",
+        "trim_inches",
+        "dpi",
+        "interior",
+        "safe_margin_inches"
+      ],
+      "properties": {
+        "book_id": { "type": "string", "minLength": 1 },
+        "working_title": { "type": "string" },
+        "audience": { "type": "string" },
+        "trim_inches": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": { "type": "number" }
+        },
+        "dpi": { "type": "integer", "const": 300 },
+        "interior": { "type": "string" },
+        "safe_margin_inches": { "type": "number", "minimum": 0.5 },
+        "inner_margin_inches": { "type": "number", "minimum": 0.5 },
+        "outer_margin_inches": { "type": "number", "minimum": 0.5 },
+        "top_margin_inches": { "type": "number", "minimum": 0.5 },
+        "bottom_margin_inches": { "type": "number", "minimum": 0.5 },
+        "min_instruction_pt": { "type": "number", "minimum": 12 },
+        "min_puzzle_letter_pt": { "type": "number", "minimum": 12 },
+        "min_answer_key_pt": { "type": "number", "minimum": 9 }
+      },
+      "additionalProperties": false
+    },
+    "mission": {
+      "type": "object",
+      "required": ["id", "title", "scripture_reference", "canon_id", "pages"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "scripture_reference": { "type": "string", "minLength": 1 },
+        "canon_id": { "type": "string", "minLength": 1 },
+        "pages": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": { "$ref": "page.schema.json" }
+        }
+      }
+    }
+  }
+}

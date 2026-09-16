@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "page.schema.json",
+  "title": "Bright Hearts page record",
+  "type": "object",
+  "required": ["page", "type", "title"],
+  "properties": {
+    "page": { "type": "integer", "minimum": 1, "maximum": 4 },
+    "type": {
+      "type": "string",
+      "enum": ["coloring", "search_find", "maze", "faith_interaction"]
+    },
+    "title": { "type": "string", "minLength": 1 },
+    "artwork_status": { "type": "string" },
+    "artwork_asset_id": { "type": ["string", "null"] },
+    "background_asset_id": { "type": ["string", "null"] },
+    "instruction": { "type": "string" },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "x", "y", "scale"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "asset_id": { "type": ["string", "null"] },
+          "x": { "type": "number", "minimum": 0, "maximum": 1 },
+          "y": { "type": "number", "minimum": 0, "maximum": 1 },
+          "scale": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "difficulty": { "type": "string" },
+    "seed": { "type": "integer" },
+    "grid": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "integer", "minimum": 2 }
+    },
+    "checkboxes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "drawing_prompt": { "type": "string" },
+    "prayer": { "type": "string" }
+  },
+  "additionalProperties": false
+}
