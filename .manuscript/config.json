@@ -1,0 +1,63 @@
+{
+  "scriveno_version": "3.8.0",
+  "work_type": "picture_book",
+  "group": "visual",
+  "command_unit": "page",
+  "title": "A Light on Halloween Night",
+  "subtitle": "A Christian Fall Story About Courage, Kindness, and Shining Bright",
+  "author": "",
+  "slug": "a-light-on-halloween-night",
+  "series": null,
+  "book_number": null,
+  "developer_mode": false,
+  "created_at": "2026-09-16T23:45:00Z",
+  "updated_at": "2026-09-16T23:45:00Z",
+  "audience": {
+    "age_min": 4,
+    "age_max": 8,
+    "read_aloud": true
+  },
+  "production": {
+    "interior_pages": 48,
+    "color": true,
+    "existing_images_only": true,
+    "new_paid_image_generation_allowed": false,
+    "source_artifact_id": 10468785082,
+    "source_artifact_run_id": 35148126172
+  },
+  "autopilot": {
+    "enabled": false,
+    "profile": "guided",
+    "include_matter": true,
+    "matter_level": "balanced",
+    "custom_checkpoints": []
+  },
+  "voice": {
+    "calibrated": true,
+    "last_calibration": "2026-09-16T23:45:00Z",
+    "drift_threshold": 0.3
+  },
+  "authenticity": {
+    "external_detector_scores": "context_only",
+    "preserve_process_evidence": true,
+    "detector_optimization": "never"
+  },
+  "draft": {
+    "rigor": "strict",
+    "context_profile": "minimal",
+    "pitfalls_enabled": true
+  },
+  "export": {
+    "default_format": "pdf",
+    "include_front_matter": true,
+    "include_back_matter": true
+  },
+  "translation": {
+    "source_language": "en",
+    "target_languages": []
+  },
+  "collaboration": {
+    "tracks_enabled": false,
+    "default_track": "canon"
+  }
+}
